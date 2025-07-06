@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/puntos.css">
+    <script type="module" src="/script/puntos.js" defer></script>
+    <title>Snack script - Puntos</title>
+</head>
+<body>
+    <div id="navbar"></div>
+
+    <div id="selector-puntos">
+        <a href="/view/puntos.html">
+            <button id="btnCanje">Estado de puntos</button>
+        </a>
+        <a href="/view/historialPuntos.html">
+            <button id="btnHistorial">Historial de puntos</button>
+        </a>
+    </div>
+
+     <div id="total-puntos">
+        <h3>10 puntos acumulados</h3>
+        <p>Ultima compra 07/06/2025</p>
+    </div>
+
+    <main id="lista-puntos">
+        <h3>Canjea tus puntos</h3>
+        <p>Selecciona un producto para canjear tus puntos</p>
+
+        <div id="cupones">
+            <h3>Cupones disponibles</h3>
+            <div class="cupon">
+                <p>10% de descuento en la siguiente compra</p>
+                <p>120 puntos</p>
+            </div>
+            <div class="cupon">
+                <p>20% de descuento en la siguiente compra</p>
+                <p>250 puntos</p>
+            </div>
+        </div>
+
+        <div id="productos">
+            <h3>Productos disponibles</h3>
+            <div class="producto">
+                <img src="/img/pockyChocolate.webp" alt="Pocky Chocolate">
+                <p>Pocky de chocolate</p>
+                <p>110 puntos</p>
+            </div>
+            <div class="producto">
+                <img src="/img/LucasmuecasAzul.jpg" alt="Lucas Muecas Azul">
+                <p>Lucas Muecas Azul</p>
+                <p>80 puntos</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="proximoCanje">
+        <h3>Proximo canje</h3>
+        <p>Producto: Pocky de chocolate</p>
+        <p>Puntos necesarios: 80</p>
+    </div>
+
+    <div class="proximoCanje">
+        <h3>Proximo canje</h3>
+        <p>Cupon: Cupon del 10%</p>
+        <p>Puntos necesarios: 120</p>
+    </div>
+    <div id="footer"></div>
+</body>
+</html>

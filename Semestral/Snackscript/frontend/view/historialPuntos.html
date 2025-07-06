@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/puntos.css">
+    <script type="module" src="/script/puntos.js" defer></script>
+    <title>Snack script - Historial puntos</title>
+</head>
+<body>
+    <div id="navbar"></div>
+
+    <div id="selector-puntos">
+        <a href="/view/puntos.html">
+            <button id="btnCanje">Estado de puntos</button>
+        </a>
+        <a href="/view/historialPuntos.html">
+            <button id="btnHistorial">Historial de puntos</button>
+        </a>
+    </div>
+    
+     <div id="total-puntos">
+        <h3>10 puntos acumulados</h3>
+        <p>Ultima compra 07/06/2025</p>
+    </div>
+    
+    <main id="Historial-puntos">
+        <h3>Historial de puntos</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Descripcion</th>
+                    <th>Puntos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>10/06/2025</td>
+                    <td>Cupon del 5%</td>
+                    <td>- 15</td>
+                </tr>
+                <tr>
+                    <td>07/06/2025</td>
+                    <td>Buldak carbonara</td>
+                    <td>+ 10</td>
+                </tr>
+                <tr>
+                    <td>05/06/2025</td>
+                    <td>Sour patch</td>
+                    <td>+ 20</td>
+                </tr>
+            </tbody>
+    </main>
+
+    <div class="proximoCanje">
+        <h3>Proximo canje</h3>
+        <p>Producto: Pocky de chocolate</p>
+        <p>Puntos necesarios: 80</p>
+    </div>
+
+    <div class="proximoCanje">
+        <h3>Proximo canje</h3>
+        <p>Cupon: Cupon del 10%</p>
+        <p>Puntos necesarios: 120</p>
+    </div>
+    <div id="footer"></div>
+</body>
+</html>

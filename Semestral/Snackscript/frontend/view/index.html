@@ -3,28 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style/index.css">
-    <script type="module" src="/script/index.js" defer></script>
+    <link rel="stylesheet" href="../style/index.css">
+    <script type="module" src="../script/index.js" defer></script>
+    <link rel="stylesheet" href="../style/navbar.css">
     <title>Snack Script</title>
 </head>
 <body>
     <div id="navbar"></div>
-    <main>
-        <button id="btnTodo">Todo</button>
-        <button id="btnDulce">Dulce</button>
-        <button id="btnSalado">Salado</button>
-        <button id="btnBebida">Bebida</button>
-        <button id="btnPais">Por pais</button>
-    </main>
-
-    <div id="snackList">
-        <img src="/img/buldakCarbonara.png" class="snack">
-        <img src="/img/SourpatchOriginal.webp" class="snack">
-        <img src="/img/ChocolatemrbeastMani.jpg" class="snack">
-        <img src="/img/PapiricasPollo.webp" class="snack">
-        <img src="/img/LucasmuecasAzul.jpg" class="snack">
-        <img src="/img/pockyChocolate.webp" class="snack">
+    
+    <!-- Header principal -->
+    <div class="page-header">
+        <h1>SnackScript</h1>
+        <p>Descubre los mejores snacks del mundo</p>
     </div>
+
+    <!-- Sección de filtros -->
+    <div class="filters-section">
+        <div class="filters-header">
+            <h2>Filtrar productos</h2>
+            <span class="filters-count">6 productos disponibles</span>
+        </div>
+        <div class="filters-container">
+            <button class="filter-btn active" id="btnTodo">Todo</button>
+            <button class="filter-btn" id="btnDulce">Dulce</button>
+            <button class="filter-btn" id="btnSalado">Salado</button>
+            <button class="filter-btn" id="btnBebida">Bebida</button>
+            <button class="filter-btn" id="btnPais">Por país</button>
+        </div>
+    </div>
+
+    <!-- Sección de productos -->
+    <div class="products-section">
+        <div class="products-header">
+            <h2>Productos destacados</h2>
+            <div class="sort-controls">
+                <span class="sort-label">Ordenar por:</span>
+                <select class="sort-select">
+                    <option value="popular">Más populares</option>
+                    <option value="price-low">Precio: menor a mayor</option>
+                    <option value="price-high">Precio: mayor a menor</option>
+                    <option value="name">Nombre A-Z</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="snackList">
+            <!-- Producto 1 -->
+            <div class="product-card">
+                <img src="../img/buldakCarbonara.png" alt="Buldak Carbonara" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Buldak Carbonara</h3>
+                    <p class="product-description">Fideos picantes con sabor carbonara, perfectos para los amantes del picante</p>
+                    <p class="product-price">$3.99</p>
+                    <div class="product-actions">
+                        <button class="add-to-cart-btn">Agregar al carrito</button>
+                        <button class="wishlist-btn">❤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="product-card">
+                <img src="../img/SourpatchOriginal.webp" alt="Sour Patch Original" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Sour Patch Original</h3>
+                    <p class="product-description">Dulces ácidos y dulces, la combinación perfecta de sabores</p>
+                    <p class="product-price">$2.39</p>
+                    <div class="product-actions">
+                        <button class="add-to-cart-btn">Agregar al carrito</button>
+                        <button class="wishlist-btn">❤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="product-card">
+                <img src="../img/ChocolatemrbeastMani.jpg" alt="Chocolate MrBeast" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Chocolate MrBeast</h3>
+                    <p class="product-description">Chocolate premium con el sello de MrBeast, edición limitada</p>
+                    <p class="product-price">$4.99</p>
+                    <div class="product-actions">
+                        <button class="add-to-cart-btn">Agregar al carrito</button>
+                        <button class="wishlist-btn">❤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="product-card">
+                <img src="../img/PapiricasPollo.webp" alt="Papiricas Pollo" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Papiricas Pollo</h3>
+                    <p class="product-description">Snack crujiente con sabor a pollo, perfecto para picar</p>
+                    <p class="product-price">$1.99</p>
+                    <div class="product-actions">
+                        <button class="add-to-cart-btn">Agregar al carrito</button>
+                        <button class="wishlist-btn">❤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 5 -->
+            <div class="product-card">
+                <img src="../img/LucasmuecasAzul.jpg" alt="Lucas Muecas Azul" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Lucas Muecas Azul</h3>
+                    <p class="product-description">Dulce tradicional mexicano con sabor a frutas azules</p>
+                    <p class="product-price">$0.99</p>
+                    <div class="product-actions">
+                        <button class="add-to-cart-btn">Agregar al carrito</button>
+                        <button class="wishlist-btn">❤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 6 -->
+            <div class="product-card">
+                <img src="../img/pockyChocolate.webp" alt="Pocky Chocolate" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Pocky Chocolate</h3>
+                    <p class="product-description">Galletas japonesas bañadas en chocolate, irresistibles</p>
+                    <p class="product-price">$2.99</p>
+                    <div class="product-actions">
+                        <button class="add-to-cart-btn">Agregar al carrito</button>
+                        <button class="wishlist-btn">❤</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination">
+            <button class="pagination-btn">← Anterior</button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn">Siguiente →</button>
+        </div>
+    </div>
+
     <div id="footer"></div>
 </body>
 </html>

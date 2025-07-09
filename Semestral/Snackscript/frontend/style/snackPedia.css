@@ -7,3 +7,336 @@
     width: 200px;
     height: 200px;
 }
+
+/* === GLOBAL MEJORADO === */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #F5FAFA 0%, #E8F4F8 50%, #F0F8FF 100%);
+  color: #030C26;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* === BARRA DE BÚSQUEDA MEJORADA === */
+search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 30px;
+  background: linear-gradient(135deg, #F2B5FF 0%, #E8A8FF 100%);
+  gap: 15px;
+  flex-wrap: wrap;
+  box-shadow: 0 8px 25px rgba(242, 181, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+search::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
+}
+
+#searchInput {
+  padding: 15px 20px;
+  border: 3px solid #9556A6;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  width: 300px;
+  max-width: 90%;
+  outline: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+}
+
+#searchInput:focus {
+  border-color: #170C40;
+  box-shadow: 0 8px 25px rgba(23, 12, 64, 0.2);
+  transform: translateY(-2px);
+}
+
+#searchButton {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 6px 15px rgba(149, 86, 166, 0.3);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+
+#searchButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+#searchButton:hover::before {
+  left: 100%;
+}
+
+#searchButton:hover {
+  background: linear-gradient(135deg, #BFA7F2 0%, #D4C7F5 100%);
+  color: #030C26;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(191, 167, 242, 0.4);
+}
+
+#searchButton:active {
+  transform: translateY(-1px);
+  transition: transform 0.1s ease;
+}
+
+/* === FILTROS MEJORADOS === */
+main {
+  text-align: center;
+  padding: 40px 30px;
+  background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
+  border-radius: 20px;
+  margin: 40px auto;
+  width: 90%;
+  max-width: 1000px;
+  box-shadow: 0 12px 40px rgba(3, 12, 38, 0.12);
+  border: 2px solid rgba(162, 136, 212, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
+  border-radius: 20px 20px 0 0;
+}
+
+main button {
+  background: linear-gradient(135deg, #99FFC2 0%, #B8FFD1 100%);
+  color: #170C40;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  padding: 12px 24px;
+  margin: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+
+main button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+main button:hover::before {
+  left: 100%;
+}
+
+main button:hover {
+  background: linear-gradient(135deg, #C2FFBF 0%, #D4FFD1 100%);
+  color: #030C26;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+main button:active {
+  transform: translateY(-1px);
+  transition: transform 0.1s ease;
+}
+
+/* === LISTA DE SNACKS MEJORADA === */
+#snackList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 50px 30px;
+  margin: 40px auto;
+  max-width: 1300px;
+  background: linear-gradient(135deg, #F2D9BB 0%, #F5E6D3 100%);
+  border-top: 5px solid #F29441;
+  border-bottom: 5px solid #D9763D;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px rgba(3, 12, 38, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+#snackList::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #F29441, #D9763D, #F26052);
+}
+
+.snack {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 15px;
+  border: 4px solid #9556A6;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 20px rgba(3, 12, 38, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.snack::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.snack:hover::before {
+  transform: translateX(100%);
+}
+
+.snack:hover {
+  transform: scale(1.08) rotate(2deg);
+  box-shadow: 0 15px 35px rgba(3, 12, 38, 0.25);
+  border-color: #BFA7F2;
+}
+
+/* === TÍTULOS MEJORADOS === */
+h1, h2, h3 {
+  background: linear-gradient(135deg, #170C40 0%, #2A1B5E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  text-align: center;
+  margin: 30px 0;
+  position: relative;
+}
+
+h1::after, h2::after, h3::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #F26052, #F29441);
+  border-radius: 2px;
+}
+
+/* === RESPONSIVE MEJORADO === */
+@media (max-width: 768px) {
+  search {
+    flex-direction: column;
+    padding: 30px 20px;
+    gap: 15px;
+  }
+
+  #searchInput {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 18px;
+    font-size: 1rem;
+  }
+
+  #searchButton {
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+
+  main {
+    padding: 30px 20px;
+    margin: 30px auto;
+    width: 95%;
+  }
+
+  main button {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    margin: 8px;
+  }
+
+  .snack {
+    width: 130px;
+    height: 130px;
+  }
+
+  #snackList {
+    padding: 40px 20px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  search {
+    padding: 25px 15px;
+  }
+
+  #searchInput {
+    padding: 10px 15px;
+    font-size: 0.95rem;
+  }
+
+  #searchButton {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+
+  main {
+    padding: 25px 15px;
+  }
+
+  main button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    margin: 6px;
+  }
+
+  .snack {
+    width: 110px;
+    height: 110px;
+  }
+
+  #snackList {
+    padding: 30px 15px;
+    gap: 15px;
+  }
+}

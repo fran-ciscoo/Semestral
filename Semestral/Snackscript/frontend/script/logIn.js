@@ -1,36 +1,71 @@
-import {generate, footer} from "../component/navbar.js"
 (()=>{
-
     const App = (()=>{
         const htmlElements = {
-            navbar: document.querySelector('#navbar'),
-            footer: document.querySelector('#footer')
+            form: document.querySelector('#loginForm'),
+            inputUsername: document.querySelector('#username'),
+            inputPassword: document.querySelector('#password'),
         }
 
+        let sessionToken = null;
+
         const methods = {
-            addFooter(){
-                const container = htmlElements.footer;
-                const generar = footer();
-                methods.printHtml(container, generar);
+            validateUser(){
+                const username = htmlElements.inputUsername.value.trim();
+                const password = htmlElements.inputPassword.value;
+                const hashedPassword = methods.hash(password);
+                console.log(hashedPassword);
+
+                if (!username || !password) {
+                    alert('Both fields are required.');
+                    return false;
+                }
+
+                fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({username, password: hashedPassword})
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Login failed: ');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    sessionToken = data.token;
+                    console.log('User found:', data);
+                    console.log('Token de sesión:', sessionToken);
+                    window.location.href = '../view/index.html';
+                })
+
             },
 
-            addNavbar(){
-                const container = htmlElements.navbar;
-                const generar = generate();
-                methods.printHtml(container, generar);
-            },
+            hash(passWord){
+                    let hash = 0; 
 
-            printHtml(element, text) {
-                element.innerHTML += `${text}`;
-            }
+                    for(let i = 0; i < passWord.length; i++){
+                        let chr = passWord.charCodeAt(i);
+                        hash = (hash << 5) - hash + chr; 
+                        hash |= 0; 
+                    }
+                    return hash;
+                },
             }
 
         return{
             init(){
-                methods.addNavbar();
-                methods.addFooter();
+                const { form } = htmlElements;
+
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    methods.validateUser();
+                });
+
             }
         }
     })();
     App.init();
+    window.AppLogin = App;
 })();

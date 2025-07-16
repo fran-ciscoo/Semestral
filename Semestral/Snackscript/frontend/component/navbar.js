@@ -16,6 +16,22 @@ export function generate(){
     return navbar;
 };
 
+export function navbarN(){
+    const navbar = `
+                    <header class="navbar-container">
+                        <div id="logo-navbar">
+                            <img src="/img/logoSnack.png" alt="Logo de Snack Script">
+                        </div>
+                        <nav class="navbar" role="navigation">
+                            <a href="/view/index.html">Inicio</a>
+                            <a href="/view/pedidos.html">Pedidos</a>
+                            <a href="/view/carrito.html">Carrito</a>
+                            <a href="/view/perfil.html">Perfil</a>
+                        </nav>
+                    </header>`
+    return navbar;
+};
+
 export function footer(){
     const footer = `
                     <footer class="footer">

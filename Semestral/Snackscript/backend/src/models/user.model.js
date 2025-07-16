@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
+        unique: true,
         trim: true
     },
     email: {
@@ -35,10 +36,10 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'subscriber', 'admin'],
         default: 'user'
     },
-    isActive: {
-        type: Boolean,
-        default: true
-    },
+    session: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Session'
+    }],
     hasActiveSubscription: {
         type: Boolean,
         default: false

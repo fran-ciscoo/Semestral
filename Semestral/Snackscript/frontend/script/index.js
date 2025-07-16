@@ -1,4 +1,4 @@
-import {generate, footer} from "../component/navbar.js"
+import {navbarN, generate, footer} from "../component/navbar.js"
 (()=>{
 
     const App = (()=>{
@@ -8,6 +8,11 @@ import {generate, footer} from "../component/navbar.js"
         }
 
         const methods = {
+            verfySession(){
+                
+            
+            },
+
             addFooter(){
                 const container = htmlElements.footer;
                 const generar = footer();
@@ -16,7 +21,7 @@ import {generate, footer} from "../component/navbar.js"
 
             addNavbar(){
                 const container = htmlElements.navbar;
-                const generar = generate();
+                const generar = navbarN();
                 methods.printHtml(container, generar);
             },
 

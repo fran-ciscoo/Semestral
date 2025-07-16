@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/index.css">
+    <script type="module" src="../script/index.js" defer></script>
+    <link rel="stylesheet" href="../style/navbar.css">
+    <title>Snack Script</title>
+</head>
+<body>
+    <div id="navbar"></div>
+    
+    <!-- Header principal -->
+    <div class="page-header">
+        <h1>SnackScript - vista de administrador</h1>
+    </div>
+
+    <!-- Sección de filtros -->
+    <div class="filters-section">
+        <div class="filters-header">
+            <h2>Filtrar productos</h2>
+            <span class="filters-count"></span>
+        </div>
+        <div class="filters-container">
+            <button class="filter-btn active" id="btnTodo">Todo</button>
+            <button class="filter-btn" id="btnDulce">Dulce</button>
+            <button class="filter-btn" id="btnSalado">Salado</button>
+            <button class="filter-btn" id="btnPais">Acidos</button>
+            <button class="filter-btn" id="btnPicante">Picante</button>
+            <button class="filter-btn" id="btnBebida">Bebida</button>
+        </div>
+    </div>
+
+    <!-- Sección de productos -->
+    <div class="products-section">
+        <div class="products-header">
+            <h2>Listado de productos</h2>
+            <div class="sort-controls">
+                <button id="addProductBtn">Añadir producto</button>
+            </div>
+        </div>
+
+        <dialog class="modal-form" id="addProductDialog">
+            <form id="addProductForm">
+                <h2>Añadir producto</h2>
+                <label for="productName">Nombre</label>
+                <input type="text" id="productName" name="productName" required>
+                <label for="productPrice">Precio</label>
+                <input type="number" id="productPrice" name="productPrice" required>
+                <label for="productCategory">Categoría</label>
+                <input type="text" id="productCategory" name="productCategory" required>
+                <label for="productOrigin">Origen</label>
+                <input type="text" id="productOrigin" name="productOrigin" required>
+                <label for="productStock">Stock</label>
+                <input type="number" id="productStock" name="productStock" required>
+                <label for="productDescription">Descripción</label>
+                <textarea id="productDescription" name="productDescription" required></textarea>
+                <label for="productStory">Historia</label>
+                <textarea id="productStory" name="productStory" required></textarea>
+                <button type="submit">Añadir</button>
+                <button type="button" class="cancel-btn" id="cancelAddProduct">Cancelar</button>
+            </form>
+        </dialog>
+
+        <div id="snackList">
+            <!-- Producto-->
+            <div class="product-card hidden" id="containerProduct">
+                
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination">
+            <button class="pagination-btn">← Anterior</button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn">Siguiente →</button>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>

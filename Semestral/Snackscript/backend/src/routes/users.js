@@ -1,7 +1,7 @@
 import User from '../models/user.model.js';
 export default async function usersRoutes(fastify, opts) {
 
-fastify.post('/users', async (request, reply) => {
+fastify.post('/', async (request, reply) => {
     const { name, username, email, password } = request.body;
 
     // Create new user

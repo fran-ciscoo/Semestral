@@ -1,4 +1,4 @@
-export function generate(){
+export function navbarS(){
     const navbar = `
                     <header class="navbar-container">
                         <div id="logo-navbar">
@@ -24,6 +24,7 @@ export function navbarN(){
                         </div>
                         <nav class="navbar" role="navigation">
                             <a href="/view/index.html">Inicio</a>
+                            <a href="/view/indexAdmin.html">Inicio admin</a>
                             <a href="/view/pedidos.html">Pedidos</a>
                             <a href="/view/carrito.html">Carrito</a>
                             <a href="/view/perfil.html">Perfil</a>

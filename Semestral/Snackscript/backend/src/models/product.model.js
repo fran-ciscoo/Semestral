@@ -6,35 +6,38 @@ const productSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    description: {
-        type: String,
-        required: true
-    },
     price: {
         type: Number,
         required: true,
         min: 0
     },
+    category:{
+        type: String,
+        required: true,
+        enum: ['dulce', 'salado', 'bebida', 'acido', 'picante']
+    },
+    origin: {
+        type: String,
+        required: true
+    },
     stock: {
         type: Number,
+        required: true,
         default: 0,
         min: 0
+    },
+    description: {
+        type: String,
+        required: true
     },
     status: {
         type: String,
         enum: ['disponible', 'descontinuado', 'agotado'],
         default: 'disponible'
     },
-    ingredients: {
-        type: [String],
-        default: []
-    },
-    origin: {
+    story: {
         type: String,
         required: true
-    },
-    story: {
-        type: String
     },
     addedAt: {
         type: Date,

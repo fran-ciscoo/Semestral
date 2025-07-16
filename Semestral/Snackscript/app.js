@@ -26,6 +26,13 @@ fastify.get('/', async (request, reply) => {
   return reply.sendFile('view/index.html');
 });
 
+async function routesProducts() {
+  await fastify.register(import('./backend/src/routes/productos.js'), {
+    prefix: '/api/productos'
+  });
+}
+routesProducts();
+
 async function routesUsers() {
   await fastify.register(import('./backend/src/routes/users.js'), {
     prefix: '/api/users'

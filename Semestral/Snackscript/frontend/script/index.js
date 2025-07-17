@@ -4,10 +4,37 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
     const App = (()=>{
         const htmlElements = {
             navbar: document.querySelector('#navbar'),
-            footer: document.querySelector('#footer')
+            footer: document.querySelector('#footer'),
+
+            containerProduct: document.querySelector('#snackList'),
         }
 
         const methods = {
+            viewProducts() {
+                fetch('http://localhost:3000/api/productos')
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = htmlElements.containerProduct;
+                        container.innerHTML = '';
+
+                        data.productos.forEach(product => {
+                            const productCard = `
+                                <div class="product-card">
+                                    <div class="product-info">
+                                        <h2 class="product-title">${product.name}</h2>
+                                        <p class="product-description">${product.description}</p>
+                                        <p class="product-price">$${product.price}</p>
+                                        <div class="product-actions">
+                                            <button class="add-to-cart-btn" data-id="${product._id}">Agregar al carrito</button>
+                                            <button class="wishlist-btn" data-id="${product._id}">❤</button>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            container.innerHTML += productCard;
+                        });
+                    }).catch(error => console.error('Error al obtener productos:', error));
+            },
+
             async verfySession(){
                 try{
                     const response = await fetch ('http://localhost:3000/api/login/me',{
@@ -60,6 +87,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             init(){
                 methods.addNavbar();
                 methods.addFooter();
+                methods.viewProducts();
             }
         }
     })();

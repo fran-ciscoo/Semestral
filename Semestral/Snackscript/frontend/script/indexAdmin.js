@@ -1,4 +1,4 @@
-import {navbarN, navbarS, footer} from "../component/navbar.js"
+import {navbarA, footer} from "../component/navbar.js"
 (()=>{
 
     const App = (()=>{
@@ -121,18 +121,10 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 }
             },
 
-            async addNavbar(){
+            addNavbar(){
                 const container = htmlElements.navbar;
-                const role = await methods.verfySession();
-                console.log(role);
-                let generar;
-
-                if (role === 'subscriber') {
-                    generar = navbarS();
-                } else {
-                    generar = navbarN();
-                }
-
+                const generar = navbarA();
+            
                 methods.printHtml(container, generar);
             },
 

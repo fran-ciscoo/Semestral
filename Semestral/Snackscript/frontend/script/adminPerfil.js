@@ -1,4 +1,4 @@
-import {navbarN, navbarS, footer} from "../component/navbar.js"
+import {navbarA, footer} from "../component/navbar.js"
 (()=>{
 
     const App = (()=>{
@@ -9,7 +9,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             perfil: document.querySelector('#perfil'),
             nombre: document.querySelector('#nombre'),
             email: document.querySelector('#email'),
-            cerrarSesion: document.querySelector('#cerrarSesion'),
+            cerrarSesion: document.querySelector('#cerrarSesion')
         }
 
         const methods = {
@@ -58,7 +58,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     htmlElements.email.textContent = 'Sin correo';
                 }
             },
-            
+
             async verfySession(){
                 try{
                     const response = await fetch ('http://localhost:3000/api/login/me',{
@@ -81,17 +81,9 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 }
             },
 
-            async addNavbar(){
+            addNavbar(){
                 const container = htmlElements.navbar;
-                const role = await methods.verfySession();
-                console.log(role);
-                let generar;
-
-                if (role === 'subscriber') {
-                    generar = navbarS();
-                } else {
-                    generar = navbarN();
-                }
+                const generar = navbarA();
 
                 methods.printHtml(container, generar);
             },

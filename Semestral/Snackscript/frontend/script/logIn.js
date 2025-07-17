@@ -25,7 +25,8 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({username, password: hashedPassword})
+                    body: JSON.stringify({username, password: hashedPassword}),
+                    credentials: 'include' 
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -37,7 +38,11 @@
                     sessionToken = data.token;
                     console.log('User found:', data);
                     console.log('Token de sesión:', sessionToken);
-                    window.location.href = '../view/index.html';
+                    if (data.user.role === 'admin') {
+                        window.location.href = '../view/indexAdmin.html';
+                    }else {
+                        window.location.href = '../view/index.html';
+                    }
                 })
 
             },

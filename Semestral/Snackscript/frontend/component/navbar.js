@@ -24,10 +24,25 @@ export function navbarN(){
                         </div>
                         <nav class="navbar" role="navigation">
                             <a href="/view/index.html">Inicio</a>
-                            <a href="/view/indexAdmin.html">Inicio admin</a>
                             <a href="/view/pedidos.html">Pedidos</a>
                             <a href="/view/carrito.html">Carrito</a>
                             <a href="/view/perfil.html">Perfil</a>
+                        </nav>
+                    </header>`
+    return navbar;
+};
+
+export function navbarA(){
+    const navbar = `
+                    <header class="navbar-container">
+                        <div id="logo-navbar">
+                            <img src="/img/logoSnack.png" alt="Logo de Snack Script">
+                        </div>
+                        <nav class="navbar" role="navigation">
+                            <a href="/view/indexAdmin.html">Inicio</a>
+                            <a href="/view/adminUsers.html">Usuarios</a>
+                            <a href="/view/adminPedidos.html">Pedidos</a>
+                            <a href="/view/adminPerfil.html">Perfil</a>
                         </nav>
                     </header>`
     return navbar;

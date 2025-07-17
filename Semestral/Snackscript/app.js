@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import jwt from 'jsonwebtoken'
 import fastifyStatic from '@fastify/static';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,6 +8,7 @@ import fastifyCookie from '@fastify/cookie';
 
 const PORT = 3000;
 const MONGO_URI = 'mongodb://root:example@localhost:27017/';
+const secretKey = 'clave_secreta_segura_y_larga';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -16,14 +18,14 @@ const fastify = Fastify({
         level: 'info'
     }   
 });
-
+fastify.register(fastifyCookie);
 fastify.register(fastifyStatic, {
   root: path.join(dirname, 'frontend'),
   prefix: '/',
 });
 
 fastify.get('/', async (request, reply) => {
-  return reply.sendFile('view/index.html');
+    reply.sendFile('view/index.html'); 
 });
 
 async function routesProducts() {
@@ -40,7 +42,7 @@ async function routesUsers() {
 }
 routesUsers();
 
-fastify.register(fastifyCookie);
+
 async function routesLogin() {
   await fastify.register(import('./backend/src/routes/login.js'), {
     prefix: '/api/login'

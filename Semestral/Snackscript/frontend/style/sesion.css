@@ -1,0 +1,136 @@
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  background: url('../img/fondosesion.png') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.sesion-bg-blur {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(39, 12, 64, 0.10);
+  backdrop-filter: blur(14px) brightness(0.95);
+  z-index: 0;
+}
+
+/* Elimina el logo centrado del fondo */
+.sesion-bg-logo { display: none; }
+
+.sesion-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 40px 32px 32px 32px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.30);
+  box-shadow: 0 8px 32px 0 rgba(39,12,64,0.10);
+  backdrop-filter: blur(18px) saturate(180%);
+  border: 2px solid #F26052;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+.sesion-container h2 {
+  margin-bottom: 24px;
+  color: #170C40;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(42,27,94,0.10);
+}
+
+.sesion-container form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sesion-container input {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  background: rgba(255,255,255,0.85);
+  font-size: 1rem;
+  color: #170C40;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.sesion-container input:focus {
+  border: 2px solid #F26052;
+  box-shadow: 0 0 0 2px #F2605233;
+  background: #fff;
+}
+
+.sesion-container button {
+  padding: 12px 0;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(90deg, #F26052 0%, #D9763D 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(242,96,82,0.12);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 1px;
+}
+
+.sesion-container button:hover {
+  background: linear-gradient(90deg, #D9763D 0%, #F26052 100%);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 16px #F2605233;
+}
+
+.sesion-container .sesion-link {
+  margin-top: 18px;
+  color: #2A1B5E;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.sesion-container .sesion-link a {
+  color: #F26052;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+.sesion-container .sesion-link a:hover {
+  color: #D9763D;
+}
+
+/* Logo arriba del formulario (opcional) */
+.sesion-logo {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 12px #2A1B5E22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sesion-logo img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+} 

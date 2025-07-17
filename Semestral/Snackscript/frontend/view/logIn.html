@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/logIn.css">
-    <script src="../script/logIn.js" defer></script>
-    <title>Log In</title>
+  <meta charset="UTF-8">
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="../style/sesion.css">
+  <script src="../script/logIn.js" defer></script>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Iniciar Sesión</h2>
-        <form id="loginForm">
-            <label for="username">Usuario:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Entrar</button>
-        </form>
-        <p>¿No tienes cuenta? <a href="../view/singUp.html">Crea una aquí</a></p>
+  <div class="sesion-bg-blur"></div>
+  <div class="sesion-bg-logo"></div>
+  <div class="sesion-container">
+    <h2>Iniciar Sesión</h2>
+    <form id="loginForm">
+      <input id="username" type="text" placeholder="Usuario o Email" required>
+      <input id="password" type="password" placeholder="Contraseña" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <div class="sesion-link">
+      ¿No tienes cuenta? <a href="singUp.html">Regístrate</a>
     </div>
+  </div>
 </body>
 </html>

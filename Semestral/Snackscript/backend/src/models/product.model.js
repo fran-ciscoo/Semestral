@@ -14,7 +14,7 @@ const productSchema = new mongoose.Schema({
     category:{
         type: String,
         required: true,
-        enum: ['dulce', 'salado', 'bebida', 'acido', 'picante']
+        enum: ['Dulces', 'Salados', 'Acidos', 'Picantes', 'Bebidas']
     },
     origin: {
         type: String,

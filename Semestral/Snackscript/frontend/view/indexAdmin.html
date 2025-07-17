@@ -24,11 +24,11 @@
         </div>
         <div class="filters-container">
             <button class="filter-btn active" id="btnTodo">Todo</button>
-            <button class="filter-btn" id="btnDulce">Dulce</button>
-            <button class="filter-btn" id="btnSalado">Salado</button>
+            <button class="filter-btn" id="btnDulce">Dulces</button>
+            <button class="filter-btn" id="btnSalado">Salados</button>
             <button class="filter-btn" id="btnPais">Acidos</button>
             <button class="filter-btn" id="btnPicante">Picante</button>
-            <button class="filter-btn" id="btnBebida">Bebida</button>
+            <button class="filter-btn" id="btnBebida">Bebidas</button>
         </div>
     </div>
 
@@ -47,9 +47,15 @@
                 <label for="productName">Nombre</label>
                 <input type="text" id="productName" name="productName" required>
                 <label for="productPrice">Precio</label>
-                <input type="number" id="productPrice" name="productPrice" required>
+                <input  id="productPrice" name="productPrice" required>
                 <label for="productCategory">Categoría</label>
-                <input type="text" id="productCategory" name="productCategory" required>
+                <select id="productCategory" name="productCategory" required>
+                    <option value="Dulces">Dulces</option>
+                    <option value="Salados">Salados</option>
+                    <option value="Acidos">Acidos</option>
+                    <option value="Picantes">Picantes</option>
+                    <option value="Bebidas">Bebidas</option>
+                </select>
                 <label for="productOrigin">Origen</label>
                 <input type="text" id="productOrigin" name="productOrigin" required>
                 <label for="productStock">Stock</label>
@@ -58,16 +64,13 @@
                 <textarea id="productDescription" name="productDescription" required></textarea>
                 <label for="productStory">Historia</label>
                 <textarea id="productStory" name="productStory" required></textarea>
-                <button type="submit">Añadir</button>
+                <button type="submit" id="Añadir">Añadir</button>
                 <button type="button" class="cancel-btn" id="cancelAddProduct">Cancelar</button>
             </form>
         </dialog>
 
         <div id="snackList">
-            <!-- Producto-->
-            <div class="product-card hidden" id="containerProduct">
-                
-            </div>
+            
         </div>
 
         <!-- Paginación -->
@@ -78,6 +81,41 @@
             <button class="pagination-btn">3</button>
             <button class="pagination-btn">Siguiente →</button>
         </div>
+
+        <dialog class="modal-form" id="editProductDialog">
+            <form id="editProductForm">
+                <h2>Añadir producto</h2>
+                <label for="productName">Nombre</label>
+                <input type="text" id="editProductName" name="productName" required>
+
+                <label for="productPrice">Precio</label>
+                <input  id="editProductPrice" name="productPrice" required>
+
+                <label for="productCategory">Categoría</label>
+                <select id="editProductCategory" name="productCategory" required>
+                    <option value="Dulces">Dulces</option>
+                    <option value="Salados">Salados</option>
+                    <option value="Acidos">Acidos</option>
+                    <option value="Picantes">Picantes</option>
+                    <option value="Bebidas">Bebidas</option>
+                </select>
+
+                <label for="productOrigin">Origen</label>
+                <input type="text" id="editProductOrigin" name="productOrigin" required>
+
+                <label for="productStock">Stock</label>
+                <input type="number" id="editProductStock" name="productStock" required>
+
+                <label for="productDescription">Descripción</label>
+                <textarea id="editProductDescription" name="productDescription" required></textarea>
+
+                <label for="productStory">Historia</label>
+                <textarea id="editProductStory" name="productStory" required></textarea>
+
+                <button type="submit" id="Actualizar">Actualizar</button>
+                <button type="button" class="cancel-btn" id="cancelEditProduct">Cancelar</button>
+            </form>
+        </dialog>
     </div>
 
     <div id="footer"></div>

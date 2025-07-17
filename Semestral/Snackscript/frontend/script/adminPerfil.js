@@ -26,9 +26,8 @@ import {navbarA, footer} from "../component/navbar.js"
                 htmlElements.nombre.textContent = 'Sin nombre';
                 htmlElements.email.textContent = 'Sin correo';
                 htmlElements.perfil.querySelector('button')?.remove();
-
-                alert('Sesión cerrada correctamente.');
                 window.location.href = '../view/index.html';
+                alert('Sesión cerrada correctamente.');
             },
 
             async addInfo() {
@@ -101,11 +100,15 @@ import {navbarA, footer} from "../component/navbar.js"
 
         return{
             init(){
+                const {cerrarSesion} = htmlElements;
                 methods.addNavbar();
                 methods.addFooter();
                 methods.addInfo();
 
-                htmlElements.cerrarSesion.addEventListener('click', methods.logout);
+                cerrarSesion.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.logout();
+                });
             }
         }
     })();

@@ -8,16 +8,16 @@ export default async function productosRoutes(fastify, opts) {
   function validarProducto(producto) {
     const errores = [];
 
-    if (!producto.nombre || typeof producto.nombre !== 'string') {
+    if (!producto.name || typeof producto.name !== 'string') {
       errores.push('Nombre inválido');
     }
-    if (!producto.precio || typeof producto.precio !== 'number' || producto.precio <= 0) {
+    if (!producto.price || typeof producto.price !== 'number' || producto.price <= 0) {
       errores.push('Precio inválido');
     }
-    if (!producto.categoria || typeof producto.categoria !== 'string') {
+    if (!producto.category || typeof producto.category !== 'string') {
       errores.push('Categoría inválida');
     }
-    if (!producto.origen || typeof producto.origen !== 'string') {
+    if (!producto.origin || typeof producto.origin !== 'string') {
       errores.push('Origen inválido');
     }
     if (!producto.stock || typeof producto.stock !== 'number' || producto.stock < 0) {
@@ -26,7 +26,7 @@ export default async function productosRoutes(fastify, opts) {
     if (!producto.description || typeof producto.description !== 'string') {
       errores.push('Descripción inválida');
     }
-    if (!producto.historia || typeof producto.historia !== 'string') {
+    if (!producto.story || typeof producto.story !== 'string') {
       errores.push('Historia inválida');
     }
     return errores;
@@ -34,16 +34,16 @@ export default async function productosRoutes(fastify, opts) {
 
    // Crear nuevo producto
   fastify.post('/', async (request, reply) => {
-    const { nombre, precio, categoria, origen, stock, description, historia } = request.body;
+    const { name, price, category, origin, stock, description, story } = request.body;
 
     const nuevoProducto = new Product({
-      nombre,
-      precio: parseFloat(precio),
-      categoria,
-      origen,
+      name,
+      price: parseFloat(price),
+      category,
+      origin,
       stock: parseInt(stock, 10),
       description,
-      historia
+      story
     });
 
     const errores = validarProducto(nuevoProducto);
@@ -65,79 +65,58 @@ export default async function productosRoutes(fastify, opts) {
     };
   });
 
-  // Ver todos los productos
   fastify.get('/', async (request, reply) => {
-    const productos = await Product.find().populate('categoria');
-    return productos;
+    const productos = await Product.find();
+    return {
+      productos,
+      mensaje: 'Productos obtenidos correctamente',
+      status: 'success'
+    };
   });
 
-  // Ver producto por ID
   fastify.get('/:id', async (request, reply) => {
     const { id } = request.params;
+    const producto = await Product.findById(id);
 
-    try {
-      const producto = await Product.findById(id).populate('categoria');
-      if (!producto) {
-        return reply.status(404).send({ error: 'Producto no encontrado' });
-      }
-      return producto;
-    } catch (error) {
-      return reply.status(400).send({ error: 'ID inválido' });
-    }
-  });
-
-  // Actualizar producto por ID
-  fastify.put('/:id', async (request, reply) => {
-    const { id } = request.params;
-    const { nombre, precio, categoria } = request.body;
-
-    const productoActualizado = {
-      nombre,
-      precio: parseFloat(precio),
-      categoria
-    };
-
-    const errores = validarProducto(productoActualizado);
-    if (errores.length > 0) {
-      return reply.code(400).send({
-        error: 'ERRORES EN LA VALIDACIÓN',
-        errores,
+    if (!producto) {
+      return reply.code(404).send({
+        error: 'Producto no encontrado',
         status: 'error'
       });
     }
 
-    try {
-      const producto = await Product.findByIdAndUpdate(id, productoActualizado, { new: true });
-      if (!producto) {
-        return reply.status(404).send({ error: 'Producto no encontrado' });
-      }
-
-      return {
-        producto,
-        mensaje: 'Producto actualizado correctamente',
-        status: 'success'
-      };
-    } catch (error) {
-      return reply.status(400).send({ error: 'ID inválido' });
-    }
+    return {
+      producto,
+      mensaje: 'Producto obtenido correctamente',
+      status: 'success'
+    };
   });
 
-  // Eliminar producto por ID
-  fastify.delete('/:id', async (request, reply) => {
+  fastify.put('/:id', async (request, reply) => {
     const { id } = request.params;
+    const { name, price, category, origin, stock, description, story } = request.body;
 
-    try {
-      const producto = await Product.findByIdAndDelete(id);
-      if (!producto) {
-        return reply.status(404).send({ error: 'Producto no encontrado' });
-      }
+    const productoActualizado = await Product.findByIdAndUpdate(id, {
+      name,
+      price: parseFloat(price),
+      category,
+      origin,
+      stock: parseInt(stock, 10),
+      description,
+      story
+    }, { new: true });
 
-      return {
-        mensaje: 'Producto eliminado correctamente',
-        status: 'success'
-      };
-    } catch (error) {
-      return reply.status(400).send({ error: 'ID inválido' });
+    if (!productoActualizado) {
+      return reply.code(404).send({
+        error: 'Producto no encontrado',
+        status: 'error'
+      });
     }
+
+    return {
+      producto: productoActualizado,
+      mensaje: 'Producto actualizado correctamente',
+      status: 'success'
+    };
   });
 }

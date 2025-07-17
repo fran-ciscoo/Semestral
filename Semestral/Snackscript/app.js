@@ -25,7 +25,7 @@ fastify.register(fastifyStatic, {
 });
 
 fastify.get('/', async (request, reply) => {
-    reply.sendFile('view/index.html'); 
+    return reply.sendFile('view/index.html'); 
 });
 
 async function routesProducts() {

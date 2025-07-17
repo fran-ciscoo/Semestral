@@ -7,7 +7,18 @@ import {navbarA, footer} from "../component/navbar.js"
             footer: document.querySelector('#footer'),
 
             botonAñadir: document.querySelector('#addProductBtn'),
-            containerProduct: document.querySelector('#containerProduct'),
+            containerProduct: document.querySelector('#snackList'),
+
+            editProduct: document.querySelector('#editProductDialog'),
+            formE: document.querySelector('#editProductForm'),
+            editInputName: document.querySelector('#editProductName'),
+            editInputPrice: document.querySelector('#editProductPrice'),
+            editInputCategory: document.querySelector('#editProductCategory'),
+            editInputOrigin: document.querySelector('#editProductOrigin'),
+            editInputStock: document.querySelector('#editProductStock'),
+            editInputDescription: document.querySelector('#editProductDescription'),
+            editInputStory: document.querySelector('#editProductStory'),
+            botonEditCancel: document.querySelector('#cancelEditProduct'),
 
             addProduct: document.querySelector('#addProductDialog'),
             form: document.querySelector('#addProductForm'),
@@ -22,36 +33,20 @@ import {navbarA, footer} from "../component/navbar.js"
         }
 
         const methods = {
-            viewProducts() {
-                fetch('http://localhost:3000/api/productos')
-                    .then(response => response.json())
-                    .then(data => {
-                        const container = htmlElements.containerProduct;
-                        container.innerHTML = '';
-                        data.forEach(product => {
-                            const productCard = `
-                                <div class="product-details">
-                                    <h2>${product.name}</h2>
-                                    <p>${product.description}</p>
-                                    <p>$${product.price}</p>
-                                    <button  class="edit-btn" data-id="${product._id}">Editar</button>
-                                    <button  class="delete-btn" data-id="${product._id}">Eliminar</button>
-                                </div>`;
-                            container.innerHTML += productCard;
-                        });
-                    })
-                    .catch(error => console.error('Error al obtener productos:', error));
-            },
+            editProduct() {
+                const id = htmlElements.formE.getAttribute('data-id');
+                
+                const name = htmlElements.editInputName.value.trim();
+                const price = parseFloat(htmlElements.editInputPrice.value);
+                const category = htmlElements.editInputCategory.value.trim();
+                const origin = htmlElements.editInputOrigin.value.trim();
+                const stock = parseInt(htmlElements.editInputStock.value, 10);
+                const description = htmlElements.editInputDescription.value.trim();
+                const story = htmlElements.editInputStory.value.trim();
 
-            saveProduct(){
-                const name = htmlElements.inputName.value.trim();
-                const price = parseFloat(htmlElements.inputPrice.value);
-                const category = htmlElements.inputCategory.value.trim();
-                const origin = htmlElements.inputOrigin.value.trim();
-                const stock = parseInt(htmlElements.inputStock.value, 10);
-                const description = htmlElements.inputDescription.value.trim();
-                const story = htmlElements.inputStory.value.trim();
-                methods.validateProduct(name, price, category, origin, stock, description, story);
+                const valid = methods.validateProduct(name, price, category, origin, stock, description, story);
+                
+                if (!valid) return;
 
                 const product = {
                     name,
@@ -62,6 +57,104 @@ import {navbarA, footer} from "../component/navbar.js"
                     description,
                     story
                 };
+
+                fetch(`http://localhost:3000/api/productos/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(product)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Producto actualizado:', data);
+                    htmlElements.formE.reset();
+                    methods.hideModal(htmlElements.editProduct);
+                    window.location.href = '../view/indexAdmin.html';
+                })
+
+            },
+
+            viewDetails(productId) {
+                fetch(`http://localhost:3000/api/productos/${productId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const product = data.producto;
+                    if (product) {
+                        htmlElements.editInputName.value = product.name;
+                        htmlElements.editInputPrice.value = product.price;
+                        htmlElements.editInputCategory.value = product.category;
+                        htmlElements.editInputOrigin.value = product.origin;
+                        htmlElements.editInputStock.value = product.stock;
+                        htmlElements.editInputDescription.value = product.description;
+                        htmlElements.editInputStory.value = product.story;
+
+                        htmlElements.formE.setAttribute('data-id', product._id);
+
+                        methods.showModal(htmlElements.editProduct);
+                    } else {
+                        console.error('Producto no encontrado');
+                    }
+                }).catch(error => console.error('Error al obtener producto:', error));
+            },
+
+            viewProducts() {
+                fetch('http://localhost:3000/api/productos')
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = htmlElements.containerProduct;
+                        container.innerHTML = '';
+
+                        data.productos.forEach(product => {
+                            const productCard = `
+                                <div class="product-card">
+                                    <div class="product-info">
+                                        <h2 class="product-title">${product.name}</h2>
+                                        <p class="product-description">${product.description}</p>
+                                        <p class="product-price">$${product.price}</p>
+                                        <div class="product-actions">
+                                            <button class="edit-btn" data-id="${product._id}">Editar</button>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            container.innerHTML += productCard;
+                        });
+
+                        const editButtons = document.querySelectorAll('.edit-btn');
+                        editButtons.forEach(button => {
+                            button.addEventListener('click', (e) => {
+                                console.log('Edit button clicked');
+                                const productId = e.target.dataset.id;
+                                methods.viewDetails(productId);
+                                
+                            });
+                        });
+                    }).catch(error => console.error('Error al obtener productos:', error));
+            },
+
+            saveProduct(){
+                const name = htmlElements.inputName.value.trim();
+                const price = parseFloat(htmlElements.inputPrice.value);
+                const category = htmlElements.inputCategory.value.trim();
+                const origin = htmlElements.inputOrigin.value.trim();
+                const stock = parseInt(htmlElements.inputStock.value, 10);
+                const description = htmlElements.inputDescription.value.trim();
+                const story = htmlElements.inputStory.value.trim();
+                const valid = methods.validateProduct(name, price, category, origin, stock, description, story);
+                
+                if (!valid) return;
+
+                const product = {
+                    name,
+                    price,
+                    category,
+                    origin,
+                    stock,
+                    description,
+                    story
+                };
+
+                console.log('Producto a guardar:', product);
 
                 fetch('http://localhost:3000/api/productos', {
                     method: 'POST',
@@ -79,10 +172,12 @@ import {navbarA, footer} from "../component/navbar.js"
                 })
             },
 
-            validateProduct(name, price, category, origin, stock, description, story) {
+            validateProduct(name, price, category, origin, stock, description, story){
 
                 if (!name || !price || !category || !origin || !stock || !description || !story) {
+                    console.log('Validating product:', { name, price, category, origin, stock, description, story });
                     alert('All fields are required.');
+                    console.error('no tan llegando')
                     return false;
                 }
 
@@ -134,12 +229,16 @@ import {navbarA, footer} from "../component/navbar.js"
                 methods.printHtml(container, generar);
             },
 
-            showModal(modal){
-                    modal.classList.remove("hidden");
+            showModal(modal) {
+                if (modal && typeof modal.showModal === 'function') {
+                    modal.showModal();
+                } else {
+                    console.error("El modal no es un <dialog> o no existe.");
+                }
             },
 
             hideModal(modal){
-                    modal.classList.add("hidden");
+                modal.close();
             },
 
             printHtml(element, text) {
@@ -149,24 +248,37 @@ import {navbarA, footer} from "../component/navbar.js"
 
         return{
             init(){
-                const {form, botonCancelar, botonAñadir} = htmlElements;
+                const {form, botonCancelar, botonAñadir, formE, botonEditCancel} = htmlElements;
                 methods.addNavbar();
                 methods.addFooter();
+                methods.viewProducts();
+
+                botonAñadir.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Botón Añadir clickeado');
+                    methods.showModal(htmlElements.addProduct);
+                });
 
                 form.addEventListener('submit', (e) => {
                     e.preventDefault();
                     methods.saveProduct();
                 });
 
-                botonAñadir.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.showModal(htmlElements.addProduct);
-                });
-
                 botonCancelar.addEventListener('click', (e) => {
                     e.preventDefault();
                     methods.hideModal(htmlElements.addProduct);
                     htmlElements.form.reset();
+                });
+
+                formE.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    methods.editProduct();
+                });
+
+                botonEditCancel.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.hideModal(htmlElements.editProduct);
+                    htmlElements.formE.reset();
                 });
 
             }

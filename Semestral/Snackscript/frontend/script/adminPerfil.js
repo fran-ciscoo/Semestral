@@ -5,11 +5,10 @@ import {navbarA, footer} from "../component/navbar.js"
         const htmlElements = {
             navbar: document.querySelector('#navbar'),
             footer: document.querySelector('#footer'),
-
             perfil: document.querySelector('#perfil'),
             nombre: document.querySelector('#nombre'),
             email: document.querySelector('#email'),
-            cerrarSesion: document.querySelector('#cerrarSesion')
+            buttons: document.querySelector("#buttons"),
         }
 
         const methods = {
@@ -96,6 +95,26 @@ import {navbarA, footer} from "../component/navbar.js"
 
             printHtml(element, text) {
                 element.innerHTML += `${text}`;
+            },
+
+            async addBottom() {
+                const session = await methods.verfySession();
+                const text = session !== 'none'
+                    ? `<button><a id="cerrarSesion" href="../view/index.html">Cerrar Sesión</a></button>`
+                    : `<button><a id="iniciarSesion" href="../view/logIn.html">Iniciar Sesión</a></button>`;
+
+                const element = htmlElements.buttons;
+                methods.printHtml(element, text);
+
+                if (session !== 'none') {
+                    const cerrarBtn = document.querySelector('#cerrarSesion');
+                    if (cerrarBtn) {
+                        cerrarBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            methods.logout();
+                        });
+                    }
+                }
             }
             }
 
@@ -104,8 +123,7 @@ import {navbarA, footer} from "../component/navbar.js"
                 methods.addNavbar();
                 methods.addFooter();
                 methods.addInfo();
-
-                htmlElements.cerrarSesion.addEventListener('click', methods.logout);
+                methods.addBottom();
             }
         }
     })();

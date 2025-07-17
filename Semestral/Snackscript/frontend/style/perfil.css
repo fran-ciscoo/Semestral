@@ -225,6 +225,72 @@ body {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* === DIVISORES ENTRE SECCIONES === */
+.section-divider {
+  width: 80%;
+  margin: 40px auto 30px auto;
+  border: none;
+  border-top: 2px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(191, 167, 242, 0.08);
+  opacity: 0.7;
+}
+
+/* === MEJOR SOMBREADO DE BLOQUES === */
+#perfil, #total-puntos, #tarjetas, #direcciones {
+  box-shadow: 0 8px 32px rgba(149, 86, 166, 0.10), 0 1.5px 8px rgba(242, 181, 255, 0.08);
+}
+
+/* === BOTONES DE SESIÓN ESTILIZADOS === */
+#buttons button {
+  background: linear-gradient(135deg, #F29441 0%, #F26052 100%);
+  color: #fff;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  margin: 10px 0;
+  box-shadow: 0 6px 18px rgba(242, 181, 255, 0.18);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+#buttons button a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+#buttons button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+#buttons button:hover::before {
+  left: 100%;
+}
+#buttons button:hover {
+  background: linear-gradient(135deg, #F2B5FF 0%, #E8A8FF 100%);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(242, 181, 255, 0.22);
+}
+#buttons button:active {
+  transform: translateY(0) scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Footer visible y estilizado */
+#footer {
+  margin-top: 60px;
+}
+
 /* === RESPONSIVE MEJORADO === */
 @media (max-width: 768px) {
   #perfil, #total-puntos, #tarjetas, #direcciones {

@@ -179,87 +179,187 @@ body {
   gap: 20px;
   margin-bottom: 40px;
 }
-/* === MODAL PARA AGREGAR PRODUCTOS === */
+/* === MODAL PARA AGREGAR PRODUCTOS MEJORADO === */
+/* MODAL aún más ancho y con padding generoso */
 .modal-form {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  min-width: 400px;
-  max-width: 500px;
-  max-height: 80vh;
+  background: linear-gradient(135deg, #e0e7ff 0%, #f5e6ff 100%);
+  padding: 48px 64px;
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(149, 86, 166, 0.15), 0 2px 12px rgba(191, 167, 242, 0.10);
+  min-width: 600px;
+  max-width: 900px;
+  max-height: 90vh;
   overflow-y: auto;
-  border: none;
+  border: 2.5px solid #bfa7f2;
+  position: relative;
+  animation: modalFadeIn 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
 }
 
-.modal-form::backdrop {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-40px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 1000px) {
+  .modal-form {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 24px 4vw;
+  }
 }
 
 .modal-form h2 {
-  color: #170C40;
-  margin-bottom: 20px;
+  color: #F26052;
+  margin-bottom: 24px;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  position: relative;
+}
+.modal-form h2::before {
+  content: "🍪";
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 8px;
+  text-align: center;
 }
 
+/* Labels suaves y modernos */
 .modal-form label {
   display: block;
-  margin-bottom: 5px;
-  color: #170C40;
-  font-weight: 600;
-  font-size: 0.9rem;
+  margin-bottom: 4px;
+  color: #6b6b8d;
+  font-weight: 400;
+  font-size: 1.08rem;
+  margin-top: 18px;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
 }
 
+.modal-form label:focus-within {
+  color: #7c3aed;
+}
+
+/* Inputs y selects más suaves */
 .modal-form input,
-.modal-form textarea {
+.modal-form textarea,
+.modal-form select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  margin-bottom: 15px;
-  font-size: 0.9rem;
-  transition: border-color 0.3s ease;
+  padding: 14px;
+  border: 1.5px solid #bfa7f2;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  font-size: 1.04rem;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 1.5px 8px rgba(191, 167, 242, 0.06);
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .modal-form input:focus,
-.modal-form textarea:focus {
+.modal-form textarea:focus,
+.modal-form select:focus {
   outline: none;
-  border-color: #F26052;
-  box-shadow: 0 0 0 2px rgba(242, 96, 82, 0.2);
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.13);
 }
 
 .modal-form textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 90px;
 }
 
 .modal-form button {
-  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
-  color: white;
+  background: linear-gradient(135deg, #F29441 0%, #F26052 100%);
+  color: #fff;
   border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
+  padding: 14px 32px;
+  border-radius: 12px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
+  font-weight: 700;
+  font-size: 1.05rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   margin-right: 10px;
+  margin-top: 10px;
+  box-shadow: 0 6px 18px rgba(242, 181, 255, 0.18);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
 }
-
+.modal-form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+.modal-form button:hover::before {
+  left: 100%;
+}
 .modal-form button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(242, 96, 82, 0.3);
+  background: linear-gradient(135deg, #F2B5FF 0%, #E8A8FF 100%);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(242, 181, 255, 0.22);
+}
+.modal-form button:active {
+  transform: translateY(0) scale(0.98);
+  transition: transform 0.1s ease;
 }
 
-.modal-form .cancel-btn {
-  background: #6c757d;
+/* Tarjeta flotante para cada campo */
+.modal-form label, .modal-form input, .modal-form textarea, .modal-form select {
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 1.5px 8px rgba(191, 167, 242, 0.08);
 }
 
-.modal-form .cancel-btn:hover {
-  background: #5a6268;
-  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+/* === LABELS FLOTANTES PARA FORMULARIOS DEL MODAL === */
+/* Elimina labels flotantes y restaura labels arriba de los inputs */
+.modal-form .form-group {
+  position: static;
+  margin-bottom: 18px;
+}
+
+.modal-form .form-group label {
+  position: static;
+  display: block;
+  margin-bottom: 6px;
+  color: #6b6b8d;
+  font-size: 1.08rem;
+  font-weight: 500;
+  background: none;
+  pointer-events: auto;
+  transition: none;
+  z-index: auto;
+  padding: 0;
+}
+
+.modal-form .form-group input,
+.modal-form .form-group textarea,
+.modal-form .form-group select {
+  padding: 12px;
+}
+
+/* Vuelve a mostrar los labels normales */
+.modal-form label:not(.form-group label) {
+  display: block;
+}
+
+/* Ajuste para textarea */
+.modal-form .form-group textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .modal-form {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 24px 6vw;
+  }
 }
 
 /* El modal se maneja con la API nativa del elemento dialog */

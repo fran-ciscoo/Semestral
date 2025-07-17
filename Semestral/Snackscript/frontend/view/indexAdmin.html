@@ -45,11 +45,12 @@
             <form id="addProductForm">
                 <h2>Añadir producto</h2>
                 <label for="productName">Nombre</label>
-                <input type="text" id="productName" name="productName" required>
+                <input type="text" id="productName" name="productName" required autocomplete="off">
                 <label for="productPrice">Precio</label>
-                <input  id="productPrice" name="productPrice" required>
+                <input id="productPrice" name="productPrice" required autocomplete="off">
                 <label for="productCategory">Categoría</label>
                 <select id="productCategory" name="productCategory" required>
+                    <option value="" disabled selected hidden></option>
                     <option value="Dulces">Dulces</option>
                     <option value="Salados">Salados</option>
                     <option value="Acidos">Acidos</option>
@@ -57,13 +58,13 @@
                     <option value="Bebidas">Bebidas</option>
                 </select>
                 <label for="productOrigin">Origen</label>
-                <input type="text" id="productOrigin" name="productOrigin" required>
+                <input type="text" id="productOrigin" name="productOrigin" required autocomplete="off">
                 <label for="productStock">Stock</label>
-                <input type="number" id="productStock" name="productStock" required>
+                <input type="number" id="productStock" name="productStock" required autocomplete="off">
                 <label for="productDescription">Descripción</label>
-                <textarea id="productDescription" name="productDescription" required></textarea>
+                <textarea id="productDescription" name="productDescription" required autocomplete="off"></textarea>
                 <label for="productStory">Historia</label>
-                <textarea id="productStory" name="productStory" required></textarea>
+                <textarea id="productStory" name="productStory" required autocomplete="off"></textarea>
                 <button type="submit" id="Añadir">Añadir</button>
                 <button type="button" class="cancel-btn" id="cancelAddProduct">Cancelar</button>
             </form>

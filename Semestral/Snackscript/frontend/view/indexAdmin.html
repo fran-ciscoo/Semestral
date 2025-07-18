@@ -9,114 +9,118 @@
     <title>Snack Script</title>
 </head>
 <body>
-    <div id="navbar"></div>
-    
-    <!-- Header principal -->
-    <div class="page-header">
-        <h1>SnackScript - vista de administrador</h1>
-    </div>
+    <div id="loader">Verificando permisos...</div>
+    <div id="contenido" style="display: none;">
+        <div id="navbar"></div>
 
-    <!-- Sección de filtros -->
-    <div class="filters-section">
-        <div class="filters-header">
-            <h2>Filtrar productos</h2>
-            <span class="filters-count"></span>
+        <!-- Header principal -->
+        <div class="page-header">
+            <h1>SnackScript - vista de administrador</h1>
         </div>
-        <div class="filters-container">
-            <button class="filter-btn active" id="btnTodo">Todo</button>
-            <button class="filter-btn" id="btnDulce">Dulces</button>
-            <button class="filter-btn" id="btnSalado">Salados</button>
-            <button class="filter-btn" id="btnPais">Acidos</button>
-            <button class="filter-btn" id="btnPicante">Picante</button>
-            <button class="filter-btn" id="btnBebida">Bebidas</button>
-        </div>
-    </div>
 
-    <!-- Sección de productos -->
-    <div class="products-section">
-        <div class="products-header">
-            <h2>Listado de productos</h2>
-            <div class="sort-controls">
-                <button id="addProductBtn">Añadir producto</button>
+        <!-- Sección de filtros -->
+        <div class="filters-section">
+            <div class="filters-header">
+                <h2>Filtrar productos</h2>
+                <span class="filters-count"></span>
+            </div>
+            <div class="filters-container">
+                <button class="filter-btn active" id="btnTodo">Todo</button>
+                <button class="filter-btn" id="btnDulce">Dulces</button>
+                <button class="filter-btn" id="btnSalado">Salados</button>
+                <button class="filter-btn" id="btnPais">Acidos</button>
+                <button class="filter-btn" id="btnPicante">Picante</button>
+                <button class="filter-btn" id="btnBebida">Bebidas</button>
             </div>
         </div>
 
-        <dialog class="modal-form" id="addProductDialog">
-            <form id="addProductForm">
-                <h2>Añadir producto</h2>
-                <label for="productName">Nombre</label>
-                <input type="text" id="productName" name="productName" required autocomplete="off">
-                <label for="productPrice">Precio</label>
-                <input id="productPrice" name="productPrice" required autocomplete="off">
-                <label for="productCategory">Categoría</label>
-                <select id="productCategory" name="productCategory" required>
-                    <option value="" disabled selected hidden></option>
-                    <option value="Dulces">Dulces</option>
-                    <option value="Salados">Salados</option>
-                    <option value="Acidos">Acidos</option>
-                    <option value="Picantes">Picantes</option>
-                    <option value="Bebidas">Bebidas</option>
-                </select>
-                <label for="productOrigin">Origen</label>
-                <input type="text" id="productOrigin" name="productOrigin" required autocomplete="off">
-                <label for="productStock">Stock</label>
-                <input type="number" id="productStock" name="productStock" required autocomplete="off">
-                <label for="productDescription">Descripción</label>
-                <textarea id="productDescription" name="productDescription" required autocomplete="off"></textarea>
-                <label for="productStory">Historia</label>
-                <textarea id="productStory" name="productStory" required autocomplete="off"></textarea>
-                <button type="submit" id="Añadir">Añadir</button>
-                <button type="button" class="cancel-btn" id="cancelAddProduct">Cancelar</button>
-            </form>
-        </dialog>
+        <!-- Sección de productos -->
+        <div class="products-section">
+            <div class="products-header">
+                <h2>Listado de productos</h2>
+                <div class="sort-controls">
+                    <button id="addProductBtn">Añadir producto</button>
+                </div>
+            </div>
 
-        <div id="snackList"></div>
+            <dialog class="modal-form" id="addProductDialog">
+                <form id="addProductForm">
+                    <h2>Añadir producto</h2>
+                    <label for="productName">Nombre</label>
+                    <input type="text" id="productName" name="productName" required autocomplete="off">
+                    <label for="productPrice">Precio</label>
+                    <input id="productPrice" name="productPrice" required autocomplete="off">
+                    <label for="productCategory">Categoría</label>
+                    <select id="productCategory" name="productCategory" required>
+                        <option value="" disabled selected hidden></option>
+                        <option value="Dulces">Dulces</option>
+                        <option value="Salados">Salados</option>
+                        <option value="Acidos">Acidos</option>
+                        <option value="Picantes">Picantes</option>
+                        <option value="Bebidas">Bebidas</option>
+                    </select>
+                    <label for="productOrigin">Origen</label>
+                    <input type="text" id="productOrigin" name="productOrigin" required autocomplete="off">
+                    <label for="productStock">Stock</label>
+                    <input type="number" id="productStock" name="productStock" required autocomplete="off">
+                    <label for="productDescription">Descripción</label>
+                    <textarea id="productDescription" name="productDescription" required autocomplete="off"></textarea>
+                    <label for="productStory">Historia</label>
+                    <textarea id="productStory" name="productStory" required autocomplete="off"></textarea>
+                    <button type="submit" id="Añadir">Añadir</button>
+                    <button type="button" class="cancel-btn" id="cancelAddProduct">Cancelar</button>
+                </form>
+            </dialog>
 
-        <!-- Paginación -->
-        <div class="pagination">
-            <button class="pagination-btn">← Anterior</button>
-            <button class="pagination-btn active">1</button>
-            <button class="pagination-btn">2</button>
-            <button class="pagination-btn">3</button>
-            <button class="pagination-btn">Siguiente →</button>
+            <div id="snackList"></div>
+
+            <!-- Paginación -->
+            <div class="pagination">
+                <button class="pagination-btn">← Anterior</button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn">Siguiente →</button>
+            </div>
+
+            <dialog class="modal-form" id="editProductDialog">
+                <form id="editProductForm">
+                    <h2>Añadir producto</h2>
+                    <label for="productName">Nombre</label>
+                    <input type="text" id="editProductName" name="productName" required>
+
+                    <label for="productPrice">Precio</label>
+                    <input  id="editProductPrice" name="productPrice" required>
+
+                    <label for="productCategory">Categoría</label>
+                    <select id="editProductCategory" name="productCategory" required>
+                        <option value="Dulces">Dulces</option>
+                        <option value="Salados">Salados</option>
+                        <option value="Acidos">Acidos</option>
+                        <option value="Picantes">Picantes</option>
+                        <option value="Bebidas">Bebidas</option>
+                    </select>
+
+                    <label for="productOrigin">Origen</label>
+                    <input type="text" id="editProductOrigin" name="productOrigin" required>
+
+                    <label for="productStock">Stock</label>
+                    <input type="number" id="editProductStock" name="productStock" required>
+
+                    <label for="productDescription">Descripción</label>
+                    <textarea id="editProductDescription" name="productDescription" required></textarea>
+
+                    <label for="productStory">Historia</label>
+                    <textarea id="editProductStory" name="productStory" required></textarea>
+
+                    <button type="submit" id="Actualizar">Actualizar</button>
+                    <button type="button" class="cancel-btn" id="cancelEditProduct">Cancelar</button>
+                </form>
+            </dialog>
         </div>
 
-        <dialog class="modal-form" id="editProductDialog">
-            <form id="editProductForm">
-                <h2>Añadir producto</h2>
-                <label for="productName">Nombre</label>
-                <input type="text" id="editProductName" name="productName" required>
-
-                <label for="productPrice">Precio</label>
-                <input  id="editProductPrice" name="productPrice" required>
-
-                <label for="productCategory">Categoría</label>
-                <select id="editProductCategory" name="productCategory" required>
-                    <option value="Dulces">Dulces</option>
-                    <option value="Salados">Salados</option>
-                    <option value="Acidos">Acidos</option>
-                    <option value="Picantes">Picantes</option>
-                    <option value="Bebidas">Bebidas</option>
-                </select>
-
-                <label for="productOrigin">Origen</label>
-                <input type="text" id="editProductOrigin" name="productOrigin" required>
-
-                <label for="productStock">Stock</label>
-                <input type="number" id="editProductStock" name="productStock" required>
-
-                <label for="productDescription">Descripción</label>
-                <textarea id="editProductDescription" name="productDescription" required></textarea>
-
-                <label for="productStory">Historia</label>
-                <textarea id="editProductStory" name="productStory" required></textarea>
-
-                <button type="submit" id="Actualizar">Actualizar</button>
-                <button type="button" class="cancel-btn" id="cancelEditProduct">Cancelar</button>
-            </form>
-        </dialog>
+        <div id="footer"></div>
     </div>
-
-    <div id="footer"></div>
+    
 </body>
 </html>

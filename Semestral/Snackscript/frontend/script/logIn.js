@@ -9,54 +9,57 @@
         let sessionToken = null;
 
         const methods = {
-            validateUser(){
+            async validateUser() {
                 const username = htmlElements.inputUsername.value.trim();
                 const password = htmlElements.inputPassword.value;
                 const hashedPassword = methods.hash(password);
-                console.log(hashedPassword);
 
                 if (!username || !password) {
                     alert('Both fields are required.');
                     return false;
                 }
 
-                fetch('http://localhost:3000/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({username, password: hashedPassword}),
-                    credentials: 'include' 
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Login failed: ');
-                    }
-                    return response.json();
-                })
-                .then(data => {
+                try {
+                    const response = await fetch('http://localhost:3000/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password: hashedPassword }),
+                        credentials: 'include'
+                    });
+                    const data = await response.json();
                     sessionToken = data.token;
-                    console.log('User found:', data);
-                    console.log('Token de sesión:', sessionToken);
+                    if (!response.ok) {
+                        methods.showErrorMessage('Usurio o contraseñas inválidas');
+                        return;
+                    }
                     if (data.user.role === 'admin') {
                         window.location.href = '../view/indexAdmin.html';
-                    }else {
+                    } else {
                         window.location.href = '../view/index.html';
                     }
-                })
 
+                } catch (error) {
+                    console.error('Error en el login:', error);
+                }
             },
 
             hash(passWord){
-                    let hash = 0; 
+                let hash = 0; 
 
-                    for(let i = 0; i < passWord.length; i++){
-                        let chr = passWord.charCodeAt(i);
-                        hash = (hash << 5) - hash + chr; 
-                        hash |= 0; 
-                    }
-                    return hash;
-                },
+                for(let i = 0; i < passWord.length; i++){
+                    let chr = passWord.charCodeAt(i);
+                    hash = (hash << 5) - hash + chr; 
+                    hash |= 0; 
+                }
+                return hash;
+            },
+            showErrorMessage(message) {
+                const errorDiv = document.getElementById('loginError');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }   
             }
 
         return{

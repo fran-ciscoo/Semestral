@@ -133,4 +133,20 @@ body {
   width: 70px;
   height: 70px;
   object-fit: contain;
-} 
+}
+
+#loginError {
+  display: none;
+  background-color: #ffe5e5;
+  color: #b30000;
+  border: 1px solid #ff9999;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  max-width: 400px;
+  margin: 15px auto;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

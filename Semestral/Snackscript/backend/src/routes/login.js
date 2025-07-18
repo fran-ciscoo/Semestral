@@ -5,7 +5,8 @@ import Session from '../models/session.model.js';
 const secretKey = 'clave_secreta_segura_y_larga';
 export default async function loginRoutes(fastify, opts) {
 
- fastify.post('/', async (request, reply) => {
+fastify.post('/', async (request, reply) => {
+  try {
     const { username, password } = request.body;
 
     const user = await User.findOne({ username });
@@ -33,15 +34,21 @@ export default async function loginRoutes(fastify, opts) {
     await newSession.save();
 
     reply
-    .setCookie('token', token, {
+      .setCookie('token', token, {
         httpOnly: true,
         path: '/',
         sameSite: 'lax',
-        secure: false, // debe ser true si usas HTTPS
-        maxAge: 3600, // 1 hora
-    })
-    .send({ message: 'Login successful', user });
-  });
+        secure: false, // true si usas HTTPS
+        maxAge: 3600,
+      })
+      .send({ message: 'Login successful', user });
+
+  } catch (error) {
+    console.error('Error en login:', error);
+    reply.status(500).send({ error: 'Internal server error' });
+  }
+});
+
 
 fastify.get('/me', async (request, reply) => {
     const token = request.cookies.token;

@@ -31,7 +31,7 @@
                     const data = await response.json();
                     sessionToken = data.token;
                     if (!response.ok) {
-                        methods.showErrorMessage('Usurio o contraseñas inválidas');
+                        methods.showErrorMessage('Usuario o contraseñas inválidas');
                         return;
                     }
                     if (data.user.role === 'admin') {

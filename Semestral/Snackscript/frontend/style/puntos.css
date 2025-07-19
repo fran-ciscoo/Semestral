@@ -18,29 +18,52 @@ body {
   line-height: 1.6;
 }
 
-/* === SELECTOR DE SECCIÓN MEJORADO === */
+/* === NAVBAR (si se inyecta) === */
+#navbar, #footer {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  padding: 20px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(3, 12, 38, 0.15);
+}
+
+/* === SELECTOR DE SECCIÓN MEJORADO - DISTRIBUCIÓN AJUSTADA === */
 #selector-puntos {
   display: flex;
   justify-content: center;
-  gap: 25px;
-  margin: 40px 0;
-  padding: 20px;
+  gap: 30px;
+  margin: 50px auto;
+  padding: 30px;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#selector-puntos a {
+  text-decoration: none;
+  flex: 1;
+  max-width: 300px;
 }
 
 #selector-puntos button {
-  padding: 15px 30px;
+  width: 100%;
+  padding: 20px 30px;
   background: linear-gradient(135deg, #F2B5FF 0%, #E8A8FF 100%);
   border: none;
-  border-radius: 12px;
+  border-radius: 15px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #170C40;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
   position: relative;
   overflow: hidden;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
 }
 
 #selector-puntos button::before {
@@ -61,28 +84,26 @@ body {
 #selector-puntos button:hover {
   background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
   color: #030C26;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
 #selector-puntos button:active {
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.02);
   transition: transform 0.1s ease;
 }
 
-/* === TOTAL DE PUNTOS MEJORADO === */
+/* === TOTAL DE PUNTOS MEJORADO - TIPOGRAFÍA MEJORADA === */
 #total-puntos {
   text-align: center;
   background: linear-gradient(135deg, #99FFC2 0%, #B8FFD1 100%);
-  padding: 30px;
-  border-radius: 15px;
-  margin: 0 auto 40px;
+  padding: 40px 30px;
+  border-radius: 20px;
+  margin: 0 auto 50px;
   width: 90%;
-  max-width: 700px;
-  font-weight: 700;
-  font-size: 1.3em;
-  box-shadow: 0 12px 35px rgba(3,12,38,0.12);
-  border: 2px solid rgba(153, 255, 194, 0.5);
+  max-width: 600px;
+  box-shadow: 0 15px 40px rgba(3,12,38,0.15);
+  border: 3px solid rgba(153, 255, 194, 0.5);
   position: relative;
   overflow: hidden;
 }
@@ -93,20 +114,39 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 4px;
   background: linear-gradient(90deg, #99FFC2, #B8FFD1);
 }
 
-/* === LISTA DE PUNTOS Y CUPONES MEJORADA === */
+#total-puntos h3 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0A3B2F;
+  margin: 0 0 15px 0;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#total-puntos p {
+  font-size: 1.1rem;
+  color: #2A5A4A;
+  font-weight: 600;
+  margin: 0;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* === LISTA DE PUNTOS Y CUPONES MEJORADA - DISTRIBUCIÓN AJUSTADA === */
 #lista-puntos {
   background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
-  margin: 40px auto;
-  padding: 40px;
-  border-radius: 20px;
+  margin: 50px auto;
+  padding: 50px 40px;
+  border-radius: 25px;
   width: 90%;
-  max-width: 1000px;
-  box-shadow: 0 15px 50px rgba(3,12,38,0.15);
-  border: 2px solid rgba(162, 136, 212, 0.3);
+  max-width: 1200px;
+  box-shadow: 0 20px 60px rgba(3,12,38,0.15);
+  border: 3px solid rgba(162, 136, 212, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -117,53 +157,79 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: 5px;
   background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
-  border-radius: 20px 20px 0 0;
+  border-radius: 25px 25px 0 0;
 }
 
 #lista-puntos h3 {
   color: #170C40;
   text-align: center;
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 30px;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 40px;
   background: linear-gradient(135deg, #170C40 0%, #2A1B5E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   position: relative;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 #lista-puntos h3::after {
   content: '';
   position: absolute;
-  bottom: -10px;
+  bottom: -15px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
+  width: 100px;
+  height: 5px;
   background: linear-gradient(90deg, #F26052, #F29441);
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
+#lista-puntos p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 40px;
+  font-weight: 500;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* === SECCIONES DE CUPONES Y PRODUCTOS - DISTRIBUCIÓN MEJORADA === */
 #cupones, #productos {
-  margin-top: 40px;
+  margin-top: 50px;
+}
+
+#cupones h3, #productos h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #170C40;
+  text-align: center;
+  margin-bottom: 30px;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
 }
 
 .cupon, .producto {
   background: linear-gradient(135deg, #F2D9BB 0%, #F5E6D3 100%);
-  border: 3px solid #F29441;
-  border-radius: 15px;
-  padding: 25px;
-  margin: 20px auto;
+  border: 4px solid #F29441;
+  border-radius: 20px;
+  padding: 35px 30px;
+  margin: 25px auto;
   text-align: center;
   width: 90%;
-  max-width: 700px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  max-width: 500px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .cupon::before, .producto::before {
@@ -172,43 +238,185 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 4px;
   background: linear-gradient(90deg, #F29441, #D9763D, #F26052);
 }
 
 .cupon:hover, .producto:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(3, 12, 38, 0.15);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 25px 60px rgba(3, 12, 38, 0.2);
   border-color: #D9763D;
 }
 
+.cupon p, .producto p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #170C40;
+  margin: 10px 0;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 0.5px;
+}
+
 .producto img {
-  width: 140px;
-  height: 140px;
+  width: 180px;
+  height: 180px;
   object-fit: contain;
-  border-radius: 12px;
-  border: 3px solid #9556A6;
-  margin-bottom: 15px;
+  border-radius: 15px;
+  border: 4px solid #9556A6;
+  margin-bottom: 20px;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 8px 20px rgba(3, 12, 38, 0.15);
+  box-shadow: 0 12px 30px rgba(3, 12, 38, 0.15);
 }
 
 .producto:hover img {
-  transform: scale(1.05);
+  transform: scale(1.08) rotate(2deg);
   border-color: #BFA7F2;
-  box-shadow: 0 12px 30px rgba(3, 12, 38, 0.25);
+  box-shadow: 0 20px 50px rgba(3, 12, 38, 0.25);
+}
+
+/* === HISTORIAL DE PUNTOS MEJORADO === */
+#historial-puntos {
+  background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
+  margin: 50px auto;
+  padding: 50px 40px;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 1200px;
+  box-shadow: 0 20px 60px rgba(3,12,38,0.15);
+  border: 3px solid rgba(162, 136, 212, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+#historial-puntos::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
+  border-radius: 25px 25px 0 0;
+}
+
+#historial-puntos h3 {
+  color: #170C40;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 40px;
+  background: linear-gradient(135deg, #170C40 0%, #2A1B5E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+#historial-puntos h3::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 5px;
+  background: linear-gradient(90deg, #F26052, #F29441);
+  border-radius: 3px;
+}
+
+.historial-container {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow-x: auto;
+}
+
+.historial-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.historial-table thead {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+}
+
+.historial-table th {
+  padding: 20px 15px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: white;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.historial-table tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(162, 136, 212, 0.1);
+}
+
+.historial-table tbody tr:hover {
+  background: linear-gradient(135deg, rgba(242, 181, 255, 0.2) 0%, rgba(255, 255, 255, 0.8) 100%);
+  transform: scale(1.01);
+}
+
+.historial-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.historial-table td {
+  padding: 18px 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #170C40;
+  letter-spacing: 0.3px;
+}
+
+.historial-table td:first-child {
+  font-weight: 600;
+  color: #9556A6;
+}
+
+.historial-table td:nth-child(2) {
+  font-weight: 500;
+  color: #2A1B5E;
+}
+
+.puntos-positivos {
+  color: #4CAF50 !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+}
+
+.puntos-negativos {
+  color: #F44336 !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
 }
 
 /* === PRÓXIMO CANJE MEJORADO === */
 .proximoCanje {
   background: linear-gradient(135deg, #C2FFBF 0%, #D4FFD1 100%);
-  margin: 40px auto;
+  border: 4px solid #99FFC2;
+  border-radius: 20px;
+  padding: 35px 30px;
+  margin: 30px auto;
+  text-align: center;
   width: 90%;
-  max-width: 700px;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 12px 35px rgba(3,12,38,0.12);
-  border: 2px solid rgba(194, 255, 191, 0.5);
+  max-width: 600px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
 }
@@ -219,42 +427,94 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 4px;
   background: linear-gradient(90deg, #99FFC2, #B8FFD1);
+}
+
+.proximoCanje:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  border-color: #B8FFD1;
 }
 
 .proximoCanje h3 {
-  margin-bottom: 15px;
-  color: #170C40;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  text-align: center;
-  position: relative;
+  color: #0A3B2F;
+  margin-bottom: 20px;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
 }
 
-.proximoCanje h3::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #99FFC2, #B8FFD1);
-  border-radius: 2px;
+.proximoCanje p {
+  font-size: 1.1rem;
+  color: #2A5A4A;
+  margin: 10px 0;
+  font-weight: 600;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 /* === RESPONSIVE MEJORADO === */
 @media (max-width: 768px) {
   #selector-puntos {
     flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    gap: 20px;
+    margin: 30px auto;
+    padding: 25px;
   }
 
   #selector-puntos button {
-    width: 100%;
-    max-width: 300px;
+    padding: 18px 25px;
+    font-size: 1rem;
+  }
+
+  #total-puntos h3 {
+    font-size: 1.8rem;
+  }
+
+  .producto img {
+    width: 140px;
+    height: 140px;
+  }
+
+  #lista-puntos, #historial-puntos {
+    padding: 40px 25px;
+    margin: 40px auto;
+  }
+
+  #lista-puntos h3, #historial-puntos h3 {
+    font-size: 2rem;
+  }
+
+  .cupon, .producto, .proximoCanje {
+    padding: 25px 20px;
+    margin: 20px auto;
+  }
+
+  .historial-container {
+    padding: 20px;
+  }
+
+  .historial-table th,
+  .historial-table td {
+    padding: 15px 10px;
+    font-size: 0.9rem;
+  }
+
+  .historial-table th {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #total-puntos {
+    padding: 30px 20px;
+  }
+
+  #total-puntos h3 {
+    font-size: 1.5rem;
   }
 
   .producto img {
@@ -262,31 +522,38 @@ body {
     height: 120px;
   }
 
-  #lista-puntos {
+  #lista-puntos, #historial-puntos {
     padding: 30px 20px;
   }
 
-  .cupon, .producto {
-    padding: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  #total-puntos {
-    padding: 25px;
-    font-size: 1.1em;
+  #lista-puntos h3, #historial-puntos h3 {
+    font-size: 1.6rem;
   }
 
-  .producto img {
-    width: 100px;
-    height: 100px;
+  .cupon, .producto, .proximoCanje {
+    padding: 20px 15px;
   }
 
-  #lista-puntos {
-    padding: 25px 15px;
+  .cupon p, .producto p, .proximoCanje p {
+    font-size: 1rem;
   }
 
-  .cupon, .producto {
+  .historial-container {
     padding: 15px;
+  }
+
+  .historial-table th,
+  .historial-table td {
+    padding: 12px 8px;
+    font-size: 0.8rem;
+  }
+
+  .historial-table th {
+    font-size: 0.9rem;
+  }
+
+  .puntos-positivos,
+  .puntos-negativos {
+    font-size: 0.9rem !important;
   }
 }

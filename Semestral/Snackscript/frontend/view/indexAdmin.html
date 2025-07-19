@@ -43,32 +43,54 @@
                 </div>
             </div>
 
-            <dialog class="modal-form" id="addProductDialog">
+            <div class="modal-overlay glass-blur" id="addProductOverlay" style="display:none;"></div>
+            <dialog class="modal-form ultra-glass-modal" id="addProductDialog">
                 <form id="addProductForm">
-                    <h2>Añadir producto</h2>
-                    <label for="productName">Nombre</label>
-                    <input type="text" id="productName" name="productName" required autocomplete="off">
-                    <label for="productPrice">Precio</label>
-                    <input id="productPrice" name="productPrice" required autocomplete="off">
-                    <label for="productCategory">Categoría</label>
-                    <select id="productCategory" name="productCategory" required>
-                        <option value="" disabled selected hidden></option>
-                        <option value="Dulces">Dulces</option>
-                        <option value="Salados">Salados</option>
-                        <option value="Acidos">Acidos</option>
-                        <option value="Picantes">Picantes</option>
-                        <option value="Bebidas">Bebidas</option>
-                    </select>
-                    <label for="productOrigin">Origen</label>
-                    <input type="text" id="productOrigin" name="productOrigin" required autocomplete="off">
-                    <label for="productStock">Stock</label>
-                    <input type="number" id="productStock" name="productStock" required autocomplete="off">
-                    <label for="productDescription">Descripción</label>
-                    <textarea id="productDescription" name="productDescription" required autocomplete="off"></textarea>
-                    <label for="productStory">Historia</label>
-                    <textarea id="productStory" name="productStory" required autocomplete="off"></textarea>
-                    <button type="submit" id="Añadir">Añadir</button>
-                    <button type="button" class="cancel-btn" id="cancelAddProduct">Cancelar</button>
+                    <div class="ultra-modal-header">
+                        <div class="ultra-modal-icon">🥨</div>
+                        <div class="ultra-modal-title">Añadir producto</div>
+                    </div>
+                    <div class="ultra-modal-fields">
+                        <div class="ultra-input-group">
+                            <label for="productName" class="ultra-label-top">Nombre</label>
+                            <input type="text" id="productName" name="productName" required autocomplete="off" class="ultra-input">
+                        </div>
+                        <div class="ultra-input-group">
+                            <label for="productPrice" class="ultra-label-top">Precio</label>
+                            <input id="productPrice" name="productPrice" required autocomplete="off" class="ultra-input">
+                        </div>
+                        <div class="ultra-input-group">
+                            <label for="productCategory" class="ultra-label-top">Categoría</label>
+                            <select id="productCategory" name="productCategory" required class="ultra-input">
+                                <option value="" disabled selected hidden></option>
+                                <option value="Dulces">Dulces</option>
+                                <option value="Salados">Salados</option>
+                                <option value="Acidos">Acidos</option>
+                                <option value="Picantes">Picantes</option>
+                                <option value="Bebidas">Bebidas</option>
+                            </select>
+                        </div>
+                        <div class="ultra-input-group">
+                            <label for="productOrigin" class="ultra-label-top">Origen</label>
+                            <input type="text" id="productOrigin" name="productOrigin" required autocomplete="off" class="ultra-input">
+                        </div>
+                        <div class="ultra-input-group">
+                            <label for="productStock" class="ultra-label-top">Stock</label>
+                            <input type="number" id="productStock" name="productStock" required autocomplete="off" class="ultra-input">
+                        </div>
+                        <div class="ultra-input-group">
+                            <label for="productDescription" class="ultra-label-top">Descripción</label>
+                            <textarea id="productDescription" name="productDescription" required autocomplete="off" class="ultra-input"></textarea>
+                        </div>
+                        <div class="ultra-input-group">
+                            <label for="productStory" class="ultra-label-top">Historia</label>
+                            <textarea id="productStory" name="productStory" required autocomplete="off" class="ultra-input"></textarea>
+                        </div>
+                    </div>
+                    <div class="ultra-modal-actions">
+                        <button type="submit" class="ultra-main-btn" id="Añadir">Añadir</button>
+                        <button type="button" class="ultra-cancel-btn" id="cancelAddProduct">Cancelar</button>
+                    </div>
                 </form>
             </dialog>
 

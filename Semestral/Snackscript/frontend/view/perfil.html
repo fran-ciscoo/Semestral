@@ -10,23 +10,206 @@
 </head>
 <body>
     <div id="navbar"></div>
-    <main id="perfil">
-        <h2 id="nombre"></h2>
-        <p id="email"></p>
-        <div id="buttons"></div>
-    </main>
-    <hr class="section-divider">
-    <div id="total-puntos">
-        <h3>Balance de puntos: 10</h3>
+    
+    <!-- Header del perfil con información principal -->
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <div class="avatar-circle">
+                <span class="avatar-initial">U</span>
+            </div>
+        </div>
+        <div class="profile-info">
+            <h1 id="nombre" class="profile-name">Usuario</h1>
+            <p id="email" class="profile-email">usuario@email.com</p>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-number">10</span>
+                    <span class="stat-label">Puntos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Pedidos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Cupones</span>
+                </div>
+            </div>
+        </div>
+        <div class="profile-actions">
+            <button id="btnEditar" class="edit-profile-btn">
+                <span class="btn-icon">✏️</span>
+                Editar Perfil
+            </button>
+        </div>
     </div>
-    <hr class="section-divider">
-    <div id="tarjetas">
-        <h3>Mis cupones</h3>
+
+    <!-- Grid de tarjetas principales -->
+    <div class="profile-grid">
+        <!-- Tarjeta de puntos -->
+        <div class="profile-card points-card">
+            <div class="card-header">
+                <div class="card-icon">🎯</div>
+                <h3>Mis Puntos</h3>
+            </div>
+            <div class="card-content">
+                <div class="points-display">
+                    <span class="points-number">10</span>
+                    <span class="points-label">puntos acumulados</span>
+                </div>
+                <div class="points-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                    <span class="progress-text">60% hacia el siguiente nivel</span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a href="../view/puntos.html" class="card-btn">Ver Detalles</a>
+            </div>
+        </div>
+
+        <!-- Tarjeta de cupones -->
+        <div class="profile-card coupons-card">
+            <div class="card-header">
+                <div class="card-icon">🎫</div>
+                <h3>Mis Cupones</h3>
+            </div>
+            <div class="card-content">
+                <div class="coupons-list">
+                    <div class="coupon-item">
+                        <span class="coupon-name">10% Descuento</span>
+                        <span class="coupon-status active">Activo</span>
+                    </div>
+                    <div class="coupon-item">
+                        <span class="coupon-name">Envío Gratis</span>
+                        <span class="coupon-status used">Usado</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <button class="card-btn">Ver Todos</button>
+            </div>
+        </div>
+
+        <!-- Tarjeta de pedidos recientes -->
+        <div class="profile-card orders-card">
+            <div class="card-header">
+                <div class="card-icon">📦</div>
+                <h3>Pedidos Recientes</h3>
+            </div>
+            <div class="card-content">
+                <div class="orders-list">
+                    <div class="order-item">
+                        <div class="order-info">
+                            <span class="order-number">#12345</span>
+                            <span class="order-date">07/06/2025</span>
+                        </div>
+                        <span class="order-status delivered">Entregado</span>
+                    </div>
+                    <div class="order-item">
+                        <div class="order-info">
+                            <span class="order-number">#12344</span>
+                            <span class="order-date">05/06/2025</span>
+                        </div>
+                        <span class="order-status processing">En Proceso</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a href="../view/pedidos.html" class="card-btn">Ver Historial</a>
+            </div>
+        </div>
+
+        <!-- Tarjeta de direcciones -->
+        <div class="profile-card addresses-card">
+            <div class="card-header">
+                <div class="card-icon">📍</div>
+                <h3>Mis Direcciones</h3>
+            </div>
+            <div class="card-content">
+                <div class="addresses-list">
+                    <div class="address-item">
+                        <span class="address-name">Casa</span>
+                        <span class="address-text">Calle Principal #123</span>
+                    </div>
+                    <div class="address-item">
+                        <span class="address-name">Trabajo</span>
+                        <span class="address-text">Oficina Central #456</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <button class="card-btn">Gestionar</button>
+            </div>
+        </div>
+
+        <!-- Tarjeta de configuración -->
+        <div class="profile-card settings-card">
+            <div class="card-header">
+                <div class="card-icon">⚙️</div>
+                <h3>Configuración</h3>
+            </div>
+            <div class="card-content">
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <span class="setting-name">Notificaciones</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-name">Newsletter</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <button class="card-btn">Más Opciones</button>
+            </div>
+        </div>
+
+        <!-- Tarjeta de ayuda -->
+        <div class="profile-card help-card">
+            <div class="card-header">
+                <div class="card-icon">❓</div>
+                <h3>Ayuda & Soporte</h3>
+            </div>
+            <div class="card-content">
+                <div class="help-links">
+                    <a href="#" class="help-link">Preguntas Frecuentes</a>
+                    <a href="#" class="help-link">Contactar Soporte</a>
+                    <a href="#" class="help-link">Tutorial</a>
+                </div>
+            </div>
+            <div class="card-actions">
+                <button class="card-btn">Contactar</button>
+            </div>
+        </div>
     </div>
-    <hr class="section-divider">
-    <div id="direcciones">
-        <h3>Mis pedidos</h3>
+
+    <!-- Sección de sesión -->
+    <div class="session-section">
+        <div class="session-card">
+            <div class="card-header">
+                <div class="card-icon">🔐</div>
+                <h3>Gestión de Sesión</h3>
+            </div>
+            <div class="card-content">
+                <div class="session-info">
+                    <p class="session-status">Estado de la sesión</p>
+                    <div class="session-actions" id="buttons">
+                        <!-- Los botones se insertarán dinámicamente aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div id="footer"></div>
 </body>
 </html>

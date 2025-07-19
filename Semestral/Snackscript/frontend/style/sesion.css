@@ -11,6 +11,15 @@ body {
   position: relative;
 }
 
+/* === NAVBAR (si se inyecta) === */
+#navbar, #footer {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  padding: 20px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(3, 12, 38, 0.15);
+}
+
 .sesion-bg-blur {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -137,16 +146,38 @@ body {
 
 #loginError {
   display: none;
-  background-color: #ffe5e5;
+  position: relative;
+  background: linear-gradient(90deg, #ffe5e5 0%, #ffd6d6 100%);
   color: #b30000;
-  border: 1px solid #ff9999;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-weight: 500;
+  border: 2px solid #F26052;
+  padding: 16px 24px 16px 54px;
+  border-radius: 12px;
+  font-weight: 600;
   font-family: 'Segoe UI', sans-serif;
-  font-size: 16px;
+  font-size: 1rem;
   max-width: 400px;
-  margin: 15px auto;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 18px auto 0 auto;
+  text-align: left;
+  box-shadow: 0 4px 16px #F2605233;
+  letter-spacing: 0.5px;
+  animation: shakeIn 0.5s;
+  overflow: hidden;
+}
+
+#loginError::before {
+  content: '⚠️';
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  background: none;
+  filter: none;
+}
+
+@keyframes shakeIn {
+  0% { transform: translateX(-30px) scale(0.95); opacity: 0; }
+  60% { transform: translateX(10px) scale(1.05); opacity: 1; }
+  80% { transform: translateX(-5px) scale(1.01); }
+  100% { transform: translateX(0) scale(1); opacity: 1; }
 }

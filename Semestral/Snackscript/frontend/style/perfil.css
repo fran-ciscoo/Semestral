@@ -13,318 +13,716 @@ body {
   line-height: 1.6;
 }
 
-/* === PERFIL PRINCIPAL MEJORADO === */
-#perfil {
-  max-width: 700px;
-  margin: 60px auto;
-  background: linear-gradient(135deg, #F2D9BB 0%, #F5E6D3 100%);
-  border-radius: 20px;
-  padding: 40px;
+/* === NAVBAR (si se inyecta) === */
+#navbar, #footer {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  padding: 20px;
+  color: white;
   text-align: center;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
-  border: 2px solid rgba(242, 217, 187, 0.5);
+  box-shadow: 0 8px 25px rgba(3, 12, 38, 0.15);
+}
+
+/* === HEADER DEL PERFIL === */
+.profile-header {
+  background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
+  margin: 40px auto;
+  padding: 40px;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  box-shadow: 0 20px 60px rgba(3, 12, 38, 0.15);
+  border: 3px solid rgba(162, 136, 212, 0.3);
   position: relative;
   overflow: hidden;
 }
 
-#perfil::before {
+.profile-header::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #F29441, #D9763D, #F26052);
-  border-radius: 20px 20px 0 0;
+  height: 5px;
+  background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
+  border-radius: 25px 25px 0 0;
 }
 
-#perfil h2 {
-  font-size: 2.2rem;
+/* Avatar del perfil */
+.profile-avatar {
+  flex-shrink: 0;
+}
+
+.avatar-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(149, 86, 166, 0.3);
+  border: 4px solid white;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-circle::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+  animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.avatar-initial {
+  font-size: 3rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  position: relative;
+}
+
+/* Información del perfil */
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 2.5rem;
+  font-weight: 800;
   color: #170C40;
-  margin-bottom: 15px;
-  font-weight: 700;
+  margin: 0 0 10px 0;
   background: linear-gradient(135deg, #170C40 0%, #2A1B5E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  position: relative;
+  letter-spacing: 1px;
 }
 
-#perfil h2::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(90deg, #F26052, #F29441);
-  border-radius: 2px;
-}
-
-#perfil p {
-  font-size: 1.1rem;
-  color: #555;
-  margin-bottom: 25px;
-  line-height: 1.6;
+.profile-email {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0 0 25px 0;
   font-weight: 500;
 }
 
-#btnEditar {
-  background: linear-gradient(135deg, #BFA7F2 0%, #D4C7F5 100%);
-  color: #170C40;
-  padding: 15px 30px;
+/* Estadísticas del perfil */
+.profile-stats {
+  display: flex;
+  gap: 30px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #F26052;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Botón de editar perfil */
+.profile-actions {
+  flex-shrink: 0;
+}
+
+.edit-profile-btn {
+  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
+  color: white;
   border: none;
-  border-radius: 12px;
+  padding: 15px 25px;
+  border-radius: 15px;
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 8px 20px rgba(191, 167, 242, 0.3);
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 0.5px;
-}
-
-#btnEditar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.6s ease;
-}
-
-#btnEditar:hover::before {
-  left: 100%;
-}
-
-#btnEditar:hover {
-  background: linear-gradient(135deg, #F2B5FF 0%, #E8A8FF 100%);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(242, 181, 255, 0.4);
-}
-
-#btnEditar:active {
-  transform: translateY(-1px);
-  transition: transform 0.1s ease;
-}
-
-/* === BALANCE DE PUNTOS MEJORADO === */
-#total-puntos {
-  max-width: 500px;
-  margin: 40px auto;
-  background: linear-gradient(135deg, #C2FFBF 0%, #D4FFD1 100%);
-  padding: 30px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
-  border: 2px solid rgba(194, 255, 191, 0.5);
-  position: relative;
-  overflow: hidden;
-}
-
-#total-puntos::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #99FFC2, #B8FFD1);
-}
-
-#total-puntos h3 {
-  color: #0A3B2F;
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  position: relative;
-}
-
-#total-puntos h3::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #99FFC2, #B8FFD1);
-  border-radius: 2px;
-}
-
-/* === CUPONES Y DIRECCIONES MEJORADOS === */
-#tarjetas, #direcciones {
-  max-width: 700px;
-  margin: 30px auto;
-  background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
-  border: 2px solid rgba(162, 136, 212, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-#tarjetas::before, #direcciones::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #BFA7F2, #D4C7F5);
-}
-
-#tarjetas h3,
-#direcciones h3 {
-  color: #170C40;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-#tarjetas h3::after, #direcciones h3::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #BFA7F2, #D4C7F5);
-  border-radius: 2px;
-}
-
-/* === ELEMENTOS DE LISTA === */
-#tarjetas ul, #direcciones ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-#tarjetas li, #direcciones li {
-  background: rgba(255, 255, 255, 0.3);
-  margin: 10px 0;
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
   transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(242, 96, 82, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-profile-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(242, 96, 82, 0.4);
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+}
+
+/* === GRID DE TARJETAS === */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin: 40px auto;
+  width: 90%;
+  max-width: 1400px;
+  padding: 0 20px;
+}
+
+/* Tarjetas base */
+.profile-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
   backdrop-filter: blur(10px);
 }
 
-#tarjetas li:hover, #direcciones li:hover {
-  background: rgba(255, 255, 255, 0.5);
-  transform: translateX(5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* === DIVISORES ENTRE SECCIONES === */
-.section-divider {
-  width: 80%;
-  margin: 40px auto 30px auto;
-  border: none;
-  border-top: 2px solid #e0e0e0;
-  box-shadow: 0 2px 8px rgba(191, 167, 242, 0.08);
-  opacity: 0.7;
-}
-
-/* === MEJOR SOMBREADO DE BLOQUES === */
-#perfil, #total-puntos, #tarjetas, #direcciones {
-  box-shadow: 0 8px 32px rgba(149, 86, 166, 0.10), 0 1.5px 8px rgba(242, 181, 255, 0.08);
-}
-
-/* === BOTONES DE SESIÓN ESTILIZADOS === */
-#buttons button {
-  background: linear-gradient(135deg, #F29441 0%, #F26052 100%);
-  color: #fff;
-  padding: 14px 32px;
-  border: none;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 1.05rem;
-  cursor: pointer;
-  margin: 10px 0;
-  box-shadow: 0 6px 18px rgba(242, 181, 255, 0.18);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 0.5px;
-}
-#buttons button a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1.05rem;
-}
-#buttons button::before {
+.profile-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
 }
-#buttons button:hover::before {
+
+.profile-card:hover::before {
   left: 100%;
 }
-#buttons button:hover {
-  background: linear-gradient(135deg, #F2B5FF 0%, #E8A8FF 100%);
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 12px 30px rgba(242, 181, 255, 0.22);
-}
-#buttons button:active {
-  transform: translateY(0) scale(0.98);
-  transition: transform 0.1s ease;
+
+.profile-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
 }
 
-/* Footer visible y estilizado */
-#footer {
-  margin-top: 60px;
+/* Header de tarjetas */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
-/* === RESPONSIVE MEJORADO === */
+.card-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.card-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #170C40;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+/* Contenido de tarjetas */
+.card-content {
+  margin-bottom: 25px;
+}
+
+/* Tarjeta de puntos */
+.points-display {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.points-number {
+  display: block;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #F26052;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.points-label {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.points-progress {
+  margin-top: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Tarjeta de cupones */
+.coupons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.coupon-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.coupon-name {
+  font-weight: 600;
+  color: #170C40;
+}
+
+.coupon-status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.coupon-status.active {
+  background: #4CAF50;
+  color: white;
+}
+
+.coupon-status.used {
+  background: #9E9E9E;
+  color: white;
+}
+
+/* Tarjeta de pedidos */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.order-number {
+  font-weight: 700;
+  color: #170C40;
+  font-size: 1.1rem;
+}
+
+.order-date {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.order-status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.order-status.delivered {
+  background: #4CAF50;
+  color: white;
+}
+
+.order-status.processing {
+  background: #FF9800;
+  color: white;
+}
+
+/* Tarjeta de direcciones */
+.addresses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.address-item {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.address-name {
+  display: block;
+  font-weight: 700;
+  color: #170C40;
+  margin-bottom: 5px;
+}
+
+.address-text {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Tarjeta de configuración */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.setting-name {
+  font-weight: 600;
+  color: #170C40;
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #4CAF50;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+/* Tarjeta de ayuda */
+.help-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.help-link {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: #170C40;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.help-link:hover {
+  background: rgba(242, 96, 82, 0.1);
+  color: #F26052;
+  transform: translateX(5px);
+}
+
+/* Botones de acción */
+.card-actions {
+  text-align: center;
+}
+
+.card-btn {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 6px 15px rgba(149, 86, 166, 0.3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(149, 86, 166, 0.4);
+}
+
+/* === SECCIÓN DE SESIÓN === */
+.session-section {
+  margin: 40px auto;
+  width: 90%;
+  max-width: 1400px;
+  padding: 0 20px;
+}
+
+.session-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.session-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.session-info {
+  text-align: center;
+}
+
+.session-status {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.session-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.session-actions button {
+  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 15px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(242, 96, 82, 0.3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+.session-actions button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.session-actions button:hover::before {
+  left: 100%;
+}
+
+.session-actions button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(242, 96, 82, 0.4);
+}
+
+.session-actions button a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
-  #perfil, #total-puntos, #tarjetas, #direcciones {
-    margin: 30px 20px;
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
     padding: 30px 20px;
   }
 
-  #perfil h2 {
-    font-size: 1.8rem;
+  .profile-stats {
+    justify-content: center;
+    gap: 20px;
   }
 
-  #btnEditar {
+  .profile-name {
+    font-size: 2rem;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .profile-card {
+    padding: 25px 20px;
+  }
+
+  .points-number {
+    font-size: 2.5rem;
+  }
+
+  .session-card {
+    padding: 25px 20px;
+  }
+
+  .session-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .session-actions button {
     padding: 12px 25px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
-  #perfil, #total-puntos, #tarjetas, #direcciones {
-    margin: 20px 15px;
+  .profile-header {
+    margin: 20px auto;
     padding: 25px 15px;
   }
 
-  #perfil h2 {
-    font-size: 1.5rem;
+  .avatar-circle {
+    width: 100px;
+    height: 100px;
   }
 
-  #perfil p {
-    font-size: 1rem;
+  .avatar-initial {
+    font-size: 2.5rem;
   }
 
-  #btnEditar {
+  .profile-name {
+    font-size: 1.8rem;
+  }
+
+  .profile-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .stat-item {
+    padding: 12px 15px;
+  }
+
+  .profile-grid {
+    margin: 20px auto;
+  }
+
+  .profile-card {
+    padding: 20px 15px;
+  }
+
+  .card-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .session-card {
+    padding: 20px 15px;
+  }
+
+  .session-actions button {
     padding: 10px 20px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 }
 #loader {

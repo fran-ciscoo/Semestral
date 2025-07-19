@@ -284,6 +284,8 @@ import {navbarA, footer} from "../component/navbar.js"
                     e.preventDefault();
                     console.log('Botón Añadir clickeado');
                     methods.showModal(htmlElements.addProduct);
+                    const overlay = document.getElementById('addProductOverlay');
+                    if (overlay) overlay.style.display = 'block';
                 });
 
                 form.addEventListener('submit', (e) => {
@@ -295,6 +297,8 @@ import {navbarA, footer} from "../component/navbar.js"
                     e.preventDefault();
                     methods.hideModal(htmlElements.addProduct);
                     htmlElements.form.reset();
+                    const overlay = document.getElementById('addProductOverlay');
+                    if (overlay) overlay.style.display = 'none';
                 });
 
                 formE.addEventListener('submit', (e) => {
@@ -308,6 +312,16 @@ import {navbarA, footer} from "../component/navbar.js"
                     htmlElements.formE.reset();
                 });
 
+                // Event listener for overlay
+                const overlay = document.getElementById('addProductOverlay');
+                if (overlay) {
+                    overlay.addEventListener('click', (e) => {
+                        if (e.target === overlay) {
+                            methods.hideModal(htmlElements.addProduct);
+                            overlay.style.display = 'none';
+                        }
+                    });
+                }
             }
         }
     })();

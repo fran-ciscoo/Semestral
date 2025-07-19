@@ -44,7 +44,7 @@
             </div>
 
             <div class="modal-overlay glass-blur" id="addProductOverlay" style="display:none;"></div>
-            <dialog class="modal-form ultra-glass-modal" id="addProductDialog">
+            <dialog class="modal-form" id="addProductDialog">
                 <form id="addProductForm">
                     <div class="ultra-modal-header">
                         <div class="ultra-modal-icon">🥨</div>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="ultra-input-group">
                             <label for="productPrice" class="ultra-label-top">Precio</label>
-                            <input id="productPrice" name="productPrice" required autocomplete="off" class="ultra-input">
+                            <input type="number" id="productPrice" min="0" name="productPrice" required autocomplete="off" class="ultra-input">
                         </div>
                         <div class="ultra-input-group">
                             <label for="productCategory" class="ultra-label-top">Categoría</label>
@@ -76,7 +76,14 @@
                         </div>
                         <div class="ultra-input-group">
                             <label for="productStock" class="ultra-label-top">Stock</label>
-                            <input type="number" id="productStock" name="productStock" required autocomplete="off" class="ultra-input">
+                            <input type="number" id="productStock" min="1" name="productStock" required autocomplete="off" class="ultra-input">
+                        </div>
+                        <div class="ultra-input-group">
+                            <label for="productImage" class="ultra-label-top">Imagen del producto</label>
+                            <div id="dropZone" class="drop-zone">
+                                <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
+                                <input type="file" id="productImage" name="productImage" accept="image/*" class="drop-zone__input" required>
+                            </div>
                         </div>
                         <div class="ultra-input-group">
                             <label for="productDescription" class="ultra-label-top">Descripción</label>

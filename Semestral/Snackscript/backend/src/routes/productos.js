@@ -1,4 +1,6 @@
 import Product from '../models/product.model.js';
+import cloudinary from '../../config/cloudinary.js';
+
 export default async function productosRoutes(fastify, opts) {
 
   fastify.addHook('preHandler', async (request, reply) => {
@@ -34,35 +36,58 @@ export default async function productosRoutes(fastify, opts) {
 
    // Crear nuevo producto
   fastify.post('/', async (request, reply) => {
-    const { name, price, category, origin, stock, description, story } = request.body;
+    const parts = request.parts();
 
-    const nuevoProducto = new Product({
-      name,
-      price: parseFloat(price),
-      category,
-      origin,
-      stock: parseInt(stock, 10),
-      description,
-      story
-    });
+    const formFields = {};
+    let imageUrl = '';
 
-    const errores = validarProducto(nuevoProducto);
+    try {
+      for await (const part of parts) {
+        if (part.type === 'field') {
+          formFields[part.fieldname] = part.value;
+        }
 
-    if (errores.length > 0) {
-      return reply.code(400).send({
-        error: 'ERRORES EN LA VALIDACIÓN',
-        errores,
-        status: 'error'
+        if (part.type === 'file' && part.fieldname === 'productImage') {
+          imageUrl = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+              { folder: 'ecommerce-snacks' },
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result.secure_url);
+              }
+            );
+            part.file.pipe(stream);
+          });
+        }
+      }
+
+      const nuevoProducto = new Product({
+        name: formFields.productName,
+        price: parseFloat(formFields.productPrice),
+        category: formFields.productCategory,
+        origin: formFields.productOrigin,
+        stock: parseInt(formFields.productStock, 10),
+        description: formFields.productDescription,
+        story: formFields.productStory,
+        image: imageUrl,
+      });
+
+      await nuevoProducto.save();
+
+      return reply.code(201).send({
+        producto: nuevoProducto,
+        mensaje: 'Producto creado correctamente',
+        status: 'success',
+      });
+
+    } catch (err) {
+      console.error('Error en la creación del producto:', err);
+      return reply.code(500).send({
+        error: 'Error interno del servidor',
+        detalle: err.message,
+        status: 'error',
       });
     }
-
-    await nuevoProducto.save();
-
-    return {
-      producto: nuevoProducto,
-      mensaje: 'Producto creado correctamente',
-      status: 'success'
-    };
   });
 
   fastify.get('/', async (request, reply) => {

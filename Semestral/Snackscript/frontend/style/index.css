@@ -1470,3 +1470,39 @@ body {
     gap: 8px;
   }
 }
+
+.drop-zone {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.3s;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.drop-zone--over {
+  border-color: #007bff;
+  background-color: #e6f0ff;
+}
+
+.drop-zone__prompt {
+  color: #555;
+}
+
+.drop-zone__input {
+  display: none;
+}
+
+.drop-zone__thumb {
+  margin-top: 10px;
+  width: 100%;
+  padding-top: 56.25%;
+  /* Relación 16:9 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}

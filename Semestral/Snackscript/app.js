@@ -5,7 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { connect } from './backend/config/database.js';
 import fastifyCookie from '@fastify/cookie';
-
+import multipart from '@fastify/multipart';
+import dotenv from 'dotenv';
+dotenv.config();
 const PORT = 3000;
 const MONGO_URI = 'mongodb://root:example@localhost:27017/';
 const secretKey = 'clave_secreta_segura_y_larga';
@@ -19,6 +21,7 @@ const fastify = Fastify({
     }   
 });
 fastify.register(fastifyCookie);
+fastify.register(multipart);
 fastify.register(fastifyStatic, {
   root: path.join(dirname, 'frontend'),
   prefix: '/',

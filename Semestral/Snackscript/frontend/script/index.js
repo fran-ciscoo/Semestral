@@ -21,12 +21,12 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                             const productCard = `
                                 <div class="product-card">
                                     <div class="product-info">
+                                        <img src="${product.image}" alt="${product.name} imagen" class="product-image">
                                         <h2 class="product-title">${product.name}</h2>
                                         <p class="product-description">${product.description}</p>
                                         <p class="product-price">$${product.price}</p>
                                         <div class="product-actions">
-                                            <button class="add-to-cart-btn" data-id="${product._id}">Agregar al carrito</button>
-                                            <button class="wishlist-btn" data-id="${product._id}">❤</button>
+                                            <button class="edit-btn" data-id="${product._id}">Editar</button>
                                         </div>
                                     </div>
                                 </div>`;

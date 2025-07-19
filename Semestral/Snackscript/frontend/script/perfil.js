@@ -24,7 +24,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
                 htmlElements.nombre.textContent = 'Sin nombre';
                 htmlElements.email.textContent = 'Sin correo';
-                htmlElements.perfil.querySelector('button')?.remove();
 
                 alert('Sesión cerrada correctamente.');
                 window.location.href = '../view/index.html';

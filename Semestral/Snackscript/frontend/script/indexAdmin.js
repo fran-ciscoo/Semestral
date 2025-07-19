@@ -30,6 +30,7 @@ import {navbarA, footer} from "../component/navbar.js"
             inputDescription: document.querySelector('#productDescription'),
             inputStory: document.querySelector('#productStory'),
             botonCancelar: document.querySelector('#cancelAddProduct'),
+            dropZone: document.querySelector('#dropZone')
         }
 
         const methods = {
@@ -109,6 +110,7 @@ import {navbarA, footer} from "../component/navbar.js"
                             const productCard = `
                                 <div class="product-card">
                                     <div class="product-info">
+                                        <img src="${product.image}" alt="${product.name} imagen" class="product-image">
                                         <h2 class="product-title">${product.name}</h2>
                                         <p class="product-description">${product.description}</p>
                                         <p class="product-price">$${product.price}</p>
@@ -132,52 +134,47 @@ import {navbarA, footer} from "../component/navbar.js"
                     }).catch(error => console.error('Error al obtener productos:', error));
             },
 
-            saveProduct(){
-                const name = htmlElements.inputName.value.trim();
-                const price = parseFloat(htmlElements.inputPrice.value);
-                const category = htmlElements.inputCategory.value.trim();
-                const origin = htmlElements.inputOrigin.value.trim();
-                const stock = parseInt(htmlElements.inputStock.value, 10);
-                const description = htmlElements.inputDescription.value.trim();
-                const story = htmlElements.inputStory.value.trim();
-                const valid = methods.validateProduct(name, price, category, origin, stock, description, story);
-                
-                if (!valid) return;
+            async saveProduct(){
+                try {
+                    const form = htmlElements.form;
+                    const formData = new FormData(form);
 
-                const product = {
-                    name,
-                    price,
-                    category,
-                    origin,
-                    stock,
-                    description,
-                    story
-                };
+                    const name = formData.get('productName')?.trim();
+                    const price = parseFloat(formData.get('productPrice'));
+                    const category = formData.get('productCategory')?.trim();
+                    const origin = formData.get('productOrigin')?.trim();
+                    const stock = parseInt(formData.get('productStock'), 10);
+                    const description = formData.get('productDescription')?.trim();
+                    const story = formData.get('productStory')?.trim();
+                    const image = formData.get('productImage');
 
-                console.log('Producto a guardar:', product);
+                    const valid = methods.validateProduct(name, price, category, origin, stock, description, story, image);
+                    console.log("Hastaa aquiiii");
+                    console.log(image);
+                    if (!valid) return;
+                    console.log("Hastaa aquiiii22222");
+                    const response = await fetch('http://localhost:3000/api/productos', {
+                        method: 'POST',
+                        body: formData
+                    });
 
-                fetch('http://localhost:3000/api/productos', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(product)
-                })
-                .then(response => response.json())
-                .then(data => {
+                    const data = await response.json();
+                    console.log(data);
                     console.log('Producto creado:', data);
-                    htmlElements.form.reset();
                     methods.hideModal(htmlElements.addProduct);
                     window.location.href = '../view/indexAdmin.html';
-                })
+
+                } catch (err) {
+                    console.error('Error al guardar producto:', err);
+                    alert('Ocurrió un error al guardar el producto. Intenta de nuevo.');
+                }
             },
 
-            validateProduct(name, price, category, origin, stock, description, story){
+            validateProduct(name, price, category, origin, stock, description, story, image){
 
-                if (!name || !price || !category || !origin || !stock || !description || !story) {
-                    console.log('Validating product:', { name, price, category, origin, stock, description, story });
-                    alert('All fields are required.');
-                    console.error('no tan llegando')
+                if (!name || !price || !category || !origin || !stock || !description || !story || !image) {
+                    console.log('Validating product:', { name, price, category, origin, stock, description, story, image});
+                    alert('Todos los campos son requeridos');
                     return false;
                 }
 
@@ -240,6 +237,59 @@ import {navbarA, footer} from "../component/navbar.js"
                 }
             },
 
+            dropZoneF(){
+                const dropZone = htmlElements.dropZone;
+                if (dropZone) {
+                    const input = dropZone.querySelector('.drop-zone__input');
+                    let preview = dropZone.querySelector('.drop-zone__thumb');
+
+                    dropZone.addEventListener('click', () => input.click());
+
+                    dropZone.addEventListener('dragover', e => {
+                        e.preventDefault();
+                        dropZone.classList.add('drop-zone--over');
+                    });
+
+                    dropZone.addEventListener('dragleave', () => {
+                        dropZone.classList.remove('drop-zone--over');
+                    });
+
+                    dropZone.addEventListener('drop', e => {
+                        e.preventDefault();
+                        dropZone.classList.remove('drop-zone--over');
+
+                        if (e.dataTransfer.files.length) {
+                            input.files = e.dataTransfer.files;
+                            updateThumbnail(input.files[0]);
+                        }
+                    });
+
+                    input.addEventListener('change', () => {
+                        if (input.files.length) {
+                            updateThumbnail(input.files[0]);
+                        }
+                    });
+
+                    function updateThumbnail(file) {
+                        if (!file.type.startsWith('image/')) return;
+
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+
+                        reader.onload = () => {
+                            if (!preview) {
+                                preview = document.createElement('div');
+                                preview.classList.add('drop-zone__thumb');
+                                dropZone.appendChild(preview);
+                            }
+                            preview.style.backgroundImage = `url('${reader.result}')`;
+                            dropZone.classList.add('has-thumb');
+                        };
+                    }
+                }
+            },
+
+
             addNavbar(){
                 const container = htmlElements.navbar;
                 const generar = navbarA();
@@ -254,6 +304,14 @@ import {navbarA, footer} from "../component/navbar.js"
             },
 
             showModal(modal) {
+                htmlElements.form.reset();
+                const dropZone = htmlElements.dropZone;
+                const preview = dropZone.querySelector('.drop-zone__thumb');
+                console.log(preview);
+                if (preview) {
+                    preview.remove();
+                }
+                dropZone.classList.remove('has-thumb');
                 if (modal && typeof modal.showModal === 'function') {
                     modal.showModal();
                 } else {
@@ -279,6 +337,7 @@ import {navbarA, footer} from "../component/navbar.js"
                 methods.addNavbar();
                 methods.addFooter();
                 methods.viewProducts();
+                methods.dropZoneF();
 
                 botonAñadir.addEventListener('click', (e) => {
                     e.preventDefault();

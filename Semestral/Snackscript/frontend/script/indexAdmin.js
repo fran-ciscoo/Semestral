@@ -5,10 +5,8 @@ import {navbarA, footer} from "../component/navbar.js"
         const htmlElements = {
             navbar: document.querySelector('#navbar'),
             footer: document.querySelector('#footer'),
-
             botonAñadir: document.querySelector('#addProductBtn'),
             containerProduct: document.querySelector('#snackList'),
-
             editProduct: document.querySelector('#editProductDialog'),
             formE: document.querySelector('#editProductForm'),
             editInputName: document.querySelector('#editProductName'),
@@ -19,7 +17,6 @@ import {navbarA, footer} from "../component/navbar.js"
             editInputDescription: document.querySelector('#editProductDescription'),
             editInputStory: document.querySelector('#editProductStory'),
             botonEditCancel: document.querySelector('#cancelEditProduct'),
-
             addProduct: document.querySelector('#addProductDialog'),
             form: document.querySelector('#addProductForm'),
             inputName: document.querySelector('#productName'),
@@ -30,7 +27,10 @@ import {navbarA, footer} from "../component/navbar.js"
             inputDescription: document.querySelector('#productDescription'),
             inputStory: document.querySelector('#productStory'),
             botonCancelar: document.querySelector('#cancelAddProduct'),
-            dropZone: document.querySelector('#dropZone')
+            dropZone: document.querySelector('#dropZone'),
+            nameError: document.querySelector("#nameError"),
+            originError: document.querySelector("#originError"),
+            imageError: document.querySelector("#imageError")
         }
 
         const methods = {
@@ -140,27 +140,24 @@ import {navbarA, footer} from "../component/navbar.js"
                     const formData = new FormData(form);
 
                     const name = formData.get('productName')?.trim();
-                    const price = parseFloat(formData.get('productPrice'));
-                    const category = formData.get('productCategory')?.trim();
                     const origin = formData.get('productOrigin')?.trim();
-                    const stock = parseInt(formData.get('productStock'), 10);
-                    const description = formData.get('productDescription')?.trim();
-                    const story = formData.get('productStory')?.trim();
                     const image = formData.get('productImage');
 
-                    const valid = methods.validateProduct(name, price, category, origin, stock, description, story, image);
-                    console.log("Hastaa aquiiii");
-                    console.log(image);
+                    const valid = methods.validateProduct(name, origin, image);
                     if (!valid) return;
-                    console.log("Hastaa aquiiii22222");
                     const response = await fetch('http://localhost:3000/api/productos', {
                         method: 'POST',
                         body: formData
                     });
 
                     const data = await response.json();
-                    console.log(data);
-                    console.log('Producto creado:', data);
+                    if (!response.ok) {
+                        console.error('Error del servidor:', data);
+                        if (data.status === 'error') {
+                            htmlElements.nameError.textContent = data.message;
+                        } 
+                        return;
+                    }
                     methods.hideModal(htmlElements.addProduct);
                     window.location.href = '../view/indexAdmin.html';
 
@@ -170,24 +167,25 @@ import {navbarA, footer} from "../component/navbar.js"
                 }
             },
 
-            validateProduct(name, price, category, origin, stock, description, story, image){
+            validateProduct(name, origin, image) {
+                htmlElements.nameError.innerHTML = "";
+                htmlElements.imageError.innerHTML = "";
+                htmlElements.originError.innerHTML = "";
+                console.log(image);
 
-                if (!name || !price || !category || !origin || !stock || !description || !story || !image) {
-                    console.log('Validating product:', { name, price, category, origin, stock, description, story, image});
-                    alert('Todos los campos son requeridos');
+                const nameRegex = /^[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ]+$/;
+                if (!nameRegex.test(name)) {
+                    htmlElements.nameError.innerHTML = "El nombre no debe contener caracteres especiales.";
                     return false;
                 }
-
-                if (isNaN(price) || price <= 0) {
-                    alert('Invalid price.');
+                if (!/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]+$/.test(origin)) {
+                    htmlElements.originError.innerHTML = "El origen solo debe contener letras";
                     return false;
                 }
-
-                if (isNaN(stock) || stock < 0) {
-                    alert('Invalid stock.');
+                if (!image || image.size === 0 || !image.name || image.type === "application/octet-stream") {
+                    htmlElements.imageError.innerHTML = "Debe seleccionar una imagen válida.";
                     return false;
                 }
-
                 return true;
             },
 
@@ -305,6 +303,9 @@ import {navbarA, footer} from "../component/navbar.js"
 
             showModal(modal) {
                 htmlElements.form.reset();
+                htmlElements.nameError.innerHTML = "";
+                htmlElements.imageError.innerHTML = "";
+                htmlElements.originError.innerHTML = "";
                 const dropZone = htmlElements.dropZone;
                 const preview = dropZone.querySelector('.drop-zone__thumb');
                 console.log(preview);

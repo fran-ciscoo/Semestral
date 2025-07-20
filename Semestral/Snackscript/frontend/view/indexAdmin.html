@@ -54,6 +54,7 @@
                         <div class="ultra-input-group">
                             <label for="productName" class="ultra-label-top">Nombre</label>
                             <input type="text" id="productName" name="productName" required autocomplete="off" class="ultra-input">
+                            <div class="error-message" id="nameError"></div>
                         </div>
                         <div class="ultra-input-group">
                             <label for="productPrice" class="ultra-label-top">Precio</label>
@@ -73,6 +74,7 @@
                         <div class="ultra-input-group">
                             <label for="productOrigin" class="ultra-label-top">Origen</label>
                             <input type="text" id="productOrigin" name="productOrigin" required autocomplete="off" class="ultra-input">
+                            <div class="error-message" id="originError"></div>
                         </div>
                         <div class="ultra-input-group">
                             <label for="productStock" class="ultra-label-top">Stock</label>
@@ -82,8 +84,9 @@
                             <label for="productImage" class="ultra-label-top">Imagen del producto</label>
                             <div id="dropZone" class="drop-zone">
                                 <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
-                                <input type="file" id="productImage" name="productImage" accept="image/*" class="drop-zone__input" required>
+                                <input type="file" id="productImage" name="productImage" accept="image/*" class="drop-zone__input">
                             </div>
+                            <div class="error-message" id="imageError"></div>
                         </div>
                         <div class="ultra-input-group">
                             <label for="productDescription" class="ultra-label-top">Descripción</label>

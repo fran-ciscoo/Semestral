@@ -181,3 +181,10 @@ body {
   80% { transform: translateX(-5px) scale(1.01); }
   100% { transform: translateX(0) scale(1); opacity: 1; }
 }
+
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}

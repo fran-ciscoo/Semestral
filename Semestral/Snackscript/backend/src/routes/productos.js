@@ -7,33 +7,6 @@ export default async function productosRoutes(fastify, opts) {
     request.log.info(`Operación en productos: ${request.method} ${request.url}`);
   });
 
-  function validarProducto(producto) {
-    const errores = [];
-
-    if (!producto.name || typeof producto.name !== 'string') {
-      errores.push('Nombre inválido');
-    }
-    if (!producto.price || typeof producto.price !== 'number' || producto.price <= 0) {
-      errores.push('Precio inválido');
-    }
-    if (!producto.category || typeof producto.category !== 'string') {
-      errores.push('Categoría inválida');
-    }
-    if (!producto.origin || typeof producto.origin !== 'string') {
-      errores.push('Origen inválido');
-    }
-    if (!producto.stock || typeof producto.stock !== 'number' || producto.stock < 0) {
-      errores.push('Stock inválido');
-    }
-    if (!producto.description || typeof producto.description !== 'string') {
-      errores.push('Descripción inválida');
-    }
-    if (!producto.story || typeof producto.story !== 'string') {
-      errores.push('Historia inválida');
-    }
-    return errores;
-  }
-
    // Crear nuevo producto
   fastify.post('/', async (request, reply) => {
     const parts = request.parts();
@@ -59,6 +32,14 @@ export default async function productosRoutes(fastify, opts) {
             part.file.pipe(stream);
           });
         }
+      }
+
+      const productoExistente = await Product.findOne({ name: formFields.productName });
+      if (productoExistente) {
+        return reply.code(400).send({
+          message: 'Ya existe un producto con ese nombre',
+          status: 'error',
+        });
       }
 
       const nuevoProducto = new Product({

@@ -18,7 +18,8 @@ const productSchema = new mongoose.Schema({
     },
     origin: {
         type: String,
-        required: true
+        required: true, 
+        enum: ['Panamá', 'México', 'Perú', 'Corea del sur', 'Japon', 'Estados unidos', 'España']
     },
     stock: {
         type: Number,

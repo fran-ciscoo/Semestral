@@ -12,17 +12,51 @@
     <div id="loader">Verificando permisos...</div>
     <div id="contenido" style="display: none;">
         <div id="navbar"></div>
-        <main id="lista-pedidos">
+        <main id="lista-usuarios">
             <h3>Lista de usuarios registrados</h3>
             <p>Gestión de los usuarios en la plataforma</p>
-            <div id="Usuarios">
-                <div class="Usuario">
-                    <h4 id="Nombre"></h4>
-                    <p id="rol"></p>
-                    <p id="correo"></p>
-                    <p id="pedidos realizados"></p>
-                </div>
+            <div class="filter-buttons">
+                <button id="btnFilterAll">Todos</button>
+                <button id="btnFilterAdmin">Administradores</button>
+                <button id="btnFilterUser">Usuarios</button>
+                <button id="btnFilterSubscriber">Suscriptores</button>
             </div>
+
+            <div class="usuarios-container">
+            <table class="table-usuarios">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Fecha de registro</th>
+                    </tr>
+                </thead>
+                <tbody id="Usuarios"></tbody>
+            </table>
+        </div>
+        </main>
+
+        <dialog id="actions-User" class="dialog">
+            <h2>Acciones a este usuario</h2>
+            <button id="btnEditUser">Editar</button>
+            <button id="btnDeleteUser">Eliminar</button>
+            <button id="btnCancelActions">Cancelar</button>
+        </dialog>
+
+        <dialog id="editUserDialog" class="dialog">
+            <h2>Editar rol del usuario</h2>
+            <form id="editUserForm">
+                <label for="editUserRole">Rol:</label>
+                <select id="editUserRole">
+                    <option value="admin">admin</option>
+                    <option value="user">user</option>
+                    <option value="subscriber">subscriber</option>
+                </select>
+                <button type="submit">Guardar Cambios</button>
+                <button type="button" id="cancelEditUser">Cancelar</button>
+            </form>
+        </dialog>
         <div id="footer"></div>
     </div>
 </body>

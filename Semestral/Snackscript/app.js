@@ -1,5 +1,4 @@
 import Fastify from 'fastify';
-import jwt from 'jsonwebtoken'
 import fastifyStatic from '@fastify/static';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -10,7 +9,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 const PORT = 3000;
 const MONGO_URI = 'mongodb://root:example@localhost:27017/';
-const secretKey = 'clave_secreta_segura_y_larga';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);

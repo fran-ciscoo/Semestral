@@ -24,7 +24,6 @@ export function navbarN(){
                         </div>
                         <nav class="navbar" role="navigation">
                             <a href="/view/index.html">Inicio</a>
-                            <a href="/view/snackPedia.html">Snack Pedia</a>
                             <a href="/view/pedidos.html">Pedidos</a>
                             <a href="/view/carrito.html">Carrito</a>
                             <a href="/view/perfil.html">Perfil</a>
@@ -41,7 +40,6 @@ export function navbarA(){
                         </div>
                         <nav class="navbar" role="navigation">
                             <a href="/view/indexAdmin.html">Inicio</a>
-                            <a href="/view/snackPedia.html">Snack Pedia</a>
                             <a href="/view/adminUsers.html">Usuarios</a>
                             <a href="/view/adminPedidos.html">Pedidos</a>
                             <a href="/view/adminPerfil.html">Perfil</a>

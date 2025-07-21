@@ -26,7 +26,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                                         <p class="product-description">${product.description}</p>
                                         <p class="product-price">$${product.price}</p>
                                         <div class="product-actions">
-                                            <button class="edit-btn" data-id="${product._id}">Editar</button>
+                                            <button class="add-to-cart-btn" data-id="${product._id}">Agregar al carrito</button>
+                                            <button class="wishlist-btn" data-id="${product._id}">❤</button>
                                         </div>
                                     </div>
                                 </div>`;

@@ -7,6 +7,7 @@ import {navbarA, footer} from "../component/navbar.js"
             footer: document.querySelector('#footer'),
             botonAñadir: document.querySelector('#addProductBtn'),
             containerProduct: document.querySelector('#snackList'),
+
             editProduct: document.querySelector('#editProductDialog'),
             formE: document.querySelector('#editProductForm'),
             editInputName: document.querySelector('#editProductName'),
@@ -17,6 +18,7 @@ import {navbarA, footer} from "../component/navbar.js"
             editInputDescription: document.querySelector('#editProductDescription'),
             editInputStory: document.querySelector('#editProductStory'),
             botonEditCancel: document.querySelector('#cancelEditProduct'),
+
             addProduct: document.querySelector('#addProductDialog'),
             form: document.querySelector('#addProductForm'),
             inputName: document.querySelector('#productName'),
@@ -27,6 +29,7 @@ import {navbarA, footer} from "../component/navbar.js"
             inputDescription: document.querySelector('#productDescription'),
             inputStory: document.querySelector('#productStory'),
             botonCancelar: document.querySelector('#cancelAddProduct'),
+            
             dropZone: document.querySelector('#dropZone'),
             nameError: document.querySelector("#nameError"),
             originError: document.querySelector("#originError"),
@@ -287,7 +290,6 @@ import {navbarA, footer} from "../component/navbar.js"
                 }
             },
 
-
             addNavbar(){
                 const container = htmlElements.navbar;
                 const generar = navbarA();
@@ -372,7 +374,6 @@ import {navbarA, footer} from "../component/navbar.js"
                     htmlElements.formE.reset();
                 });
 
-                // Event listener for overlay
                 const overlay = document.getElementById('addProductOverlay');
                 if (overlay) {
                     overlay.addEventListener('click', (e) => {

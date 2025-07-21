@@ -31,6 +31,7 @@ export default async function productosRoutes(fastify, opts) {
             );
             part.file.pipe(stream);
           });
+          console.log('Imagen subida a Cloudinary:', imageUrl);
         }
       }
 

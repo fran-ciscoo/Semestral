@@ -39,6 +39,20 @@ fastify.get('/', async (request, reply) => {
     }
 });
 
+fastify.get('/:id', async (request, reply) => {
+    const { id } = request.params;
+    try {
+        const user = await User.findById(id, '-password');
+        if (!user) {
+            return reply.status(404).send({ error: 'Usuario no encontrado.' });
+        }
+        return reply.status(200).send(user);
+    } catch (error) {
+        console.error('Error al obtener usuario:', error);
+        return reply.status(500).send({ error: 'Error interno del servidor.' });
+    }
+});
+
 fastify.get('/role', async (request, reply) => {
     const { role } = request.query;
 
@@ -59,6 +73,8 @@ fastify.put('/:id', async (request, reply) => {
     const { id } = request.params;
     const { role } = request.body;
 
+    console.log('Datos recibidos para actualizar:', request.body);
+
     if (!role) {
         return reply.status(400).send({ error: 'El campo "role" es requerido.' });
     }
@@ -72,6 +88,22 @@ fastify.put('/:id', async (request, reply) => {
     } catch (error) {
         console.error('Error al actualizar rol de usuario:', error);
         return reply.status(500).send({ error: 'Error interno del servidor.' });}
+});
+
+fastify.patch('/:id', async (request, reply) => {
+    const { id } = request.params;
+    const { name, email, shippingAddress, phone } = request.body;
+
+    try {
+        const user = await User.findByIdAndUpdate(id, { name, email, shippingAddress, phone }, { new: true, runValidators: true });
+        if (!user) {
+            return reply.status(404).send({ error: 'Usuario no encontrado.' });
+        }
+        return reply.status(200).send({ message: 'Perfil actualizado exitosamente.', user });
+    } catch (error) {
+        console.error('Error al actualizar perfil de usuario:', error);
+        return reply.status(500).send({ error: 'Error interno del servidor.' });
+    }
 });
 
 fastify.delete('/:id', async (request, reply) => {

@@ -23,10 +23,13 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     shippingAddress: {
-        country: String,
+        country: {
+            type: String,
+            default: 'Panamá',
+            immutable: true
+        },
         city: String,
         address: String,
-        postalCode: String
     },
     phone: {
         type: String

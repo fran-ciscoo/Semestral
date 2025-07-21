@@ -9,9 +9,104 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             nombre: document.querySelector('#nombre'),
             email: document.querySelector('#email'),
             buttons: document.querySelector("#buttons"),
+            btnEditar: document.querySelector('#btnEditar'),
+
+            dialogEditar: document.querySelector('#dialogEditarPerfil'),
+            formEditar: document.querySelector('#formEditarPerfil'),
+            inputName: document.querySelector('#inputName'),
+            inputUsername: document.querySelector('#inputUsername'),
+            inputEmail: document.querySelector('#inputEmail'),
+            inputCity: document.querySelector('#inputCity'),
+            inputAddress: document.querySelector('#inputAddress'),
+            inputPhone: document.querySelector('#inputPhone'),
+            btnCancelar: document.querySelector('#cancelar'),
+
         }
 
         const methods = {
+            saveChanges(userUpdate) {
+                fetch(`http://localhost:3000/api/users/${userUpdate._id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userUpdate),
+                    credentials: 'include',
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Error al actualizar el perfil');
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Perfil actualizado exitosamente');
+                    methods.hideModal(htmlElements.dialogEditar);
+                    methods.viewDetails();
+                    window.location.href = '../view/perfil.html';
+                })
+                .catch(error => {
+                    console.error('Error al actualizar el perfil:', error);
+                    alert('Error al actualizar el perfil');
+                });
+
+            },
+
+            async viewDetails() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/login/me', {
+                    credentials: 'include',
+                    });
+
+                    if (response.status === 401) {
+                        alert('Debes iniciar sesión para ver tus datos.');
+                        return;
+                    }
+
+                    if (!response.ok) throw new Error('Token inválido o sesión expirada');
+
+                    const data = await response.json();
+                    console.log('Datos del usuario:', data);
+                    const user = data.user;
+
+                    if (!user) {
+                        console.warn('Datos del usuario no disponibles');
+                        return;
+                    }
+
+                    htmlElements.inputName.value = user.name || '';
+                    htmlElements.inputUsername.value = user.username || '';
+                    htmlElements.inputUsername.disabled = true;
+                    htmlElements.inputEmail.value = user.email || 'No llega correo';
+                    console.log('Email del usuario:', user.email);
+                    htmlElements.inputCity.value = user.shippingAddress?.city || '';
+                    htmlElements.inputAddress.value = user.shippingAddress || '';
+                    htmlElements.inputPhone.value = user.phone || '';
+
+                    htmlElements.formEditar.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+
+                        const userUpdate = {
+                            _id: user._id,
+                            name: htmlElements.inputName.value.trim(),
+                            email: htmlElements.inputEmail.value.trim(),
+                            shippingAddress: {
+                                country: 'Panamá',
+                                city: htmlElements.inputCity.value.trim(),
+                                address: htmlElements.inputAddress.value.trim(),
+                            },
+                            phone: htmlElements.inputPhone.value.trim(),
+                        }
+
+                        console.log('Datos del usuario a actualizar:', userUpdate);
+                        methods.saveChanges(userUpdate);
+                        methods.hideModal(htmlElements.dialogEditar);
+                    });
+
+
+                } catch (error) {
+                    console.error('Error al obtener datos del usuario:', error);
+                }
+            },
+            
             async logout() {
                 try {
                     await fetch('http://localhost:3000/api/login/logout', {
@@ -94,6 +189,14 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 methods.printHtml(container, generar);
             },
 
+            showModal(modal) {
+                modal.showModal();
+            },
+
+            hideModal(modal){
+                modal.close();
+            },
+
             addFooter(){
                 const container = htmlElements.footer;
                 const generar = footer();
@@ -126,10 +229,23 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             }
         return{
             init(){
+                const {btnCancelar, btnEditar} = htmlElements;
                 methods.addNavbar();
                 methods.addFooter();
                 methods.addInfo();
                 methods.addBottom();
+
+                btnEditar.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.showModal(htmlElements.dialogEditar);
+                    methods.viewDetails();
+                });
+
+                btnCancelar.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.hideModal(htmlElements.dialogEditar);
+                });
+
             }
         }
     })();

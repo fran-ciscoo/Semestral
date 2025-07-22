@@ -47,8 +47,9 @@ import {navbarA, footer} from "../component/navbar.js"
                     const name = formData.get('productName')?.trim();
                     const origin = formData.get('productOrigin')?.trim();
                     const image = formData.get('productImage');
-
-                    const valid = methods.validateProduct(name, origin, image);
+                    console.log(image);
+                    const edit = true;
+                    const valid = methods.validateProduct(name, origin, image, edit);
                     if (!valid) return;
 
                     const response = await fetch(`http://localhost:3000/api/productos/${id}`, {
@@ -157,8 +158,8 @@ import {navbarA, footer} from "../component/navbar.js"
                     const name = formData.get('productName')?.trim();
                     const origin = formData.get('productOrigin')?.trim();
                     const image = formData.get('productImage');
-
-                    const valid = methods.validateProduct(name, origin, image);
+                    const edit = false;
+                    const valid = methods.validateProduct(name, origin, image, edit);
                     if (!valid) return;
                     const response = await fetch('http://localhost:3000/api/productos', {
                         method: 'POST',
@@ -182,7 +183,7 @@ import {navbarA, footer} from "../component/navbar.js"
                 }
             },
 
-            validateProduct(name, origin, image) {
+            validateProduct(name, origin, image, edit) {
                 htmlElements.nameError.innerHTML = "";
                 htmlElements.imageError.innerHTML = "";
                 htmlElements.originError.innerHTML = "";
@@ -197,8 +198,9 @@ import {navbarA, footer} from "../component/navbar.js"
                     htmlElements.originError.innerHTML = "El origen solo debe contener letras";
                     return false;
                 }
-                if (!image || image.size === 0 || !image.name || image.type === "application/octet-stream") {
+                if ((edit === false && image.size===0)) {
                     htmlElements.imageError.innerHTML = "Debe seleccionar una imagen válida.";
+                    console.log("Entrooooooooooo");
                     return false;
                 }
                 return true;

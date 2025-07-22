@@ -111,7 +111,7 @@ export default async function productosRoutes(fastify, opts) {
           formFields[part.fieldname] = part.value;
         }
 
-        if (part.type === 'file' && part.fieldname === 'productImage' && part.file) {
+        if (part.type === 'file' && part.fieldname === 'productImage' && part.file && part.filename && part.mimetype !== 'application/octet-stream') {
           imageUrl = await new Promise((resolve, reject) => {
             const stream = cloudinary.uploader.upload_stream(
               { folder: 'ecommerce-snacks' },

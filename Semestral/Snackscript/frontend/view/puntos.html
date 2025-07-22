@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/puntos.css">
+    <link rel="stylesheet" href="../style/estadoPuntos.css">
     <script type="module" src="../script/puntos.js" defer></script>
     <link rel="stylesheet" href="../style/navbar.css">
+    <link rel="stylesheet" href="../style/puntos.css">
     <title>Snack script - Puntos</title>
 </head>
 <body>
@@ -20,53 +21,43 @@
         </a>
     </div>
 
-     <div id="total-puntos">
-        <h3>10 puntos acumulados</h3>
-        <p>Ultima compra 07/06/2025</p>
+    <div class="puntos-main">
+        <section class="puntos-header">
+            <h1>¡Tus puntos!</h1>
+            <div class="puntos-cantidad">10</div>
+            <p>Última compra: 07/06/2025</p>
+        </section>
+
+        <section class="puntos-logro">
+            ¡Felicidades! Has alcanzado un nuevo logro de puntos 🎉
+        </section>
+
+        <section class="puntos-canje">
+            <h2>Canjea tus puntos</h2>
+            <p style="text-align:center;">Selecciona un producto o cupón para canjear tus puntos</p>
+            <div class="puntos-canje-lista">
+                <div class="puntos-canje-card">
+                    <div class="canje-nombre">10% de descuento</div>
+                    <div class="canje-puntos">120 puntos</div>
+                </div>
+                <div class="puntos-canje-card">
+                    <div class="canje-nombre">20% de descuento</div>
+                    <div class="canje-puntos">250 puntos</div>
+                </div>
+                <div class="puntos-canje-card">
+                    <img src="../img/pockyChocolate.webp" alt="Pocky Chocolate">
+                    <div class="canje-nombre">Pocky de chocolate</div>
+                    <div class="canje-puntos">110 puntos</div>
+                </div>
+                <div class="puntos-canje-card">
+                    <img src="../img/LucasmuecasAzul.jpg" alt="Lucas Muecas Azul">
+                    <div class="canje-nombre">Lucas Muecas Azul</div>
+                    <div class="canje-puntos">80 puntos</div>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <main id="lista-puntos">
-        <h3>Canjea tus puntos</h3>
-        <p>Selecciona un producto para canjear tus puntos</p>
-
-        <div id="cupones">
-            <h3>Cupones disponibles</h3>
-            <div class="cupon">
-                <p>10% de descuento en la siguiente compra</p>
-                <p>120 puntos</p>
-            </div>
-            <div class="cupon">
-                <p>20% de descuento en la siguiente compra</p>
-                <p>250 puntos</p>
-            </div>
-        </div>
-
-        <div id="productos">
-            <h3>Productos disponibles</h3>
-            <div class="producto">
-                <img src="../img/pockyChocolate.webp" alt="Pocky Chocolate">
-                <p>Pocky de chocolate</p>
-                <p>110 puntos</p>
-            </div>
-            <div class="producto">
-                <img src="../img/LucasmuecasAzul.jpg" alt="Lucas Muecas Azul">
-                <p>Lucas Muecas Azul</p>
-                <p>80 puntos</p>
-            </div>
-        </div>
-    </main>
-
-    <div class="proximoCanje">
-        <h3>Proximo canje</h3>
-        <p>Producto: Pocky de chocolate</p>
-        <p>Puntos necesarios: 80</p>
-    </div>
-
-    <div class="proximoCanje">
-        <h3>Proximo canje</h3>
-        <p>Cupon: Cupon del 10%</p>
-        <p>Puntos necesarios: 120</p>
-    </div>
     <div id="footer"></div>
 </body>
 </html>

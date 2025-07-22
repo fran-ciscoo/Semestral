@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/puntos.css">
+    <link rel="stylesheet" href="../style/historialPuntos.css">
     <script type="module" src="../script/puntos.js" defer></script>
     <link rel="stylesheet" href="../style/navbar.css">
+    <link rel="stylesheet" href="../style/puntos.css">
     <title>Snack script - Historial puntos</title>
 </head>
 <body>
@@ -19,14 +20,20 @@
             <button id="btnHistorial">Historial de puntos</button>
         </a>
     </div>
-    
-     <div id="total-puntos">
-        <h3>10 puntos acumulados</h3>
-        <p>Ultima compra 07/06/2025</p>
-    </div>
-    
-    <main id="historial-puntos">
+
+    <section class="puntos-actuales">
+        <h2>¡Tus puntos!</h2>
+        <div class="puntos-cantidad">10</div>
+        <p>Última compra: 07/06/2025</p>
+    </section>
+
+    <main class="historial-puntos-section">
         <h3>Historial de puntos</h3>
+        <div style="margin-bottom: 18px; text-align:center;">
+            <span class="badge-estado badge-ganado">Ganado</span>
+            <span class="badge-estado badge-canjeado">Canjeado</span>
+            <span class="badge-estado badge-pendiente">Pendiente</span>
+        </div>
         <div class="historial-container">
             <table class="historial-table">
                 <thead>
@@ -40,34 +47,29 @@
                     <tr>
                         <td>10/06/2025</td>
                         <td>Cupón del 5%</td>
-                        <td class="puntos-negativos">- 15</td>
+                        <td><span class="badge-estado badge-canjeado">-15</span></td>
                     </tr>
                     <tr>
                         <td>07/06/2025</td>
                         <td>Buldak carbonara</td>
-                        <td class="puntos-positivos">+ 10</td>
+                        <td><span class="badge-estado badge-ganado">+10</span></td>
                     </tr>
                     <tr>
                         <td>05/06/2025</td>
                         <td>Sour patch</td>
-                        <td class="puntos-positivos">+ 20</td>
+                        <td><span class="badge-estado badge-ganado">+20</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </main>
 
-    <div class="proximoCanje">
-        <h3>Próximo canje</h3>
-        <p>Producto: Pocky de chocolate</p>
-        <p>Puntos necesarios: 80</p>
-    </div>
+    <section class="logro-puntos-card">
+        <h4>Próximos canjes</h4>
+        <p>Producto: Pocky de chocolate <span class="badge-estado badge-pendiente">80 puntos</span></p>
+        <p>Cupón: Cupón del 10% <span class="badge-estado badge-pendiente">120 puntos</span></p>
+    </section>
 
-    <div class="proximoCanje">
-        <h3>Próximo canje</h3>
-        <p>Cupón: Cupón del 10%</p>
-        <p>Puntos necesarios: 120</p>
-    </div>
     <div id="footer"></div>
 </body>
 </html>

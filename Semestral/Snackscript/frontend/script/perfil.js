@@ -75,10 +75,10 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     htmlElements.inputName.value = user.name || '';
                     htmlElements.inputUsername.value = user.username || '';
                     htmlElements.inputUsername.disabled = true;
-                    htmlElements.inputEmail.value = user.email || 'No llega correo';
+                    htmlElements.inputEmail.value = user.email || '';
                     console.log('Email del usuario:', user.email);
                     htmlElements.inputCity.value = user.shippingAddress?.city || '';
-                    htmlElements.inputAddress.value = user.shippingAddress || '';
+                    htmlElements.inputAddress.value = user.shippingAddress?.address || '';
                     htmlElements.inputPhone.value = user.phone || '';
 
                     htmlElements.formEditar.addEventListener('submit', async (e) => {

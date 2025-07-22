@@ -7,9 +7,49 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             footer: document.querySelector('#footer'),
 
             containerProduct: document.querySelector('#snackList'),
+
+            btnTodo: document.querySelector('#btnTodo'),
+            btnDulce: document.querySelector('#btnDulce'),
+            btnSalado: document.querySelector('#btnSalado'),
+            btnAcido: document.querySelector('#btnAcido'),
+            btnPicante: document.querySelector('#btnPicante'),
+            btnBebida: document.querySelector('#btnBebida'),
         }
 
         const methods = {
+            viewOnlyCategory(category){
+                fetch(`http://localhost:3000/api/productos/category?category=${category}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        const container = htmlElements.containerProduct;
+                        container.innerHTML = '';
+
+                        if (!Array.isArray(data.productos)) {
+                            console.error('La propiedad "productos" no está definida o no es un array:', data);
+                            return;
+                        }
+
+                        data.productos.forEach(product => {
+                            const productCard = `
+                                <div class="product-card">
+                                    <div class="product-info">
+                                        <img src="${product.image}" alt="${product.name} imagen" class="product-image">
+                                        <h2 class="product-title">${product.name}</h2>
+                                        <p class="product-description">${product.description}</p>
+                                        <p class="product-price">$${product.price}</p>
+                                        <div class="product-actions">
+                                            <button class="add-to-cart-btn" data-id="${product._id}">Agregar al carrito</button>
+                                            <button class="wishlist-btn" data-id="${product._id}">❤</button>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            container.innerHTML += productCard;
+                        });
+                    }).catch(error => console.error('Error al obtener productos:', error));
+
+            },
+
             viewProducts() {
                 fetch('http://localhost:3000/api/productos')
                     .then(response => response.json())
@@ -86,9 +126,41 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
         return{
             init(){
+                const {btnTodo, btnDulce, btnAcido, btnSalado, btnPicante, btnBebida} = htmlElements
                 methods.addNavbar();
                 methods.addFooter();
                 methods.viewProducts();
+
+                btnTodo.addEventListener('click', (e) =>{
+                    e.preventDefault();
+                    methods.viewProducts();
+                });
+
+                btnDulce.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.viewOnlyCategory('Dulces');
+                });
+
+                btnSalado.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.viewOnlyCategory('Salados');
+                });
+
+                btnAcido.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.viewOnlyCategory('Acidos');
+                });
+
+                btnPicante.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.viewOnlyCategory('Picantes');
+                });
+
+                btnBebida.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.viewOnlyCategory('Bebidas');
+                });
+
             }
         }
     })();

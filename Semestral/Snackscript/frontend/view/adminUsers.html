@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/pedidos.css">
+    <link rel="stylesheet" href="../style/adminUsers.css">
+    <link rel="stylesheet" href="../style/perfil.css">
     <script type="module" src="../script/adminUsers.js" defer></script>
     <link rel="stylesheet" href="../style/navbar.css">
     <title>Snack script - Usuarios Admin</title>
@@ -13,8 +14,10 @@
     <div id="contenido" style="display: none;">
         <div id="navbar"></div>
         <main id="lista-usuarios">
-            <h3>Lista de usuarios registrados</h3>
-            <p>Gestión de los usuarios en la plataforma</p>
+            <div class="usuarios-header-card">
+              <h2>Lista de usuarios registrados</h2>
+              <p>Gestión de los usuarios en la plataforma</p>
+            </div>
             <div class="filter-buttons">
                 <button id="btnFilterAll">Todos</button>
                 <button id="btnFilterAdmin">Administradores</button>

@@ -100,31 +100,66 @@ export default async function productosRoutes(fastify, opts) {
   });
 
   fastify.put('/:id', async (request, reply) => {
+    const parts = request.parts();
+    const formFields = {};
+    let imageUrl = null;
     const { id } = request.params;
-    const { name, price, category, origin, stock, description, story } = request.body;
 
-    const productoActualizado = await Product.findByIdAndUpdate(id, {
-      name,
-      price: parseFloat(price),
-      category,
-      origin,
-      stock: parseInt(stock, 10),
-      description,
-      story
-    }, { new: true });
+    try {
+      for await (const part of parts) {
+        if (part.type === 'field') {
+          formFields[part.fieldname] = part.value;
+        }
 
-    if (!productoActualizado) {
-      return reply.code(404).send({
-        error: 'Producto no encontrado',
-        status: 'error'
+        if (part.type === 'file' && part.fieldname === 'productImage' && part.file && part.filename && part.mimetype !== 'application/octet-stream') {
+          imageUrl = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+              { folder: 'ecommerce-snacks' },
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result.secure_url);
+              }
+            );
+            part.file.pipe(stream);
+          });
+          console.log('Imagen actualizada en Cloudinary:', imageUrl);
+        }
+      }
+
+      const producto = await Product.findById(id);
+      if (!producto) {
+        return reply.code(404).send({
+          status: 'error',
+          message: 'Producto no encontrado',
+        });
+      }
+      producto.name = formFields.productName;
+      producto.price = formFields.productPrice;
+      producto.category = formFields.productCategory;
+      producto.origin = formFields.productOrigin;
+      producto.stock = formFields.productStock;
+      producto.description = formFields.productDescription;
+      producto.story = formFields.productStory;
+      if (imageUrl) {
+        producto.image = imageUrl;
+      }
+
+      await producto.save();
+
+      return reply.code(200).send({
+        status: 'success',
+        message: 'Producto actualizado correctamente',
+        producto,
+      });
+
+    } catch (err) {
+      console.error('Error al actualizar el producto:', err);
+      return reply.code(500).send({
+        status: 'error',
+        message: 'Error interno del servidor',
+        detalle: err.message,
       });
     }
-
-    return {
-      producto: productoActualizado,
-      mensaje: 'Producto actualizado correctamente',
-      status: 'success'
-    };
   });
 
   fastify.get('/category',  async (request, reply) => { 

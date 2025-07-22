@@ -31,60 +31,60 @@ import {navbarA, footer} from "../component/navbar.js"
             inputStory: document.querySelector('#productStory'),
             botonCancelar: document.querySelector('#cancelAddProduct'),
             
-            dropZone: document.querySelector('#dropZone'),
+            dropZone: document.querySelectorAll('.drop-zone'),
             nameError: document.querySelector("#nameError"),
             originError: document.querySelector("#originError"),
             imageError: document.querySelector("#imageError")
         }
 
         const methods = {
-            editProduct() {
-                const id = htmlElements.formE.getAttribute('data-id');
-                
-                const name = htmlElements.editInputName.value.trim();
-                const price = parseFloat(htmlElements.editInputPrice.value);
-                const category = htmlElements.editInputCategory.value.trim();
-                const origin = htmlElements.editInputOrigin.value.trim();
-                const stock = parseInt(htmlElements.editInputStock.value, 10);
-                const description = htmlElements.editInputDescription.value.trim();
-                const story = htmlElements.editInputStory.value.trim();
+            async editProduct() {
+                try {
+                    const form = htmlElements.formE;
+                    const id = form.getAttribute('data-id');
+                    const formData = new FormData(form);
 
-                const valid = methods.validateProduct(name, price, category, origin, stock, description, story);
-                
-                if (!valid) return;
+                    const name = formData.get('productName')?.trim();
+                    const origin = formData.get('productOrigin')?.trim();
+                    const image = formData.get('productImage');
+                    console.log(image);
+                    const edit = true;
+                    const valid = methods.validateProduct(name, origin, image, edit);
+                    if (!valid) return;
 
-                const product = {
-                    name,
-                    price,
-                    category,
-                    origin,
-                    stock,
-                    description,
-                    story
-                };
+                    const response = await fetch(`http://localhost:3000/api/productos/${id}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
 
-                fetch(`http://localhost:3000/api/productos/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(product)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Producto actualizado:', data);
-                    htmlElements.formE.reset();
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        console.error('Error del servidor:');
+                        if (data.status === 'error') {
+                            console.error(data.message);
+                        }
+                        return;
+                    }
+
+                    console.log('Producto actualizado:', data.message);
+                    form.reset();
                     methods.hideModal(htmlElements.editProduct);
                     window.location.href = '../view/indexAdmin.html';
-                })
 
+                } catch (error) {
+                    console.error('Error al editar el producto:', error);
+                    alert('Ocurrió un error al actualizar el producto. Intenta de nuevo.');
+                }
             },
 
-            viewDetails(productId) {
-                fetch(`http://localhost:3000/api/productos/${productId}`)
-                .then(response => response.json())
-                .then(data => {
+            async viewDetails(productId) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/productos/${productId}`);
+                    const data = await response.json();
                     const product = data.producto;
+                    htmlElements.formE.setAttribute('data-id', product._id);
+
                     if (product) {
                         htmlElements.editInputName.value = product.name;
                         htmlElements.editInputPrice.value = product.price;
@@ -93,14 +93,26 @@ import {navbarA, footer} from "../component/navbar.js"
                         htmlElements.editInputStock.value = product.stock;
                         htmlElements.editInputDescription.value = product.description;
                         htmlElements.editInputStory.value = product.story;
-
                         htmlElements.formE.setAttribute('data-id', product._id);
-
+                        methods.loadImagePreview(product.image);
                         methods.showModal(htmlElements.editProduct);
                     } else {
                         console.error('Producto no encontrado');
                     }
-                }).catch(error => console.error('Error al obtener producto:', error));
+                } catch (error) {
+                    console.error('Error al obtener producto:', error);
+                }
+            },
+            loadImagePreview(urlImagen) {
+                const dropZone = htmlElements.editProduct.querySelector('.drop-zone');
+                let preview = dropZone.querySelector('.drop-zone__thumb');
+                if (!preview) {
+                    preview = document.createElement('div');
+                    preview.classList.add('drop-zone__thumb');
+                    dropZone.appendChild(preview);
+                }
+                preview.style.backgroundImage = `url('${urlImagen}')`;
+                dropZone.classList.add('has-thumb');
             },
 
             viewProducts() {
@@ -146,8 +158,8 @@ import {navbarA, footer} from "../component/navbar.js"
                     const name = formData.get('productName')?.trim();
                     const origin = formData.get('productOrigin')?.trim();
                     const image = formData.get('productImage');
-
-                    const valid = methods.validateProduct(name, origin, image);
+                    const edit = false;
+                    const valid = methods.validateProduct(name, origin, image, edit);
                     if (!valid) return;
                     const response = await fetch('http://localhost:3000/api/productos', {
                         method: 'POST',
@@ -171,7 +183,7 @@ import {navbarA, footer} from "../component/navbar.js"
                 }
             },
 
-            validateProduct(name, origin, image) {
+            validateProduct(name, origin, image, edit) {
                 htmlElements.nameError.innerHTML = "";
                 htmlElements.imageError.innerHTML = "";
                 htmlElements.originError.innerHTML = "";
@@ -186,8 +198,9 @@ import {navbarA, footer} from "../component/navbar.js"
                     htmlElements.originError.innerHTML = "El origen solo debe contener letras";
                     return false;
                 }
-                if (!image || image.size === 0 || !image.name || image.type === "application/octet-stream") {
+                if ((edit === false && image.size===0)) {
                     htmlElements.imageError.innerHTML = "Debe seleccionar una imagen válida.";
+                    console.log("Entrooooooooooo");
                     return false;
                 }
                 return true;
@@ -240,10 +253,9 @@ import {navbarA, footer} from "../component/navbar.js"
             },
 
             dropZoneF(){
-                const dropZone = htmlElements.dropZone;
-                if (dropZone) {
+                const dropZones = htmlElements.dropZone;
+                dropZones.forEach(dropZone => {
                     const input = dropZone.querySelector('.drop-zone__input');
-                    let preview = dropZone.querySelector('.drop-zone__thumb');
 
                     dropZone.addEventListener('click', () => input.click());
 
@@ -262,33 +274,34 @@ import {navbarA, footer} from "../component/navbar.js"
 
                         if (e.dataTransfer.files.length) {
                             input.files = e.dataTransfer.files;
-                            updateThumbnail(input.files[0]);
+                            updateThumbnail(input.files[0], dropZone);
                         }
                     });
 
                     input.addEventListener('change', () => {
                         if (input.files.length) {
-                            updateThumbnail(input.files[0]);
+                            updateThumbnail(input.files[0], dropZone);
                         }
                     });
 
-                    function updateThumbnail(file) {
+                    function updateThumbnail(file, zone) {
                         if (!file.type.startsWith('image/')) return;
 
                         const reader = new FileReader();
                         reader.readAsDataURL(file);
 
                         reader.onload = () => {
+                            let preview = zone.querySelector('.drop-zone__thumb');
                             if (!preview) {
                                 preview = document.createElement('div');
                                 preview.classList.add('drop-zone__thumb');
-                                dropZone.appendChild(preview);
+                                zone.appendChild(preview);
                             }
                             preview.style.backgroundImage = `url('${reader.result}')`;
-                            dropZone.classList.add('has-thumb');
+                            zone.classList.add('has-thumb');
                         };
                     }
-                }
+                });
             },
 
             addNavbar(){
@@ -305,22 +318,31 @@ import {navbarA, footer} from "../component/navbar.js"
             },
 
             showModal(modal) {
-                htmlElements.form.reset();
                 htmlElements.nameError.innerHTML = "";
                 htmlElements.imageError.innerHTML = "";
                 htmlElements.originError.innerHTML = "";
-                const dropZone = htmlElements.dropZone;
+                const dropZone = modal.querySelector('.drop-zone');
+                if (!dropZone) {
+                    console.error('No se encontró dropZone en el modal.');
+                    return;
+                }
                 const preview = dropZone.querySelector('.drop-zone__thumb');
-                console.log(preview);
-                if (preview) {
-                    preview.remove();
+                const inputFile = dropZone.querySelector('.drop-zone__input');
+
+                if (modal.id === 'addProductDialog') {
+                    if (preview) {
+                        preview.remove();
+                    }
+                    dropZone.classList.remove('has-thumb');
+                    if (inputFile) {
+                        inputFile.value = '';
+                    }
+                    if (htmlElements.form) {
+                        htmlElements.form.reset();
+                    }
+
                 }
-                dropZone.classList.remove('has-thumb');
-                if (modal && typeof modal.showModal === 'function') {
-                    modal.showModal();
-                } else {
-                    console.error("El modal no es un <dialog> o no existe.");
-                }
+                modal.showModal();
             },
 
             hideModal(modal){
@@ -354,6 +376,7 @@ import {navbarA, footer} from "../component/navbar.js"
                 form.addEventListener('submit', (e) => {
                     e.preventDefault();
                     methods.saveProduct();
+                    htmlElements.form.reset();
                 });
 
                 botonCancelar.addEventListener('click', (e) => {

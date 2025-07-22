@@ -161,4 +161,20 @@ export default async function productosRoutes(fastify, opts) {
       });
     }
   });
+
+  fastify.get('/category',  async (request, reply) => { 
+    const {category} = request.query;
+
+    if (!category) {
+        return reply.status(400).send({ error: 'El parámetro "category" es requerido.' });
+    }
+
+    try {
+        const productos = await Product.find({ category });
+        return reply.status(200).send({ productos });
+    } catch (error) {
+        console.error('Error al obtener usuarios por rol:', error);
+        return reply.status(500).send({ error: 'Error interno del servidor.' });
+    }
+  });
 }

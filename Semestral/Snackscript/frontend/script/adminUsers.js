@@ -18,7 +18,7 @@ import {navbarA, footer} from "../component/navbar.js"
             btnCancelActions: document.querySelector('#btnCancelActions'),
 
             dialogEditUser: document.querySelector('#editUserDialog'),
-            formEditUser: document.querySelector('#formEditUser'),
+            formEditUser: document.querySelector('#editUserForm'),
             inputRole: document.querySelector('#editUserRole'),
             btnCancelEdit: document.querySelector('#cancelEditUser'),
         }
@@ -43,6 +43,7 @@ import {navbarA, footer} from "../component/navbar.js"
 
             editRoleUser(id){
                 const role = htmlElements.inputRole.value;
+                console.log('Rol seleccionado:', role);
                 fetch(`http://localhost:3000/api/users/${id}`, {
                     method: 'PUT',
                     headers: {
@@ -88,14 +89,16 @@ import {navbarA, footer} from "../component/navbar.js"
                                 methods.deleteUser(user._id);
                                 methods.hideModal(htmlElements.dialogActions);
                                 window.location.reload();
-                            }
+                            };
 
                             htmlElements.btnEditUser.onclick = () => {
                                 methods.hideModal(htmlElements.dialogActions);
                                 methods.showModal(htmlElements.dialogEditUser);
-                                htmlElements.formEditUser.onsubmit = (e) => {
-                                    methods.editRoleUser(user._id);
-                                    e.preventDefault();}
+                            };
+
+                            htmlElements.formEditUser.onsubmit = (e) => {
+                                e.preventDefault();
+                                methods.editRoleUser(user._id);
                             };
                         });
 
@@ -131,14 +134,16 @@ import {navbarA, footer} from "../component/navbar.js"
                                 methods.deleteUser(user._id);
                                 methods.hideModal(htmlElements.dialogActions);
                                 window.location.reload();
-                            }
+                            };
 
                             htmlElements.btnEditUser.onclick = () => {
                                 methods.hideModal(htmlElements.dialogActions);
                                 methods.showModal(htmlElements.dialogEditUser);
-                                htmlElements.formEditUser.onsubmit = (e) => {
-                                    methods.editRoleUser(user._id);
-                                    e.preventDefault();}
+                            };
+
+                            htmlElements.formEditUser.onsubmit = (e) => {
+                                e.preventDefault();
+                                methods.editRoleUser(user._id);
                             };
                         });
 
@@ -199,7 +204,7 @@ import {navbarA, footer} from "../component/navbar.js"
 
         return{
             init(){
-                const {btnTodos, btnAdmins, btnSub, btnUsers, btnCancelEdit, btnCancelActions} = htmlElements;
+                const {btnTodos, btnAdmins, btnSub, btnUsers, btnCancelEdit, btnCancelActions, formEditUser} = htmlElements;
                 document.addEventListener('DOMContentLoaded', () => {
                     methods.verifyAdmin();
                 });

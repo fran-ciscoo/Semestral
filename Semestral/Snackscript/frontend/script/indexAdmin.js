@@ -26,6 +26,7 @@ import {navbarA, footer} from "../component/navbar.js"
             inputCategory: document.querySelector('#productCategory'),
             inputOrigin: document.querySelector('#productOrigin'),
             inputStock: document.querySelector('#productStock'),
+            inputImage: document.querySelector('#productImage'),
             inputDescription: document.querySelector('#productDescription'),
             inputStory: document.querySelector('#productStory'),
             botonCancelar: document.querySelector('#cancelAddProduct'),

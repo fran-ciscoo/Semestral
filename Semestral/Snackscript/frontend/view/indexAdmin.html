@@ -73,7 +73,16 @@
                         </div>
                         <div class="ultra-input-group">
                             <label for="productOrigin" class="ultra-label-top">Origen</label>
-                            <input type="text" id="productOrigin" name="productOrigin" required autocomplete="off" class="ultra-input">
+                            <select id="productOrigin" name="productOrigin" required class="ultra-input">
+                                <option value="" disabled selected hidden></option>
+                                <option value="Panamá">Panamá</option>
+                                <option value="México">México</option>
+                                <option value="Perú">Perú</option>
+                                <option value="Corea del sur">Corea del sur</option>
+                                <option value="Japon">Japon</option>
+                                <option value="Estados unidos">Estados unidos</option>
+                                <option value="España">España</option>
+                            </select>
                             <div class="error-message" id="originError"></div>
                         </div>
                         <div class="ultra-input-group">
@@ -134,7 +143,16 @@
                     </select>
 
                     <label for="productOrigin">Origen</label>
-                    <input type="text" id="editProductOrigin" name="productOrigin" required>
+                    <select id="editProductOrigin" name="editProductOrigin" required class="ultra-input">
+                                <option value="" disabled selected hidden></option>
+                                <option value="Panamá">Panamá</option>
+                                <option value="México">México</option>
+                                <option value="Perú">Perú</option>
+                                <option value="Corea del sur">Corea del sur</option>
+                                <option value="Japon">Japon</option>
+                                <option value="Estados unidos">Estados unidos</option>
+                                <option value="España">España</option>
+                            </select>
 
                     <label for="productStock">Stock</label>
                     <input type="number" id="editProductStock" name="productStock" required>

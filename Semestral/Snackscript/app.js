@@ -51,6 +51,13 @@ async function routesLogin() {
 }
 routesLogin();
 
+async function routesCart() {
+  await fastify.register(import('./backend/src/routes/cart.js'), {
+    prefix: '/api/cart'
+  })
+}
+routesCart();
+
 const start = async () => {
     try {
         await connect(MONGO_URI);

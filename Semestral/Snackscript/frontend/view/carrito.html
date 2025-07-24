@@ -12,20 +12,18 @@
 </head>
 
 <body>
-    <div id="navbar">
-        
-    </div>
-
+    <div id="navbar"></div>
+    <div id="messageCart" class="alert-message"></div>
     <main id="carrito">
         <!-- Sección de productos del carrito -->
         <div id="snackList">
             <div class="cart-header">
                 <h2>Carrito de compras</h2>
-                <span class="cart-item-count">2 artículos</span>
+                <span class="cart-item-count" id="cart-item-count"></span>
             </div>
             
-            <ul class="cart-items">
-                <li class="cart-item">
+            <ul class="cart-items" id="cartList">
+                <!-- <li class="cart-item">
                     <img src="../img/buldakCarbonara.png" alt="Buldak Carbonara">
                     <div class="product-info">
                         <h3 class="product-title">Buldak Carbonara</h3>
@@ -57,7 +55,7 @@
                     <div class="product-actions">
                         <button class="remove-btn">Eliminar</button>
                     </div>
-                </li>
+                </li> -->
             </ul>
         </div>
 
@@ -65,8 +63,8 @@
         <div class="cart-summary">
             <h3 class="summary-header">Resumen del pedido</h3>
             
-            <div class="price-breakdown">
-                <div class="price-row">
+            <div class="price-breakdown" id="price-breakdown">
+                <!-- <div class="price-row" id="priceItems">
                     <span>Subtotal (2 artículos)</span>
                     <span>$6.38</span>
                 </div>
@@ -74,10 +72,10 @@
                     <span>Envío</span>
                     <span>Gratis</span>
                 </div>
-                <div class="price-row total">
+                <div class="price-row total" id="priceTotal">
                     <span>Total</span>
                     <span>$6.38</span>
-                </div>
+                </div> -->
             </div>
             
             <button id="btnComprar">Proceder al pago</button>

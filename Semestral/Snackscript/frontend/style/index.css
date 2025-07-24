@@ -1572,3 +1572,28 @@ body {
   margin-top: 4px;
   margin-bottom: 8px;
 }
+
+.alert-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #36f46c;
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, top 0.4s ease;
+}
+
+/* Mostrar el mensaje */
+.alert-message.show {
+  opacity: 1;
+  pointer-events: auto;
+  top: 40px;
+}

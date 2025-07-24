@@ -38,7 +38,7 @@ fastify.post('/', async (request, reply) => {
         httpOnly: true,
         path: '/',
         sameSite: 'lax',
-        secure: false, // true si usas HTTPS
+        secure: false,
         maxAge: 3600,
       })
       .send({ message: 'Login successful', user });

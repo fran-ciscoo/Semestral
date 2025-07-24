@@ -4,6 +4,7 @@
             form: document.querySelector('#loginForm'),
             inputUsername: document.querySelector('#username'),
             inputPassword: document.querySelector('#password'),
+            messageUrl: document.querySelector('#messageUrl')
         }
 
         let sessionToken = null;
@@ -59,13 +60,24 @@
                 const errorDiv = document.getElementById('loginError');
                 errorDiv.textContent = message;
                 errorDiv.style.display = 'block';
+            },
+            showUrlMessage() {
+                const params = new URLSearchParams(window.location.search);
+                const message = params.get('message');
+                if (message) {
+                    htmlElements.messageUrl.textContent = decodeURIComponent(message);
+                    htmlElements.messageUrl.classList.add('show');
+                    setTimeout(() => {
+                        htmlElements.messageUrl.classList.remove('show');
+                    }, 5000);
+                }
             }   
             }
 
         return{
             init(){
                 const { form } = htmlElements;
-
+                methods.showUrlMessage();
                 form.addEventListener('submit', (event) => {
                     event.preventDefault();
                     methods.validateUser();

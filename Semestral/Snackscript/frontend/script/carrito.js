@@ -54,7 +54,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     cartList.innerHTML = '';
                     const summary = htmlElements.priceItems;
                     summary.innerHTML = '';
-                    htmlElements.cartProdCount.innerHTML = `${cart.items.length} artículos`;
+                    
                     cart.items.forEach(item => {
                         const li = document.createElement('li');
                         li.classList.add('cart-item');
@@ -80,13 +80,16 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             <span>${item.product.name} x ${item.quantity}</span>
                             <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
                         </div>
+                        
                         `;
                         cartList.appendChild(li);
                         priceTotal += item.product.price * item.quantity;
                         totalItems += item.quantity;
                         
                     });
+                    htmlElements.cartProdCount.innerHTML = `${totalItems} artículos`;
                     summary.innerHTML += `
+                    <br>
                     <div class="price-row">
                         <span>Subtotal (${totalItems} artículos)</span>
                         <span>$${priceTotal.toFixed(2)}</span>
@@ -122,9 +125,9 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             e.target.closest('.cart-item');
                             htmlElements.messageCart.textContent = 'El producto fue borrado del carrito';
                             htmlElements.messageCart.classList.add('show');
+                            methods.viewItemsCart();
                             setTimeout(() => {
                                 htmlElements.messageCart.classList.remove('show');
-                                window.location.href = `../view/carrito.html`;
                             }, 3000);
                         } catch (error) {
                             console.error('Error al eliminar producto:', error);
@@ -143,10 +146,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         let quantity = parseInt(quantityDisplay.textContent);
                         quantity += 1;
                         quantityDisplay.textContent = quantity;
-
-                        setTimeout(async () => {
-                            await methods.updateQuantity(productId, quantity);
-                        }, 3000);
+                        methods.updateQuantity(productId, quantity);
                     });
 
                     btnMinus.addEventListener('click', () => {
@@ -154,10 +154,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         if (quantity > 1) {
                             quantity -= 1;
                             quantityDisplay.textContent = quantity;
-
-                            setTimeout(async () => {
-                                await method.updateQuantity(productId, quantity);
-                            }, 3000);
+                            methods.updateQuantity(productId, quantity);
                         }
                         htmlElements.messageCart.textContent = 'No puede poner cantidades negativas';
                         htmlElements.messageCart.style.background.color = '#f43636'; 
@@ -182,9 +179,9 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     }
                     htmlElements.messageCart.textContent = 'Cantidad Actualizada';
                     htmlElements.messageCart.classList.add('show');
+                    methods.viewItemsCart();
                     setTimeout(() => {
                         htmlElements.messageCart.classList.remove('show');
-                        window.location.href = `../view/carrito.html`;
                     }, 3000);
                 } catch (error) {
                     console.error('Error al actualizar cantidad:', error);

@@ -8,6 +8,39 @@ import {navbarA, footer} from "../component/navbar.js"
         }
 
         const methods = {
+            async addPending(){
+                 try {
+                    const response = await fetch('http://localhost:3000/api/orders', {
+                        credentials: 'include'
+                    });
+                    if (!response.ok) throw new Error("No se pudieron obtener los pedidos");
+
+                    const orders = await response.json();
+                    const pendientes = orders.filter(order => order.status === "PENDIENTE");
+
+                    const container = document.getElementById('pedidosPendientes');
+                    container.innerHTML = ""; // Limpiar antes de agregar
+
+                    if (pendientes.length === 0) {
+                        container.innerHTML = "<p>No hay pedidos pendientes.</p>";
+                        return;
+                    }
+
+                    pendientes.forEach(order => {
+                        container.innerHTML += `
+                            <div class="pedido">
+                                <p><strong>ID:</strong> ${order.id}</p>
+                                <p><strong>Cliente:</strong> ${order.cliente}</p>
+                                <p><strong>Estado:</strong> ${order.status}</p>
+                                <!-- Agrega más campos si es necesario -->
+                            </div>
+                        `;
+                    });
+                } catch (error) {
+                    console.error("Error al obtener pedidos pendientes:", error);
+                }
+
+            },
 
             addNavbar(){
                 const container = htmlElements.navbar;

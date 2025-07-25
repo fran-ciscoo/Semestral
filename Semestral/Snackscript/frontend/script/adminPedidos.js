@@ -15,10 +15,11 @@ import {navbarA, footer} from "../component/navbar.js"
 
         const methods = {
             editOrder(){
-                const orderId = htmlElements.form.getAttribute('data-order-id');
-                const status = htmlElements.form.querySelector('#status').value;
+                const id = htmlElements.form.getAttribute('data-order-id');
+                console.log('Editando pedido con ID:', id);
+                const status = htmlElements.form.querySelector('#editStatus').value;
                 console.log('Estado seleccionado:', status);
-                fetch(`http://localhost:3000/api/orders/${orderId}`, {
+                fetch(`http://localhost:3000/api/order/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -33,17 +34,23 @@ import {navbarA, footer} from "../component/navbar.js"
                 .then(data => {
                     console.log('Pedido editado:', data);
                     methods.hideModal(htmlElements.dialog);
-                    window.location.reload();
+                    window.location.href = '../view/adminPedidos.html';
                 })
                 .catch(error => console.error('Error al editar pedido:', error));
             },
 
             async addFilter(status){
+                console.log(status);
                  try {
-                    const response = await fetch(`http://localhost:3000/api/orders/status/${status}`, {
+                    const response = await fetch(`http://localhost:3000/api/order/status/${status}`, {
                         credentials: 'include'
                     });
-                    if (!response.ok) throw new Error("No se pudieron obtener los pedidos");
+                    if (!response.ok) {
+                    const errorText = await response.text(); // captura el contenido del error
+                    console.error("Estado de respuesta:", response.status);
+                    console.error("Texto del error:", errorText);
+                    throw new Error("No se pudieron obtener los pedidos");
+                    }
 
                     const data = await response.json();
                     const orders = data.orders;
@@ -72,7 +79,7 @@ import {navbarA, footer} from "../component/navbar.js"
 
                     orders.forEach(order => {
                         tableHtml += `
-                            <tr>
+                            <tr data-order-id="${order._id}">
                                 <td>${order.userId?.name || 'Sin nombre'}</td>
                                 <td>${order._id}</td>
                                 <td>${order.totalAmount}</td>
@@ -164,6 +171,7 @@ import {navbarA, footer} from "../component/navbar.js"
 
                 form.addEventListener('submit', (e) =>{
                     e.preventDefault();
+                    console.log('Formulario enviado');
                     methods.editOrder();
                 });
 

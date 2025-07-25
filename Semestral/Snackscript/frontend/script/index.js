@@ -8,6 +8,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             containerProduct: document.querySelector('#snackList'),
 
             botones: document.querySelectorAll('.filters-container button'),
+            countProducts: document.querySelector('#totalCount'),
 
             messageCart: document.querySelector('#messageCart')
         }
@@ -20,6 +21,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         console.log(data);
                         const container = htmlElements.containerProduct;
                         container.innerHTML = '';
+                        htmlElements.countProducts.textContent = data.productos.length + ' productos encontrados';
 
                         if (!Array.isArray(data.productos)) {
                             console.error('La propiedad "productos" no está definida o no es un array:', data);
@@ -54,6 +56,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
                     const container = htmlElements.containerProduct;
                     container.innerHTML = '';
+                    htmlElements.countProducts.textContent = data.productos.length + ' productos encontrados';
 
                     data.productos.forEach(product => {
                         const productCard = document.createElement('div');

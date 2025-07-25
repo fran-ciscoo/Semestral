@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/pedidos.css">
-    <script type="module" src="../script/pedidos.js" defer></script>
+    <script type="module" src="../script/historialPedidos.js" defer></script>
     <link rel="stylesheet" href="../style/navbar.css">
     <title>Snack script - Historial pedidos</title>
 </head>
@@ -19,15 +19,15 @@
         </div>
         <div class="header-stats">
             <div class="stat-card">
-                <span class="stat-number">12</span>
+                <span class="stat-number" id="cantidadtotal">0</span>
                 <span class="stat-label">Pedidos Totales</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">9</span>
+                <span class="stat-number" id="cantidadentregados">0</span>
                 <span class="stat-label">Entregados</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">3</span>
+                <span class="stat-number" id="cantidadcancelados">0</span>
                 <span class="stat-label">Cancelados</span>
             </div>
         </div>
@@ -48,154 +48,14 @@
     <!-- Filtros y búsqueda -->
     <div class="filters-section">
         <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">Todos</button>
-            <button class="filter-btn" data-filter="delivered">Entregados</button>
-            <button class="filter-btn" data-filter="cancelled">Cancelados</button>
+            <button class="filter-btn active" data-filter="all" id="Todos">Todos</button>
+            <button class="filter-btn" data-filter="delivered" id="ENTREGADO">Entregados</button>
+            <button class="filter-btn" data-filter="cancelled" id="CANCELADO">Cancelados</button>
         </div>
     </div>
 
-    <!-- Lista de historial de pedidos -->
     <div class="orders-container">
-        <div class="orders-grid">
-            <!-- Pedido entregado -->
-            <div class="order-card" data-status="delivered">
-                <div class="order-header">
-                    <div class="order-number">
-                        <span class="number">#12345</span>
-                        <span class="status-badge delivered">Entregado</span>
-                    </div>
-                    <div class="order-date">
-                        <span class="date">07/06/2025</span>
-                        <span class="time">14:30</span>
-                    </div>
-                </div>
-                <div class="order-content">
-                    <div class="order-items">
-                        <div class="item">
-                            <span class="item-name">Buldak Carbonara</span>
-                            <span class="item-quantity">x2</span>
-                            <span class="item-price">$8.00</span>
-                        </div>
-                        <div class="item">
-                            <span class="item-name">Pocky Chocolate</span>
-                            <span class="item-quantity">x1</span>
-                            <span class="item-price">$3.50</span>
-                        </div>
-                    </div>
-                    <div class="order-summary">
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span>$19.50</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Envío:</span>
-                            <span>$2.50</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total:</span>
-                            <span>$22.00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="order-footer">
-                    <div class="order-actions">
-                        <button class="action-btn primary">Ver Detalles</button>
-                        <button class="action-btn secondary">Volver a Pedir</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pedido cancelado -->
-            <div class="order-card" data-status="cancelled">
-                <div class="order-header">
-                    <div class="order-number">
-                        <span class="number">#12346</span>
-                        <span class="status-badge cancelled">Cancelado</span>
-                    </div>
-                    <div class="order-date">
-                        <span class="date">05/06/2025</span>
-                        <span class="time">12:15</span>
-                    </div>
-                </div>
-                <div class="order-content">
-                    <div class="order-items">
-                        <div class="item">
-                            <span class="item-name">Lucas Muecas Azul</span>
-                            <span class="item-quantity">x1</span>
-                            <span class="item-price">$2.00</span>
-                        </div>
-                        <div class="item">
-                            <span class="item-name">Papiricas Pollo</span>
-                            <span class="item-quantity">x2</span>
-                            <span class="item-price">$6.50</span>
-                        </div>
-                    </div>
-                    <div class="order-summary">
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span>$15.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Envío:</span>
-                            <span>$0.00</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total:</span>
-                            <span>$15.00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="order-footer">
-                    <div class="order-actions">
-                        <button class="action-btn primary">Ver Detalles</button>
-                        <button class="action-btn danger">Eliminar</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Otro pedido entregado -->
-            <div class="order-card" data-status="delivered">
-                <div class="order-header">
-                    <div class="order-number">
-                        <span class="number">#12347</span>
-                        <span class="status-badge delivered">Entregado</span>
-                    </div>
-                    <div class="order-date">
-                        <span class="date">01/06/2025</span>
-                        <span class="time">10:00</span>
-                    </div>
-                </div>
-                <div class="order-content">
-                    <div class="order-items">
-                        <div class="item">
-                            <span class="item-name">Chocolate MrBeast</span>
-                            <span class="item-quantity">x1</span>
-                            <span class="item-price">$4.50</span>
-                        </div>
-                    </div>
-                    <div class="order-summary">
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span>$4.50</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Envío:</span>
-                            <span>$1.50</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total:</span>
-                            <span>$6.00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="order-footer">
-                    <div class="order-actions">
-                        <button class="action-btn primary">Ver Detalles</button>
-                        <button class="action-btn secondary">Volver a Pedir</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="orders-grid" id="orders-grid"></div>
     </div>
 
     <div id="footer"></div>

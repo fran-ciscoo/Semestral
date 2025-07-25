@@ -7,6 +7,7 @@ export default async function orderRoutes(fastify, reply) {
 
 fastify.get('/status/:status', async (request, reply) => {
     const {status} = request.params;
+    console.log(status);
 
         if (!status){
             return reply.status(400).send({error: 'Estatus no encontrado'});
@@ -14,6 +15,7 @@ fastify.get('/status/:status', async (request, reply) => {
 
     try {
         const orders = await Order.find({status}).populate('userId');
+        console.log(orders);
         return reply.status(200).send({orders});
     } catch(error){
         console.error('Error al buscar: ', error);
@@ -22,24 +24,27 @@ fastify.get('/status/:status', async (request, reply) => {
 });
 
 fastify.get('/', async (request, reply) => {
-    const {status} = request.query;
+   try {
+        const token = request.cookies.token;
+        if (!token) {
+            return reply.status(401).send({ error: 'No autorizado. Debes iniciar sesión.' });
+        }
 
-    if (!status){
-        try {
-        const orders = await Order.find().populate('userId');
-        return reply.status(200).send({orders});
+        const decoded = jwt.verify(token, secretKey);
+        const userId = decoded.id;
+
+        const { status } = request.query;
+        let query = { userId };
+
+        if (status) {
+            query.status = status;
+        }
+
+        const orders = await Order.find(query).populate('userId');
+        return reply.status(200).send({ orders });
     } catch (error) {
         console.error('Error al obtener pedidos:', error);
-        return reply.status(500).send({error: 'Error en el servidor'});
-    }
-    }else{
-        try {
-        const orders = await Order.find({status}).populate('userId');
-        return reply.status(200).send({orders});
-    } catch(error){
-        console.error('Error al buscar: ', error);
-        return reply.status(500).send({error: 'Error en el server'});
-    }
+        return reply.status(500).send({ error: 'Error en el servidor' });
     }
 });
 
@@ -77,6 +82,7 @@ fastify.post('/', async (request, reply) => {
             }
             const items = cart.items.map(item => ({
                 product: item.product._id,
+                name: item.product.name,
                 quantity: item.quantity,
                 price: item.product.price
             }));

@@ -30,6 +30,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         const filteredOrders = orders.filter(order => 
                             order.status !== 'ENTREGADO' && order.status !== 'CANCELADO'
                         );
+                        filteredOrders.sort((a, b) => new Date(b.orderedAt) - new Date(a.orderedAt));
 
                         htmlElements.cantidadTotal.textContent = filteredOrders.length;
                         htmlElements.cantidadPendientes.textContent = filteredOrders.filter(order => order.status === 'PENDIENTE').length;
@@ -64,8 +65,11 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                             card.innerHTML = `
                                 <div class="order-header">
                                     <div class="order-number">
-                                        <span class="idOrder">#${order._id}</span>
-                                        <span class="status">${order.status}</span>
+                                        <span class="idOrder">#${order._id.slice(-5)}</span>
+                                        <span class="status-badge ${order.status === 'PENDIENTE' ? 'pending' : order.status === 'EN PREPARACION' || order.status === 'EN CAMINO' ? 'processing' : ''}">
+                                            ${order.status}
+                                        </span>
+
                                     </div>
                                     <div class="order-date">
                                         <span class="date">${formattedDate}</span>
@@ -97,17 +101,28 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                                 <div class="order-footer">
                                     <div class="order-progress">
                                         <div class="progress-steps">
+
                                             <div class="step ${order.status === 'PENDIENTE' ? 'active' : 'completed'}">
-                                                <div class="step-icon">⏳</div>
-                                                <span class="step-label">Pendiente</span>
+                                                <div class="step-icon">${order.status === 'PENDIENTE' ? '⏳' : '✔'}</div>
+                                                <span class="step-label">${order.status === 'PENDIENTE' ? 'Pendiente' : 'Confirmado'}</span>
                                             </div>
-                                            <div class="step ${order.status === 'EN PREPARACIÓN' ? 'active' : order.status === 'EN CAMINO' || order.status === 'ENTREGADO' ? 'completed' : ''}">
-                                                <div class="step-icon">🔄</div>
-                                                <span class="step-label">En Preparación</span>
+
+                                            <div class="step ${
+                                                order.status === 'EN PREPARACION' ? 'active' :
+                                                (order.status === 'EN CAMINO' || order.status === 'ENTREGADO') ? 'completed' : ''}">
+                                                <div class="step-icon">${
+                                                    order.status === 'EN PREPARACION' ? '🔄' :
+                                                    (order.status === 'EN CAMINO' || order.status === 'ENTREGADO') ? '✔' : '🔄'}</div>
+                                                <span class="step-label">${
+                                                    order.status === 'EN PREPARACION' ? 'En Preparación' :
+                                                    (order.status === 'EN CAMINO' || order.status === 'ENTREGADO') ? 'Preparado' : 'En Preparación'}</span>
                                             </div>
+
                                             <div class="step ${order.status === 'EN CAMINO' ? 'active' : order.status === 'ENTREGADO' ? 'completed' : ''}">
-                                                <div class="step-icon">🚚</div>
-                                                <span class="step-label">En Camino</span>
+                                                <div class="step-icon">${order.status === 'EN CAMINO' ? '🚚' : order.status === 'ENTREGADO' ? '✔' : '🚚'}</div>
+                                                <span class="step-label">${
+                                                    order.status === 'EN CAMINO' ? 'En Camino' :
+                                                    order.status === 'ENTREGADO' ? 'Entregado' : 'En Camino'}</span>
                                             </div>
                                         </div>
                                     </div>

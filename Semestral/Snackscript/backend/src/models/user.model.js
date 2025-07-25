@@ -26,10 +26,10 @@ const userSchema = new mongoose.Schema({
         country: {
             type: String,
             default: 'Panamá',
-            immutable: true
         },
         city: String,
         address: String,
+        postalCode: String
     },
     phone: {
         type: String

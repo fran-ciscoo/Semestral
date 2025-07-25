@@ -9,9 +9,16 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
             cartList: document.querySelector('#cartList'),
             priceTotal: document.querySelector('#priceTotal'),
             priceItems: document.querySelector('#price-breakdown'),
-            messageCart: document.querySelector('#messageCart')
+            messageCart: document.querySelector('#messageCart'),
+            btnBuy: document.querySelector('#btnBuy'),
+            dialogAddress: document.querySelector('#addressDialog'),
+            formAddress: document.querySelector('#addressForm'),
+            closeDialog: document.querySelector('#closeDialog'),
+            confirmAddressDialog: document.querySelector('#confirmAddressDialog'),
+            addressInfo: document.querySelector('#address-info'),
+            confirmBtn: document.querySelector('#btn-yes'),
+            noBtn: document.querySelector('#btn-no'),
         }
-
         const methods = {
             async verfySession() {
                 try {
@@ -105,6 +112,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     `;
                     methods.updateQItemFront();
                     methods.deleteItem();
+                    return {cart, priceTotal};
                 } catch (error) {
                     console.error('Error al mostrar el carrito:', error);
                 }
@@ -157,7 +165,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             methods.updateQuantity(productId, quantity);
                         }
                         htmlElements.messageCart.textContent = 'No puede poner cantidades negativas';
-                        htmlElements.messageCart.style.background.color = '#f43636'; 
                         htmlElements.messageCart.classList.add('show');
                         setTimeout(() => {
                             htmlElements.messageCart.classList.remove('show');
@@ -187,6 +194,31 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     console.error('Error al actualizar cantidad:', error);
                 }
             },
+            async createOrder() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/order', {
+                        method: 'POST',
+                        credentials: 'include',
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        console.error('Ocurrió un error inesperado: ', data.message);
+                        return;
+                    }
+                    htmlElements.messageCart.textContent = 'Pedido Creado.';
+                    htmlElements.messageCart.classList.add('show');
+                    setTimeout(() => {
+                        htmlElements.messageCart.classList.remove('show');
+                    }, 3000);
+                } catch (error) {
+                    console.error('Error al crear la orden:', error);
+                    htmlElements.messageCart.textContent = 'Error al crear la orden.';
+                    htmlElements.messageCart.classList.add('show');
+                    setTimeout(() => {
+                        htmlElements.messageCart.classList.remove('show');
+                    }, 3000);
+                }
+            },
             async addNavbar() {
                 const container = htmlElements.navbar;
                 const role = await methods.verfySession();
@@ -201,7 +233,72 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
 
                 methods.printHtml(container, generar);
             },
+            async updateAddress(shippingData) {
+                try {
+                    const response = await fetch('http://localhost:3000/api/users/address', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify(shippingData)
+                    });
 
+                    if (!response.ok) {
+                        console.warn('No se pudo actualizar la dirección');
+                        return;
+                    }
+
+                    const data = await response.json();
+                    console.log('Dirección actualizada:', data);
+                    htmlElements.messageCart.textContent = 'Dirección actualizada con éxito';
+                    htmlElements.messageCart.classList.add('show');
+                    setTimeout(() => {
+                        htmlElements.messageCart.classList.remove('show');
+                    }, 3000);
+                } catch (error) {
+                    console.error('Error al actualizar dirección:', error);
+                }
+            },
+            async getUserAddress() {
+                try {
+                    const { addressInfo, confirmAddressDialog } = htmlElements;
+                    const response = await fetch('http://localhost:3000/api/users/address', {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const data = await response.json();
+                    const shippingAddress = data.shippingAddress;
+                    if (data.error === 'noAddress') {
+                        console.warn('Error al crear la orden, usuario no tiene direccion', data.message);
+                        htmlElements.messageCart.textContent = data.message;
+                        htmlElements.messageCart.classList.add('show');
+                        setTimeout(() => {
+                            htmlElements.messageCart.classList.remove('show');
+                        }, 3000);
+                        htmlElements.dialogAddress.showModal();
+                        return;
+                    }
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Error al obtener la dirección');
+                    }
+                    addressInfo.innerHTML = `
+                    <p><strong>País:</strong> ${shippingAddress.country}</p>
+                    <p><strong>Ciudad:</strong> ${shippingAddress.city}</p>
+                    <p><strong>Dirección:</strong> ${shippingAddress.address}</p>
+                    <p><strong>Código Postal:</strong> ${shippingAddress.postalCode}</p>
+                    `;
+                    confirmAddressDialog.showModal();
+                    return data.shippingAddress;
+                } catch (error) {
+                    console.error('Error en getUserAddress:', error.message);
+                    return null;
+                }
+            },
             addFooter() {
                 const container = htmlElements.footer;
                 const generar = footer();
@@ -215,9 +312,32 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
 
         return {
             init() {
+                const { btnBuy, closeDialog, formAddress, dialogAddress, confirmBtn, noBtn, confirmAddressDialog} = htmlElements;
                 methods.viewItemsCart();
                 methods.addNavbar();
                 methods.addFooter();
+                btnBuy.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.getUserAddress();
+                });
+                confirmBtn.addEventListener('click', async (e) => {
+                    methods.createOrder();
+                });
+                noBtn.addEventListener('click', (e) => {
+                    confirmAddressDialog.close();
+                });
+                closeDialog.addEventListener('click', (e) => {
+                    dialogAddress.close();
+                });
+                formAddress.addEventListener('submit', (e) => {
+                    const shippingData = {
+                        country: document.getElementById('country').value,
+                        city: document.getElementById('city').value,
+                        address: document.getElementById('address').value,
+                        postalCode: document.getElementById('postalCode').value
+                    };
+                    methods.updateAddress(shippingData);
+                });
             }
         }
     })();

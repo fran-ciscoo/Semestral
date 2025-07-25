@@ -1,13 +1,12 @@
 import Product from '../models/product.model.js';
 import cloudinary from '../../config/cloudinary.js';
-
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export default async function productosRoutes(fastify, opts) {
 
   fastify.addHook('preHandler', async (request, reply) => {
     request.log.info(`Operación en productos: ${request.method} ${request.url}`);
   });
-
-   // Crear nuevo producto
   fastify.post('/', async (request, reply) => {
     const parts = request.parts();
 
@@ -34,6 +33,14 @@ export default async function productosRoutes(fastify, opts) {
           console.log('Imagen subida a Cloudinary:', imageUrl);
         }
       }
+      const priceId = await stripe.prices.create({
+        currency: 'usd',
+        unit_amount: Math.round(formFields.productPrice * 100),
+        product_data: {
+          name: formFields.productName,
+          image: [imageUrl],
+        },
+      });
 
       const productoExistente = await Product.findOne({ name: formFields.productName });
       if (productoExistente) {
@@ -52,6 +59,7 @@ export default async function productosRoutes(fastify, opts) {
         description: formFields.productDescription,
         story: formFields.productStory,
         image: imageUrl,
+        stripeId: priceId,
       });
 
       await nuevoProducto.save();

@@ -1,6 +1,5 @@
 import Cart from '../models/cart.model.js';
 import jwt from 'jsonwebtoken';
-
 const secretKey = 'clave_secreta_segura_y_larga';
 export default async function cartRoutes(fastify, opts) {
     fastify.post('/', async (request, reply) => {

@@ -44,6 +44,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    stripeId: {
+        type: String,
+        required: true
+    },
     addedAt: {
         type: Date,
         default: Date.now

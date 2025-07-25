@@ -1,4 +1,6 @@
 import User from '../models/user.model.js';
+import jwt from 'jsonwebtoken';
+const secretKey = 'clave_secreta_segura_y_larga';
 export default async function usersRoutes(fastify, opts) {
 
 fastify.post('/', async (request, reply) => {
@@ -121,4 +123,21 @@ fastify.delete('/:id', async (request, reply) => {
     }
 });
 
+fastify.get('/address', async (request, reply) => {
+    try {
+        const token = request.cookies.token;
+        const decoded = jwt.verify(token, secretKey);
+        const userId = decoded.id;
+
+        const user = await User.findById(userId).select('shippingAddress');
+        if (!user.shippingAddress.city) {
+            return reply.status(400).send({ message: 'Por favor completa tu dirección de envío en tu perfil.', error: 'noAddress' });
+        }
+
+        return reply.status(200).send({ shippingAddress: user.shippingAddress });
+    } catch (error) {
+        console.error('Error al obtener la dirección:', error);
+        return reply.status(500).send({ message: 'Error interno del servidor.' });
+    }
+});
 }

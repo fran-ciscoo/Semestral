@@ -23,39 +23,6 @@
             </div>
             
             <ul class="cart-items" id="cartList">
-                <!-- <li class="cart-item">
-                    <img src="../img/buldakCarbonara.png" alt="Buldak Carbonara">
-                    <div class="product-info">
-                        <h3 class="product-title">Buldak Carbonara</h3>
-                        <p class="product-description">Fideos picantes con sabor carbonara</p>
-                        <p class="product-price">$3.99</p>
-                        <div class="quantity-controls">
-                            <button class="quantity-btn">-</button>
-                            <span class="quantity-display">1</span>
-                            <button class="quantity-btn">+</button>
-                        </div>
-                    </div>
-                    <div class="product-actions">
-                        <button class="remove-btn">Eliminar</button>
-                    </div>
-                </li>
-                
-                <li class="cart-item">
-                    <img src="../img/SourpatchOriginal.webp" alt="Sour Patch Original">
-                    <div class="product-info">
-                        <h3 class="product-title">Sour Patch Original</h3>
-                        <p class="product-description">Dulces ácidos y dulces</p>
-                        <p class="product-price">$2.39</p>
-                        <div class="quantity-controls">
-                            <button class="quantity-btn">-</button>
-                            <span class="quantity-display">1</span>
-                            <button class="quantity-btn">+</button>
-                        </div>
-                    </div>
-                    <div class="product-actions">
-                        <button class="remove-btn">Eliminar</button>
-                    </div>
-                </li> -->
             </ul>
         </div>
 
@@ -64,21 +31,8 @@
             <h3 class="summary-header">Resumen del pedido</h3>
             
             <div class="price-breakdown" id="price-breakdown">
-                <!-- <div class="price-row" id="priceItems">
-                    <span>Subtotal (2 artículos)</span>
-                    <span>$6.38</span>
-                </div>
-                <div class="price-row">
-                    <span>Envío</span>
-                    <span>Gratis</span>
-                </div>
-                <div class="price-row total" id="priceTotal">
-                    <span>Total</span>
-                    <span>$6.38</span>
-                </div> -->
             </div>
-            
-            <button id="btnComprar">Proceder al pago</button>
+            <button id="btnBuy">Proceder al pago</button>
         </div>
     </main>
 
@@ -93,6 +47,16 @@
         <h3>Balance de puntos: 10</h3>
     </div>
     <div id="footer"></div>
+
+    <dialog id="confirmAddressDialog">
+        <div class="dialog-header">¿Deseas usar esta dirección de envío?</div>
+        <div class="address-info" id="address-info">
+        </div>
+        <div class="dialog-buttons">
+            <button class="btn-yes" id="btn-yes">Sí</button>
+            <button class="btn-no" id="btn-no">No</button>
+        </div>
+    </dialog>
 </body>
 
 </html>

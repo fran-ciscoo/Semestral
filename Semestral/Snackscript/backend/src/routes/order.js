@@ -1,13 +1,16 @@
 import Order from '../models/order.model.js';
-
+import User from '../models/user.model.js';
+import Cart from '../models/cart.model.js';
+import jwt from 'jsonwebtoken';
+const secretKey = 'clave_secreta_segura_y_larga';
 export default async function orderRoutes(fastify, reply) {
 
 fastify.get('/status/:status', async (request, reply) => {
     const {status} = request.params;
 
-    if (!status){
-        return reply.status(400).send({error: 'Estatus no encontrado'});
-    }
+        if (!status){
+            return reply.status(400).send({error: 'Estatus no encontrado'});
+        }
 
     try {
         const orders = await Order.find({status}).populate('userId');
@@ -59,4 +62,37 @@ fastify.put('/:id', async (request, reply) => {
         return reply.status(500).send({error: 'Error en el servidor'});
     }
 });
+
+fastify.post('/', async (request, reply) => {
+        try {
+            const token = request.cookies.token;
+            const decoded = jwt.verify(token, secretKey);
+            const userId = decoded.id;
+
+            const user = await User.findById(userId).select('-password');
+            const cart = await Cart.findOne({ userId }).populate('items.product');
+
+            if (!cart || !Array.isArray(cart.items) || cart.items.length === 0) {
+                return reply.status(400).send({ message: 'El carrito está vacío.' });
+            }
+            const items = cart.items.map(item => ({
+                product: item.product._id,
+                quantity: item.quantity,
+                price: item.product.price
+            }));
+            const totalAmount = items.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2);
+            const newOrder = await Order.create({
+                userId,
+                items,
+                shippingAddress: user.shippingAddress,
+                paymentMethod: 'stripe',
+                totalAmount
+            });
+
+            return reply.status(201).send({ message: 'Orden creada exitosamente.', order: newOrder });
+        } catch (error) {
+            console.error('Error al crear la orden:', error);
+            return reply.status(500).send({ message: 'Error interno del servidor.' });
+        }
+    });
 }

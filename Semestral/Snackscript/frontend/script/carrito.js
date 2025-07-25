@@ -9,9 +9,13 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
             cartList: document.querySelector('#cartList'),
             priceTotal: document.querySelector('#priceTotal'),
             priceItems: document.querySelector('#price-breakdown'),
-            messageCart: document.querySelector('#messageCart')
+            messageCart: document.querySelector('#messageCart'),
+            btnBuy: document.querySelector('#btnBuy'),
+            confirmAddressDialog: document.querySelector('#confirmAddressDialog'),
+            addressInfo: document.querySelector('#address-info'),
+            confirmBtn: document.querySelector('#btn-yes'),
+            noBtn: document.querySelector('#btn-no'),
         }
-
         const methods = {
             async verfySession() {
                 try {
@@ -54,7 +58,20 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     cartList.innerHTML = '';
                     const summary = htmlElements.priceItems;
                     summary.innerHTML = '';
-                    
+                    if (!cart.items || cart.items.length === 0) {
+                        cartList.innerHTML = `
+                            <li class="cart-empty">
+                                <div class="empty-content">
+                                    <span class="empty-icon">🛒</span>
+                                    <p>Tu carrito está vacío</p>
+                                    <a href="../view/index.html" class="btn-empty">Ir a comprar</a>
+                                </div>
+                            </li>
+                        `;
+                        summary.innerHTML = '';
+                        htmlElements.cartProdCount.innerHTML = '0 artículos';
+                        return;
+                    }
                     cart.items.forEach(item => {
                         const li = document.createElement('li');
                         li.classList.add('cart-item');
@@ -105,6 +122,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     `;
                     methods.updateQItemFront();
                     methods.deleteItem();
+                    return {cart, priceTotal};
                 } catch (error) {
                     console.error('Error al mostrar el carrito:', error);
                 }
@@ -157,7 +175,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             methods.updateQuantity(productId, quantity);
                         }
                         htmlElements.messageCart.textContent = 'No puede poner cantidades negativas';
-                        htmlElements.messageCart.style.background.color = '#f43636'; 
                         htmlElements.messageCart.classList.add('show');
                         setTimeout(() => {
                             htmlElements.messageCart.classList.remove('show');
@@ -187,6 +204,53 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     console.error('Error al actualizar cantidad:', error);
                 }
             },
+            async createOrder() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/order', {
+                        method: 'POST',
+                        credentials: 'include',
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        htmlElements.messageCart.textContent = data.message;
+                        htmlElements.messageCart.style.backgroundColor = '#f94144';
+                        htmlElements.messageCart.classList.add('show');
+                        setTimeout(() => {
+                            htmlElements.messageCart.classList.remove('show');
+                        }, 3000);
+                        return;
+                    }
+                    htmlElements.messageCart.textContent = 'Pedido en progreso. Consulta tus pedidos para más info.';
+                    htmlElements.messageCart.classList.add('show');
+                    setTimeout(() => {
+                        htmlElements.messageCart.classList.remove('show');
+                    }, 3000);
+                    methods.clearUserCart();
+                } catch (error) {
+                    console.error('Error al crear la orden:', error);
+                    htmlElements.messageCart.textContent = 'Error al crear la orden.';
+                    htmlElements.messageCart.classList.add('show');
+                    setTimeout(() => {
+                        htmlElements.messageCart.classList.remove('show');
+                    }, 3000);
+                }
+            },
+            async clearUserCart() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/cart/clear', {
+                        method: 'PUT',
+                        credentials: 'include',
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        console.warn('No se pudo vaciar el carrito:', data.message);
+                        return;
+                    }
+                    methods.viewItemsCart();
+                } catch (error) {
+                    console.error('Error al vaciar el carrito:', error);
+                }
+            },
             async addNavbar() {
                 const container = htmlElements.navbar;
                 const role = await methods.verfySession();
@@ -201,7 +265,44 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
 
                 methods.printHtml(container, generar);
             },
-
+            async getUserAddress() {
+                try {
+                    const { addressInfo, confirmAddressDialog } = htmlElements;
+                    const response = await fetch('http://localhost:3000/api/users/address', {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const data = await response.json();
+                    const shippingAddress = data.shippingAddress;
+                    if (data.error === 'noAddress') {
+                        htmlElements.messageCart.textContent = data.message;
+                        htmlElements.messageCart.classList.add('show');
+                        setTimeout(() => {
+                            htmlElements.messageCart.classList.remove('show');
+                            window.location.href = '../view/perfil.html?msg=noAddress';
+                        }, 2000);
+                        return;
+                    }
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Error al obtener la dirección');
+                    }
+                    addressInfo.innerHTML = `
+                    <p><strong>País:</strong> ${shippingAddress.country}</p>
+                    <p><strong>Ciudad:</strong> ${shippingAddress.city}</p>
+                    <p><strong>Dirección:</strong> ${shippingAddress.address}</p>
+                    <p><strong>Código Postal:</strong> ${shippingAddress.postalCode}</p>
+                    `;
+                    confirmAddressDialog.showModal();
+                    return data.shippingAddress;
+                } catch (error) {
+                    console.error('Error en getUserAddress:', error.message);
+                    return null;
+                }
+            },
             addFooter() {
                 const container = htmlElements.footer;
                 const generar = footer();
@@ -215,9 +316,21 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
 
         return {
             init() {
+                const { btnBuy, confirmBtn, noBtn, confirmAddressDialog} = htmlElements;
                 methods.viewItemsCart();
                 methods.addNavbar();
                 methods.addFooter();
+                btnBuy.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.getUserAddress();
+                });
+                confirmBtn.addEventListener('click', async (e) => {
+                    htmlElements.confirmAddressDialog.close();
+                    methods.createOrder();
+                });
+                noBtn.addEventListener('click', (e) => {
+                    confirmAddressDialog.close();
+                });
             }
         }
     })();

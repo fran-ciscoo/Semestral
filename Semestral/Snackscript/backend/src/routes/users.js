@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import Product from '../models/product.model.js';
 import jwt from 'jsonwebtoken';
 const secretKey = 'clave_secreta_segura_y_larga';
 export default async function usersRoutes(fastify, opts) {
@@ -137,6 +138,64 @@ fastify.get('/address', async (request, reply) => {
         return reply.status(200).send({ shippingAddress: user.shippingAddress });
     } catch (error) {
         console.error('Error al obtener la dirección:', error);
+        return reply.status(500).send({ message: 'Error interno del servidor.' });
+    }
+});
+fastify.post('/favorites/:productId', async (request, reply) => {
+    try {
+        const token = request.cookies.token;
+        if (!token) {
+            return reply.status(401).send({ message: 'No autorizado. Inicia sesión.' });
+        }
+        const decoded = jwt.verify(token, secretKey);
+        const userId = decoded.id;
+        const { productId } = request.params;
+        const product = await Product.findById(productId);
+        if (!product) {
+            return reply.status(404).send({ message: 'Producto no encontrado.' });
+        }
+        const user = await User.findById(userId);
+        if (!user) {
+            return reply.status(404).send({ message: 'Usuario no encontrado.' });
+        }
+        const index = user.favProducts.indexOf(productId);
+
+        if (index > -1) {
+            user.favProducts.splice(index, 1);
+            await user.save();
+            return reply.status(200).send({ message: 'Producto eliminado de favoritos.' });
+        } else {
+            user.favProducts.push(productId);
+            await user.save();
+            return reply.status(200).send({ message: 'Producto agregado a favoritos.' });
+        }
+    } catch (error) {
+        console.error('Error al agregar a favoritos:', error);
+        return reply.status(500).send({ message: 'Error interno del servidor.' });
+    }
+});
+
+fastify.get('/favorites', async (request, reply) => {
+    try {
+        const token = request.cookies.token;
+        if (!token) {
+            return reply.status(401).send({ message: 'No autorizado. Inicia sesión.' });
+        }
+
+        const decoded = jwt.verify(token, secretKey);
+        const userId = decoded.id;
+
+        const user = await User.findById(userId).populate('favProducts');
+        if (!user) {
+            return reply.status(404).send({ message: 'Usuario no encontrado.' });
+        }
+
+        return reply.status(200).send({
+            favorites: user.favProducts
+        });
+
+    } catch (error) {
+        console.error('Error al obtener favoritos:', error);
         return reply.status(500).send({ message: 'Error interno del servidor.' });
     }
 });

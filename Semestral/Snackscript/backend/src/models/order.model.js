@@ -55,7 +55,15 @@ const orderSchema = new mongoose.Schema({
     orderedAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    subtotal: {
+        type: Number,
+        default: 0
+    },
+    descuentos: {
+        type: Number,
+        default: 0
+    },
 })
 
 const Order = mongoose.model('Order', orderSchema)

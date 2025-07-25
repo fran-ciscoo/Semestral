@@ -14,7 +14,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
         }
 
         const methods = {
-            viewOnlyCategory(category){
+            async viewOnlyCategory(category){
+                const rol = await methods.verfySession();
                 fetch(`http://localhost:3000/api/productos/category?category=${category}`)
                     .then(response => response.json())
                     .then(data => {
@@ -44,10 +45,86 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                                 </div>`;
                             container.innerHTML += productCard;
                         });
+                        document.querySelectorAll('.wishlist-btn').forEach(button => {
+                            button.addEventListener('click', (e) => {
+                                const productId = e.target.dataset.id;
+                                e.target.closest('.product-info');
+                                methods.addToFavorites(productId);
+                            });
+                        });
+                        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                            button.addEventListener('click', (e) => {
+                                if (rol === 'none') {
+                                    const message = encodeURIComponent('Necesita una cuenta para agregar productos al carrito');
+                                    window.location.href = `../view/logIn.html?message=${message}`;
+                                    return;
+                                }
+                                const productId = e.target.dataset.id;
+                                methods.addToCart(productId);
+                                console.log(`Producto ${productId} agregado al carrito.`);
+                            });
+                        });
                     }).catch(error => console.error('Error al obtener productos:', error));
 
             },
+            async viewFavorites() {
+                try {
+                    const rol = await methods.verfySession();
+                    const response = await fetch('http://localhost:3000/api/users/favorites', {
+                        method: 'GET',
+                        credentials: 'include'
+                    });
 
+                    const data = await response.json();
+                    const container = htmlElements.containerProduct;
+                    container.innerHTML = '';
+                    const productos = data.favorites;
+                    htmlElements.countProducts.textContent = productos.length + ' productos en favoritos';
+                    if (!Array.isArray(productos)) {
+                        console.error('La propiedad "favorites" no está definida o no es un array:', data);
+                        return;
+                    }
+                    productos.forEach(product => {
+                        const productCard = `
+                        <div class="product-card">
+                            <div class="product-info">
+                                <img src="${product.image}" alt="${product.name} imagen" class="product-image">
+                                <h2 class="product-title">${product.name}</h2>
+                                <p class="product-description">${product.description}</p>
+                                <p class="product-price">$${product.price}</p>
+                                <div class="product-actions">
+                                    <button class="add-to-cart-btn" data-id="${product._id}">Agregar al carrito</button>
+                                    <button class="wishlist-btn" data-id="${product._id}">❤</button>
+                                </div>
+                            </div>
+                        </div>`;
+                        container.innerHTML += productCard;
+                    });
+                    document.querySelectorAll('.wishlist-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const productId = e.target.dataset.id;
+                            e.target.closest('.product-info');
+                            methods.addToFavorites(productId);
+                            methods.viewFavorites();
+                        });
+                    });
+                    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            if (rol === 'none') {
+                                const message = encodeURIComponent('Necesita una cuenta para agregar productos al carrito');
+                                window.location.href = `../view/logIn.html?message=${message}`;
+                                return;
+                            }
+                            const productId = e.target.dataset.id;
+                            methods.addToCart(productId);
+                            console.log(`Producto ${productId} agregado al carrito.`);
+                        });
+                    });
+
+                } catch (error) {
+                    console.error('Error al obtener productos favoritos:', error);
+                }
+            },
             async viewProducts() {
                 try {
                     const response = await fetch('http://localhost:3000/api/productos');
@@ -88,11 +165,10 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                             console.log(`Producto ${productId} agregado al carrito.`);
                         });
                     });
-
                     document.querySelectorAll('.wishlist-btn').forEach(button => {
                         button.addEventListener('click', (e) => {
                             const productId = e.target.dataset.id;
-                            console.log(`Producto ${productId} añadido a favoritos.`);
+                            methods.addToFavorites(productId);
                         });
                     });
 
@@ -128,6 +204,26 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     return null;
                 }
             },
+            async addToFavorites(productId) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/users/favorites/${productId}`, {
+                        method: 'POST',
+                        credentials: 'include',
+                    });
+                    const data = await response.json();
+                    if (!response.ok && data.error === 401) {
+                        const message = encodeURIComponent('Necesita una cuenta para agregar productos a favoritos');
+                        window.location.href = `../view/logIn.html?message=${message}`;
+                        return;
+                    }
+                    if (!response.ok) {
+                        console.error("Ocurrió algo inesperado: "+ data.message);
+                    }
+                    methods.showMessage(data.message, null);
+                } catch (error) {
+                    console.error('Error al agregar a favoritos:', error);
+                }
+            },
             async verfySession(){
                 try{
                     const response = await fetch ('http://localhost:3000/api/login/me',{
@@ -148,7 +244,16 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     return 'none';
                 }
             },
-
+            showMessage(mensaje, color){
+                htmlElements.messageCart.textContent = mensaje;
+                if(color){
+                    htmlElements.messageCart.style.backgroundColor = '#f94144';
+                }
+                htmlElements.messageCart.classList.add('show');
+                setTimeout(() => {
+                    htmlElements.messageCart.classList.remove('show');
+                }, 3000);
+            },
             async addNavbar(){
                 const container = htmlElements.navbar;
                 const role = await methods.verfySession();
@@ -186,9 +291,11 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     boton.addEventListener('click', (e) =>{
                         e.preventDefault();
                         const id = boton.id.split("btn")[1];
-                        if (id == "Todo"){
+                        if (id === "Favoritos") {
+                            methods.viewFavorites();
+                        } else if (id === "Todo") {
                             methods.viewProducts();
-                        }else{
+                        } else {
                             methods.viewOnlyCategory(id);
                         }
                     })

@@ -41,21 +41,30 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
 
             async viewItemsCart() {
                 try {
+                    const cartList = htmlElements.cartList;
+                    cartList.innerHTML = '';
                     const response = await fetch('http://localhost:3000/api/cart/cart', {
                         method: 'GET',
                         credentials: 'include'
                     });
 
                     if (!response.ok) {
-                        console.warn('No se pudo obtener el carrito');
+                        cartList.innerHTML = `
+                            <li class="cart-empty">
+                                <div class="empty-content">
+                                    <span class="empty-icon">🛒</span>
+                                    <p>Tu carrito está vacío</p>
+                                    <a href="../view/index.html" class="btn-empty">Ir a comprar</a>
+                                </div>
+                            </li>
+                        `;
+                        htmlElements.cartProdCount.innerHTML = '0 artículos';
                         return;
                     }
 
                     const data = await response.json();
                     const cart = data.cart;
-                    const cartList = htmlElements.cartList;
                     let priceTotal = 0, totalItems = 0;
-                    cartList.innerHTML = '';
                     const summary = htmlElements.priceItems;
                     summary.innerHTML = '';
                     if (!cart.items || cart.items.length === 0) {
@@ -143,10 +152,10 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             e.target.closest('.cart-item');
                             htmlElements.messageCart.textContent = 'El producto fue borrado del carrito';
                             htmlElements.messageCart.classList.add('show');
-                            methods.viewItemsCart();
                             setTimeout(() => {
                                 htmlElements.messageCart.classList.remove('show');
                             }, 3000);
+                            methods.viewItemsCart();
                         } catch (error) {
                             console.error('Error al eliminar producto:', error);
                         }
@@ -267,7 +276,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
             },
             async getUserAddress() {
                 try {
-                    const { addressInfo, confirmAddressDialog } = htmlElements;
+                    const { confirmAddressDialog } = htmlElements;
                     const response = await fetch('http://localhost:3000/api/users/address', {
                         method: 'GET',
                         credentials: 'include',
@@ -276,7 +285,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         }
                     });
                     const data = await response.json();
-                    const shippingAddress = data.shippingAddress;
+                    /* const shippingAddress = data.shippingAddress; */
                     if (data.error === 'noAddress') {
                         htmlElements.messageCart.textContent = data.message;
                         htmlElements.messageCart.classList.add('show');
@@ -290,12 +299,12 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         const errorData = await response.json();
                         throw new Error(errorData.message || 'Error al obtener la dirección');
                     }
-                    addressInfo.innerHTML = `
+                    /* addressInfo.innerHTML = `
                     <p><strong>País:</strong> ${shippingAddress.country}</p>
                     <p><strong>Ciudad:</strong> ${shippingAddress.city}</p>
                     <p><strong>Dirección:</strong> ${shippingAddress.address}</p>
                     <p><strong>Código Postal:</strong> ${shippingAddress.postalCode}</p>
-                    `;
+                    `; */
                     confirmAddressDialog.showModal();
                     return data.shippingAddress;
                 } catch (error) {

@@ -20,11 +20,63 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             inputAddress: document.querySelector('#inputAddress'),
             inputPhone: document.querySelector('#inputPhone'),
             btnCancelar: document.querySelector('#cancelar'),
-            inputPostalCode: document.querySelector('#inputPostalCode')
+            inputPostalCode: document.querySelector('#inputPostalCode'),
+
+            orderList: document.querySelector('#ordersList'),
+            pedidosCount: document.querySelector('#pedidosCount'),
+
 
         }
 
         const methods = {
+            async viewOrders(){
+                try {
+                    const response = await fetch('http://localhost:3000/api/order', {
+                        credentials: 'include',
+                    });
+                    if (!response.ok) {
+                        throw new Error('Error al obtener los pedidos');
+                    }
+
+                    const data = await response.json();
+                    const orders = data.orders || data;
+                    htmlElements.pedidosCount.textContent = orders.length;
+
+                    // Ordena por fecha descendente y toma los 3 más recientes
+                    const recentOrders = [...orders]
+                        .sort((a, b) => new Date(b.orderedAt) - new Date(a.orderedAt))
+                        .slice(0, 3);
+
+                    const container = htmlElements.orderList;
+                    container.innerHTML = "";
+
+                    if (!recentOrders || recentOrders.length === 0) {
+                        container.innerHTML = `<p>No tienes pedidos realizados.</p>`;
+                        return;
+                    }
+                    
+
+                    recentOrders.forEach(order => {
+                        const dateObj = new Date(order.orderedAt);
+                        const formattedDate = dateObj.toLocaleDateString('es-PA');
+                        const statusClass = order.status === 'ENTREGADO' ? 'delivered' : order.status === 'CANCELADO' ? 'cancelled' : 'pending';
+
+                        const orderDiv = document.createElement('div');
+                        orderDiv.className = "order-item";
+                        orderDiv.innerHTML = `
+                            <div class="order-info">
+                                <span class="order-number">#${order._id}</span>
+                                <span class="order-date">${formattedDate}</span>
+                            </div>
+                            <span class="order-status ${statusClass}">${order.status}</span>
+                        `;
+                        container.appendChild(orderDiv);
+                    });
+                } catch (error) {
+                    console.error('Error al obtener pedidos recientes:', error);
+                }
+            },
+
             saveChanges(userUpdate) {
                 fetch(`http://localhost:3000/api/users/${userUpdate._id}`, {
                     method: 'PATCH',
@@ -243,6 +295,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 methods.addFooter();
                 methods.addInfo();
                 methods.addBottom();
+                methods.viewOrders();
 
                 btnEditar.addEventListener('click', (e) => {
                     e.preventDefault();

@@ -27,7 +27,7 @@
                     <span class="stat-label">Puntos</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">5</span>
+                    <span class="stat-number" id="pedidosCount">0</span>
                     <span class="stat-label">Pedidos</span>
                 </div>
                 <div class="stat-item">
@@ -117,22 +117,7 @@
                 <h3>Pedidos Recientes</h3>
             </div>
             <div class="card-content">
-                <div class="orders-list">
-                    <div class="order-item">
-                        <div class="order-info">
-                            <span class="order-number">#12345</span>
-                            <span class="order-date">07/06/2025</span>
-                        </div>
-                        <span class="order-status delivered">Entregado</span>
-                    </div>
-                    <div class="order-item">
-                        <div class="order-info">
-                            <span class="order-number">#12344</span>
-                            <span class="order-date">05/06/2025</span>
-                        </div>
-                        <span class="order-status processing">En Proceso</span>
-                    </div>
-                </div>
+                <div class="orders-list" id="ordersList"></div>
             </div>
             <div class="card-actions">
                 <a href="../view/pedidos.html" class="card-btn">Ver Historial</a>

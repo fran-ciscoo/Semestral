@@ -20,6 +20,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             inputAddress: document.querySelector('#inputAddress'),
             inputPhone: document.querySelector('#inputPhone'),
             btnCancelar: document.querySelector('#cancelar'),
+            inputPostalCode: document.querySelector('#inputPostalCode')
 
         }
 
@@ -76,9 +77,9 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     htmlElements.inputUsername.value = user.username || '';
                     htmlElements.inputUsername.disabled = true;
                     htmlElements.inputEmail.value = user.email || '';
-                    console.log('Email del usuario:', user.email);
                     htmlElements.inputCity.value = user.shippingAddress?.city || '';
                     htmlElements.inputAddress.value = user.shippingAddress?.address || '';
+                    htmlElements.inputPostalCode.value = user.shippingAddress?.postalCode || '';
                     htmlElements.inputPhone.value = user.phone || '';
 
                     htmlElements.formEditar.addEventListener('submit', async (e) => {
@@ -92,6 +93,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                                 country: 'Panamá',
                                 city: htmlElements.inputCity.value.trim(),
                                 address: htmlElements.inputAddress.value.trim(),
+                                postalCode: htmlElements.inputPostalCode.value.trim()
                             },
                             phone: htmlElements.inputPhone.value.trim(),
                         }
@@ -206,7 +208,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             printHtml(element, text) {
                 element.innerHTML += `${text}`;
             },
-
             async addBottom() {
                 const session = await methods.verfySession();
                 const text = session !== 'none'
@@ -224,6 +225,14 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                             methods.logout();
                         });
                     }
+                }
+            },
+            verifyAddress(){
+                const params = new URLSearchParams(window.location.search);
+                const msg = params.get('msg');
+                if (msg === 'noAddress') {
+                    methods.showModal(htmlElements.dialogEditar);
+                    methods.viewDetails();
                 }
             }
             }
@@ -245,7 +254,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     e.preventDefault();
                     methods.hideModal(htmlElements.dialogEditar);
                 });
-
+                methods.verifyAddress();
             }
         }
     })();

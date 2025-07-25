@@ -123,34 +123,6 @@ fastify.delete('/:id', async (request, reply) => {
     }
 });
 
-fastify.put('/address', async (request, reply) => {
-    try {
-        const token = request.cookies.token;
-        const decoded = jwt.verify(token, secretKey);
-        const userId = decoded.id;
-        const { country, city, address, postalCode } = request.body;
-        if (!country || !city || !address || !postalCode) {
-            return reply.status(400).send({ message: 'Todos los campos de dirección son requeridos.' });
-        }
-        const updatedUser = await User.findByIdAndUpdate(
-            userId,
-            {
-                shippingAddress: {
-                    country,
-                    city,
-                    address,
-                    postalCode
-                }
-            },
-            { new: true }
-        ).select('-password');
-        return reply.status(200).send({ message: 'Dirección actualizada con éxito.', user: updatedUser });
-    } catch (error) {
-        console.error('Error al actualizar dirección:', error);
-        return reply.status(500).send({ message: 'Error interno del servidor.' });
-    }
-});
-
 fastify.get('/address', async (request, reply) => {
     try {
         const token = request.cookies.token;
@@ -158,8 +130,8 @@ fastify.get('/address', async (request, reply) => {
         const userId = decoded.id;
 
         const user = await User.findById(userId).select('shippingAddress');
-        if (!user.shippingAddress.country) {
-            return reply.status(400).send({ message: 'El usuario no tiene direccion registrada', error: 'noAddress' });
+        if (!user.shippingAddress.city) {
+            return reply.status(400).send({ message: 'Por favor completa tu dirección de envío en tu perfil.', error: 'noAddress' });
         }
 
         return reply.status(200).send({ shippingAddress: user.shippingAddress });

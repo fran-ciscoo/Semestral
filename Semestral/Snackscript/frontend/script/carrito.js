@@ -11,9 +11,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
             priceItems: document.querySelector('#price-breakdown'),
             messageCart: document.querySelector('#messageCart'),
             btnBuy: document.querySelector('#btnBuy'),
-            dialogAddress: document.querySelector('#addressDialog'),
-            formAddress: document.querySelector('#addressForm'),
-            closeDialog: document.querySelector('#closeDialog'),
             confirmAddressDialog: document.querySelector('#confirmAddressDialog'),
             addressInfo: document.querySelector('#address-info'),
             confirmBtn: document.querySelector('#btn-yes'),
@@ -61,7 +58,20 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     cartList.innerHTML = '';
                     const summary = htmlElements.priceItems;
                     summary.innerHTML = '';
-                    
+                    if (!cart.items || cart.items.length === 0) {
+                        cartList.innerHTML = `
+                            <li class="cart-empty">
+                                <div class="empty-content">
+                                    <span class="empty-icon">🛒</span>
+                                    <p>Tu carrito está vacío</p>
+                                    <a href="../view/index.html" class="btn-empty">Ir a comprar</a>
+                                </div>
+                            </li>
+                        `;
+                        summary.innerHTML = '';
+                        htmlElements.cartProdCount.innerHTML = '0 artículos';
+                        return;
+                    }
                     cart.items.forEach(item => {
                         const li = document.createElement('li');
                         li.classList.add('cart-item');
@@ -202,14 +212,20 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     });
                     const data = await response.json();
                     if (!response.ok) {
-                        console.error('Ocurrió un error inesperado: ', data.message);
+                        htmlElements.messageCart.textContent = data.message;
+                        htmlElements.messageCart.style.backgroundColor = '#f94144';
+                        htmlElements.messageCart.classList.add('show');
+                        setTimeout(() => {
+                            htmlElements.messageCart.classList.remove('show');
+                        }, 3000);
                         return;
                     }
-                    htmlElements.messageCart.textContent = 'Pedido Creado.';
+                    htmlElements.messageCart.textContent = 'Pedido en progreso. Consulta tus pedidos para más info.';
                     htmlElements.messageCart.classList.add('show');
                     setTimeout(() => {
                         htmlElements.messageCart.classList.remove('show');
                     }, 3000);
+                    methods.clearUserCart();
                 } catch (error) {
                     console.error('Error al crear la orden:', error);
                     htmlElements.messageCart.textContent = 'Error al crear la orden.';
@@ -217,6 +233,22 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     setTimeout(() => {
                         htmlElements.messageCart.classList.remove('show');
                     }, 3000);
+                }
+            },
+            async clearUserCart() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/cart/clear', {
+                        method: 'PUT',
+                        credentials: 'include',
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        console.warn('No se pudo vaciar el carrito:', data.message);
+                        return;
+                    }
+                    methods.viewItemsCart();
+                } catch (error) {
+                    console.error('Error al vaciar el carrito:', error);
                 }
             },
             async addNavbar() {
@@ -233,33 +265,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
 
                 methods.printHtml(container, generar);
             },
-            async updateAddress(shippingData) {
-                try {
-                    const response = await fetch('http://localhost:3000/api/users/address', {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        credentials: 'include',
-                        body: JSON.stringify(shippingData)
-                    });
-
-                    if (!response.ok) {
-                        console.warn('No se pudo actualizar la dirección');
-                        return;
-                    }
-
-                    const data = await response.json();
-                    console.log('Dirección actualizada:', data);
-                    htmlElements.messageCart.textContent = 'Dirección actualizada con éxito';
-                    htmlElements.messageCart.classList.add('show');
-                    setTimeout(() => {
-                        htmlElements.messageCart.classList.remove('show');
-                    }, 3000);
-                } catch (error) {
-                    console.error('Error al actualizar dirección:', error);
-                }
-            },
             async getUserAddress() {
                 try {
                     const { addressInfo, confirmAddressDialog } = htmlElements;
@@ -273,13 +278,12 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     const data = await response.json();
                     const shippingAddress = data.shippingAddress;
                     if (data.error === 'noAddress') {
-                        console.warn('Error al crear la orden, usuario no tiene direccion', data.message);
                         htmlElements.messageCart.textContent = data.message;
                         htmlElements.messageCart.classList.add('show');
                         setTimeout(() => {
                             htmlElements.messageCart.classList.remove('show');
-                        }, 3000);
-                        htmlElements.dialogAddress.showModal();
+                            window.location.href = '../view/perfil.html?msg=noAddress';
+                        }, 2000);
                         return;
                     }
                     if (!response.ok) {
@@ -312,7 +316,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
 
         return {
             init() {
-                const { btnBuy, closeDialog, formAddress, dialogAddress, confirmBtn, noBtn, confirmAddressDialog} = htmlElements;
+                const { btnBuy, confirmBtn, noBtn, confirmAddressDialog} = htmlElements;
                 methods.viewItemsCart();
                 methods.addNavbar();
                 methods.addFooter();
@@ -321,22 +325,11 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     methods.getUserAddress();
                 });
                 confirmBtn.addEventListener('click', async (e) => {
+                    htmlElements.confirmAddressDialog.close();
                     methods.createOrder();
                 });
                 noBtn.addEventListener('click', (e) => {
                     confirmAddressDialog.close();
-                });
-                closeDialog.addEventListener('click', (e) => {
-                    dialogAddress.close();
-                });
-                formAddress.addEventListener('submit', (e) => {
-                    const shippingData = {
-                        country: document.getElementById('country').value,
-                        city: document.getElementById('city').value,
-                        address: document.getElementById('address').value,
-                        postalCode: document.getElementById('postalCode').value
-                    };
-                    methods.updateAddress(shippingData);
                 });
             }
         }

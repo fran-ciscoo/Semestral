@@ -104,4 +104,21 @@ export default async function cartRoutes(fastify, opts) {
             return reply.status(500).send({ message: 'Error interno del servidor' });
         }
     });
+    fastify.put('/clear', async (request, reply) => {
+        try {
+            const token = request.cookies.token;
+            const decoded = jwt.verify(token, secretKey);
+            const userId = decoded.id;
+            const cart = await Cart.findOne({ userId });
+            if (!cart) {
+                return reply.status(404).send({ message: 'No se encontró un carrito para este usuario.' });
+            }
+            cart.items = [];
+            await cart.save();
+            return reply.status(200).send({ message: 'Carrito vaciado correctamente.' });
+        } catch (error) {
+            console.error('Error al vaciar el carrito:', error);
+            return reply.status(500).send({ message: 'Error al vaciar el carrito.' });
+        }
+    });
 }

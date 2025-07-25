@@ -7,6 +7,7 @@ import {navbarA, footer} from "../component/navbar.js"
             footer: document.querySelector('#footer'),
             botonAñadir: document.querySelector('#addProductBtn'),
             containerProduct: document.querySelector('#snackList'),
+            botones: document.querySelectorAll('.filters-container button'),
 
             editProduct: document.querySelector('#editProductDialog'),
             formE: document.querySelector('#editProductForm'),
@@ -113,6 +114,38 @@ import {navbarA, footer} from "../component/navbar.js"
                 }
                 preview.style.backgroundImage = `url('${urlImagen}')`;
                 dropZone.classList.add('has-thumb');
+            },
+
+            viewOnlyCategory(category){
+                fetch(`http://localhost:3000/api/productos/category?category=${category}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        const container = htmlElements.containerProduct;
+                        container.innerHTML = '';
+
+                        if (!Array.isArray(data.productos)) {
+                            console.error('La propiedad "productos" no está definida o no es un array:', data);
+                            return;
+                        }
+
+                        data.productos.forEach(product => {
+                            const productCard = `
+                                <div class="product-card">
+                                    <div class="product-info">
+                                        <img src="${product.image}" alt="${product.name} imagen" class="product-image">
+                                        <h2 class="product-title">${product.name}</h2>
+                                        <p class="product-description">${product.description}</p>
+                                        <p class="product-price">$${product.price}</p>
+                                        <div class="product-actions">
+                                            <button class="edit-btn" data-id="${product._id}">Editar</button>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            container.innerHTML += productCard;
+                        });
+                    }).catch(error => console.error('Error al obtener productos:', error));
+
             },
 
             viewProducts() {
@@ -356,7 +389,7 @@ import {navbarA, footer} from "../component/navbar.js"
 
         return{
             init(){
-                const {form, botonCancelar, botonAñadir, formE, botonEditCancel} = htmlElements;
+                const {form, botonCancelar, botonAñadir, formE, botonEditCancel, botones} = htmlElements;
                 document.addEventListener('DOMContentLoaded', () => {
                     methods.verifyAdmin();
                 });
@@ -364,6 +397,18 @@ import {navbarA, footer} from "../component/navbar.js"
                 methods.addFooter();
                 methods.viewProducts();
                 methods.dropZoneF();
+
+                botones.forEach((boton) =>{
+                    boton.addEventListener('click', (e) =>{
+                        e.preventDefault();
+                        const id = boton.id.split("btn")[1];
+                        if (id == "Todo"){
+                            methods.viewProducts();
+                        }else{
+                            methods.viewOnlyCategory(id);
+                        }
+                    })
+                });
 
                 botonAñadir.addEventListener('click', (e) => {
                     e.preventDefault();

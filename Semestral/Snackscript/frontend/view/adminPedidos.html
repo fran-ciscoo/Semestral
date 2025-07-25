@@ -17,17 +17,32 @@
             <h3>Lista de pedidos realizados</h3>
             <p>Seguimiento de los pedidos en curso</p>
             <div class="filter-buttons">
-                <button id="btnFilterPendientes">Pendientes</button>
-                <button id="btnFilterPreparacion">En preparación</button>
-                <button id="btnFilterCamino">En camino</button>
-                <button id="btnFilterCompleted">Completados</button>
+                <button id="PENDIENTE">Pendientes</button>
+                <button id="EN PREPARACIÓN">En preparación</button>
+                <button id="EN CAMINO">En camino</button>
+                <button id="ENTREGADO">Completados</button>
+                <button id="CANCELADO">Cancelados</button>
             </div>
-
-            <div id="nombreUsuario"></div>
 
             <div id="infoPedido"></div>
         </main>
-            
+
+        <dialog id="editStatus" class="dialog">
+            <h2>Editar estado de pedido</h2>
+            <form id="editStatusForm">
+                <label for="editStatus">Estado:</label>
+                <select id="editStatus">
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="EN PREPARACION">En preparación</option>
+                    <option value="EN CAMINO">En camino</option>
+                    <option value="ENTREGADO">Entregado</option>
+                    <option value="CANCELADO">Cancelado</option>
+                </select>
+                <button type="submit">Guardar Cambios</button>
+                <button type="button" id="cancelEdit">Cancelar</button>
+            </form>
+        </dialog>
+        
         <div id="footer"></div>
     </div>
 </body>

@@ -7,10 +7,7 @@ import {navbarA, footer} from "../component/navbar.js"
             footer: document.querySelector('#footer'),
 
             containerUsers: document.querySelector('#Usuarios'),
-            btnTodos: document.querySelector('#btnFilterAll'),
-            btnAdmins: document.querySelector('#btnFilterAdmin'),
-            btnUsers: document.querySelector('#btnFilterUser'),
-            btnSub: document.querySelector('#btnFilterSubscriber'),
+            botones: document.querySelectorAll('.filter-buttons button'),
 
             dialogActions: document.querySelector('#actions-User'),
             btnEditUser: document.querySelector('#btnEditUser'),
@@ -204,7 +201,7 @@ import {navbarA, footer} from "../component/navbar.js"
 
         return{
             init(){
-                const {btnTodos, btnAdmins, btnSub, btnUsers, btnCancelEdit, btnCancelActions, formEditUser} = htmlElements;
+                const {botones, btnCancelEdit, btnCancelActions} = htmlElements;
                 document.addEventListener('DOMContentLoaded', () => {
                     methods.verifyAdmin();
                 });
@@ -212,24 +209,17 @@ import {navbarA, footer} from "../component/navbar.js"
                 methods.addFooter();
                 methods.viewUsers();
 
-                btnTodos.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.viewUsers();
-                });
-
-                btnAdmins.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.viewOnlyAdmins('admin');
-                });
-
-                btnUsers.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.viewOnlyAdmins('user');
-                });
-
-                btnSub.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.viewOnlyAdmins('subscriber');
+                botones.forEach((boton) =>{
+                    boton.addEventListener('click', (e) =>{
+                        e.preventDefault();
+                        const id = boton.id;
+                        console.log(id);
+                        if (id == "todos"){
+                            methods.viewUsers();
+                        }else{
+                            methods.viewOnlyAdmins(id);
+                        }
+                    })
                 });
 
                 btnCancelEdit.addEventListener('click', (e) => {

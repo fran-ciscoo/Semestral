@@ -6,12 +6,9 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             navbar: document.querySelector('#navbar'),
             footer: document.querySelector('#footer'),
             containerProduct: document.querySelector('#snackList'),
-            btnTodo: document.querySelector('#btnTodo'),
-            btnDulce: document.querySelector('#btnDulce'),
-            btnSalado: document.querySelector('#btnSalado'),
-            btnAcido: document.querySelector('#btnAcido'),
-            btnPicante: document.querySelector('#btnPicante'),
-            btnBebida: document.querySelector('#btnBebida'),
+
+            botones: document.querySelectorAll('.filters-container button'),
+
             messageCart: document.querySelector('#messageCart')
         }
 
@@ -177,41 +174,22 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
         return{
             init(){
-                const {btnTodo, btnDulce, btnAcido, btnSalado, btnPicante, btnBebida} = htmlElements
+                const {botones} = htmlElements
                 methods.addNavbar();
                 methods.addFooter();
                 methods.viewProducts();
 
-                btnTodo.addEventListener('click', (e) =>{
-                    e.preventDefault();
-                    methods.viewProducts();
+                botones.forEach((boton) =>{
+                    boton.addEventListener('click', (e) =>{
+                        e.preventDefault();
+                        const id = boton.id.split("btn")[1];
+                        if (id == "Todo"){
+                            methods.viewProducts();
+                        }else{
+                            methods.viewOnlyCategory(id);
+                        }
+                    })
                 });
-
-                btnDulce.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.viewOnlyCategory('Dulces');
-                });
-
-                btnSalado.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.viewOnlyCategory('Salados');
-                });
-
-                btnAcido.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.viewOnlyCategory('Acidos');
-                });
-
-                btnPicante.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.viewOnlyCategory('Picantes');
-                });
-
-                btnBebida.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.viewOnlyCategory('Bebidas');
-                });
-
             }
         }
     })();

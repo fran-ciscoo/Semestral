@@ -4,42 +4,102 @@ import {navbarA, footer} from "../component/navbar.js"
     const App = (()=>{
         const htmlElements = {
             navbar: document.querySelector('#navbar'),
-            footer: document.querySelector('#footer')
+            footer: document.querySelector('#footer'),
+
+            container: document.querySelector('#infoPedido'),
+            botones: document.querySelectorAll('.filter-buttons button'),
+            dialog: document.querySelector('#editStatus'),
+            form: document.querySelector('#editStatusForm'),
+            btnCancel: document.querySelector('#cancelEdit'),
         }
 
         const methods = {
-            async addPending(){
+            editOrder(){
+                const orderId = htmlElements.form.getAttribute('data-order-id');
+                const status = htmlElements.form.querySelector('#status').value;
+                console.log('Estado seleccionado:', status);
+                fetch(`http://localhost:3000/api/orders/${orderId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status }),
+                    credentials: 'include'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Error al editar el pedido");
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Pedido editado:', data);
+                    methods.hideModal(htmlElements.dialog);
+                    window.location.reload();
+                })
+                .catch(error => console.error('Error al editar pedido:', error));
+            },
+
+            async addFilter(status){
                  try {
-                    const response = await fetch('http://localhost:3000/api/orders', {
+                    const response = await fetch(`http://localhost:3000/api/orders/status/${status}`, {
                         credentials: 'include'
                     });
                     if (!response.ok) throw new Error("No se pudieron obtener los pedidos");
 
-                    const orders = await response.json();
-                    const pendientes = orders.filter(order => order.status === "PENDIENTE");
+                    const data = await response.json();
+                    const orders = data.orders;
 
-                    const container = document.getElementById('pedidosPendientes');
-                    container.innerHTML = ""; // Limpiar antes de agregar
+                    const container = htmlElements.container;
+                    container.innerHTML = "";
 
-                    if (pendientes.length === 0) {
-                        container.innerHTML = "<p>No hay pedidos pendientes.</p>";
+                    if (!orders || orders.length === 0) {
+                        container.innerHTML = `<p>No hay pedidos con estado "${status}".</p>`;
                         return;
                     }
 
-                    pendientes.forEach(order => {
-                        container.innerHTML += `
-                            <div class="pedido">
-                                <p><strong>ID:</strong> ${order.id}</p>
-                                <p><strong>Cliente:</strong> ${order.cliente}</p>
-                                <p><strong>Estado:</strong> ${order.status}</p>
-                                <!-- Agrega más campos si es necesario -->
-                            </div>
+                    let tableHtml = `
+                        <table class="tabla-pedidos">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Usuario</th>
+                                    <th>ID del Pedido</th>
+                                    <th>Monto del Pedido</th>
+                                    <th>Status del Pedido</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    orders.forEach(order => {
+                        tableHtml += `
+                            <tr>
+                                <td>${order.userId?.name || 'Sin nombre'}</td>
+                                <td>${order._id}</td>
+                                <td>${order.totalAmount}</td>
+                                <td>${order.status}</td>
+                                <td>${order.orderedAt}</td>
+                            </tr>
                         `;
                     });
-                } catch (error) {
-                    console.error("Error al obtener pedidos pendientes:", error);
-                }
 
+                    tableHtml += `
+                            </tbody>
+                        </table>
+                    `;
+
+                    container.innerHTML = tableHtml;
+
+                    container.querySelectorAll('tbody tr').forEach(row => {
+                        row.addEventListener('click', () => {
+                            const orderId = row.getAttribute('data-order-id');
+                            methods.showModal(htmlElements.dialog);
+                            htmlElements.form.setAttribute('data-order-id', orderId);
+                        });
+                    });
+
+                } catch (error) {
+                    console.error(`Error al obtener pedidos con estado "${status}":`, error);
+                }
             },
 
             addNavbar(){
@@ -73,6 +133,14 @@ import {navbarA, footer} from "../component/navbar.js"
                 }
             },
 
+            showModal(modal) {
+                modal.showModal();
+            },
+
+            hideModal(modal){
+                modal.close();
+            },
+
             addFooter(){
                 const container = htmlElements.footer;
                 const generar = footer();
@@ -86,11 +154,34 @@ import {navbarA, footer} from "../component/navbar.js"
 
         return{
             init(){
+                const {botones, form, btnCancel} = htmlElements;
                 document.addEventListener('DOMContentLoaded', () => {
                     methods.verifyAdmin();
                 });
                 methods.addNavbar();
                 methods.addFooter();
+                methods.addFilter('PENDIENTE');
+
+                form.addEventListener('submit', (e) =>{
+                    e.preventDefault();
+                    methods.editOrder();
+                });
+
+                btnCancel.addEventListener('click', (e) =>{
+                    e.preventDefault();
+                    methods.hideModal(htmlElements.dialog);
+                });
+
+                botones.forEach((boton) =>{
+                    boton.addEventListener('click', (e) =>{
+                        e.preventDefault();
+                        const id = boton.id;
+                        console.log(id);
+                        if (id){
+                            methods.addFilter(id);
+                        }
+                    })
+                });
             }
         }
     })();

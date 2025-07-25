@@ -27,6 +27,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
 
                     const filteredOrders = orders.filter(order => statuses.includes(order.status));
+                    filteredOrders.sort((a, b) => new Date(b.orderedAt) - new Date(a.orderedAt));
                     htmlElements.cantidadTotal.textContent = filteredOrders.length;
                     htmlElements.cantidadEntregados.textContent = filteredOrders.filter(order => order.status === 'ENTREGADO').length;
                     htmlElements.cantidadCancelados.textContent = filteredOrders.filter(order => order.status === 'CANCELADO').length;
@@ -62,8 +63,10 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         card.innerHTML = `
                             <div class="order-header">
                                 <div class="order-number">
-                                    <span class="idOrder">#${order._id}</span>
-                                    <span class="status">${order.status}</span>
+                                    <span class="idOrder">#${order._id.slice(-5)}</span>
+                                    <span class="status-badge ${order.status === 'ENTREGADO' ? 'delivered' : order.status === 'CANCELADO' ? 'cancelled' : ''}">
+                                        ${order.status}
+                                    </span>
                                 </div>
                                 <div class="order-date">
                                     <span class="date">${formattedDate}</span>

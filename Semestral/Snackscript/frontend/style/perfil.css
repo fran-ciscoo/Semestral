@@ -385,13 +385,20 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
-.order-status.delivered {
-  background: #4CAF50;
-  color: white;
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.order-status.processing {
+.status-badge.pending {
+  background: #9E9E9E;
+  color: white;
+}
+.status-badge.processing {
   background: #FF9800;
   color: white;
 }

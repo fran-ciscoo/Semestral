@@ -60,38 +60,41 @@ body {
   border: 2px solid #DED6FF;
   padding: 32px 20px;
 }
+
 .table-usuarios {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 12px;
+  border-collapse: collapse; /* ✅ Juntas las filas */
   font-size: 1.08rem;
 }
+
+
+
 .table-usuarios th {
   background: #bfa7f2;
   color: #fff;
   font-weight: 700;
   padding: 14px 10px;
-  border-radius: 1rem 1rem 0 0;
   border: none;
   text-align: left;
   letter-spacing: 0.5px;
+  border-bottom: 2px solid #a48cdc;
 }
+
 .table-usuarios td {
   background: #fff;
   color: #2a1b5e;
   padding: 14px 10px;
-  border-radius: 0 0 1rem 1rem;
-  border: none;
   font-weight: 500;
-  box-shadow: 0 2px 8px #bfa7f233;
+  border: none;
+  border-bottom: 1px solid #e0d7f5; /* ✅ Línea entre filas */
+  box-shadow: none; /* ❌ Elimina sombra que separa */
+  transition: background 0.3s ease;
 }
-.table-usuarios tr {
-  transition: box-shadow 0.2s, transform 0.2s;
-}
+
 .table-usuarios tr:hover td {
-  box-shadow: 0 6px 18px #7c3aed33;
-  transform: scale(1.01);
+  background: #f5f0ff; /* ✅ efecto hover sutil */
 }
+
 
 /* Responsive */
 @media (max-width: 900px) {

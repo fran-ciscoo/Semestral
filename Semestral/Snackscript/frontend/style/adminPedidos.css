@@ -1,24 +1,130 @@
+/* Fondo general */
 body {
   background: linear-gradient(120deg, #F5FAFA 0%, #E8F4F8 60%, #F0F8FF 100%);
   font-family: 'Segoe UI', 'Roboto', sans-serif;
   color: #030C26;
 }
 
-/* Tarjeta de encabezado igual a page-header */
-.admin-pedidos-header {
-  background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
-  margin: 40px auto 30px auto;
-  padding: 40px;
+/* Sección principal */
+#lista-pedidos {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Títulos */
+#lista-pedidos h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #2A1B5E;
+}
+
+#lista-pedidos p {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 24px;
+}
+
+/* Botones de filtro */
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.filter-buttons button {
+  background: #f2f0ff;
+  border: 2px solid #bfa7f2;
+  color: #4c3c91;
+  font-weight: 600;
   border-radius: 25px;
-  width: 70%;
-  max-width: 900px;
-  box-shadow: 0 20px 60px rgba(3, 12, 38, 0.15);
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-buttons button:hover {
+  background: linear-gradient(135deg, #c3b3f5 0%, #e4d9ff 100%);
+  color: #170C40;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(191, 167, 242, 0.3);
+}
+
+.filter-buttons button.active {
+  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Estilo para tarjetas individuales de pedidos */
+.pedido-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(149, 86, 166, 0.10);
+  border: 2px solid #DED6FF;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pedido-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(149, 86, 166, 0.18);
+  border-color: #bfa7f2;
+}
+
+/* Dialog */
+.dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+}
+
+.dialog h2 {
+  margin-top: 0;
+  color: #2A1B5E;
+  font-weight: 700;
+}
+
+.dialog button {
+  margin-top: 12px;
+  margin-right: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #bfa7f2;
+  color: white;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.dialog button:hover {
+  background: #a48cdc;
+}
+
+.admin-header-card {
+  background: #e8deff;
+  margin: 40px auto 30px auto;
+  padding: 40px 20px;
+  border-radius: 20px;
+  width: 80%;
+  max-width: 1000px;
+  box-shadow: 0 20px 40px rgba(3, 12, 38, 0.1);
   border: 3px solid rgba(162, 136, 212, 0.3);
   position: relative;
-  overflow: hidden;
   text-align: center;
 }
-.admin-pedidos-header::before {
+
+.admin-header-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -26,155 +132,26 @@ body {
   right: 0;
   height: 5px;
   background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
-  border-radius: 25px 25px 0 0;
+  border-radius: 20px 20px 0 0;
 }
-.admin-pedidos-header h2 {
-  font-size: 2.5rem;
+
+/* Título */
+.admin-header-card h2 {
+  font-size: 2.3rem;
   font-weight: 800;
   color: #170C40;
-  margin: 0 0 10px 0;
+  margin: 0 0 12px 0;
   background: linear-gradient(135deg, #170C40 0%, #2A1B5E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 1px;
-  text-align: center;
+  letter-spacing: 0.5px;
 }
-.admin-pedidos-header p {
-  font-size: 1.2rem;
+
+/* Subtítulo */
+.admin-header-card p {
+  font-size: 1.1rem;
   color: #666;
   margin: 0;
   font-weight: 500;
-  text-align: center;
 }
-
-/* Botones de filtro o acción */
-.admin-pedidos-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin: 24px 0 32px 0;
-}
-.admin-pedidos-buttons button {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #170C40;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-.admin-pedidos-buttons button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.6s ease;
-}
-.admin-pedidos-buttons button:hover::before {
-  left: 100%;
-}
-.admin-pedidos-buttons button:hover {
-  background: linear-gradient(135deg, #99FFC2 0%, #B8FFD1 100%);
-  border-color: #99FFC2;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(153, 255, 194, 0.3);
-}
-.admin-pedidos-buttons button.active {
-  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
-  color: white;
-  border-color: #F26052;
-  box-shadow: 0 4px 12px rgba(242, 96, 82, 0.3);
-}
-
-/* Lista o tabla de pedidos */
-.lista-pedidos-container {
-  max-width: 900px;
-  margin: 0 auto 40px auto;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 8px rgba(149, 86, 166, 0.10);
-  border: 2px solid #DED6FF;
-  padding: 32px 20px;
-}
-.table-pedidos {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 12px;
-  font-size: 1.08rem;
-}
-.table-pedidos th {
-  background: #bfa7f2;
-  color: #fff;
-  font-weight: 700;
-  padding: 14px 10px;
-  border-radius: 1rem 1rem 0 0;
-  border: none;
-  text-align: left;
-  letter-spacing: 0.5px;
-}
-.table-pedidos td {
-  background: #fff;
-  color: #2a1b5e;
-  padding: 14px 10px;
-  border-radius: 0 0 1rem 1rem;
-  border: none;
-  font-weight: 500;
-  box-shadow: 0 2px 8px #bfa7f233;
-}
-.table-pedidos tr {
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-.table-pedidos tr:hover td {
-  box-shadow: 0 6px 18px #7c3aed33;
-  transform: scale(1.01);
-}
-
-/* Tarjeta individual de pedido (opcional) */
-.pedido-card {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 8px rgba(149, 86, 166, 0.10);
-  border: 2px solid #DED6FF;
-  padding: 24px 20px;
-  margin: 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-.pedido-card:hover {
-  box-shadow: 0 8px 24px rgba(149, 86, 166, 0.18);
-  transform: translateY(-4px) scale(1.02);
-  border-color: #bfa7f2;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .admin-pedidos-header {
-    padding: 18px 2vw 12px 2vw;
-    font-size: 0.98rem;
-    width: 98vw;
-    max-width: 98vw;
-  }
-  .lista-pedidos-container {
-    padding: 18px 2vw 12px 2vw;
-    font-size: 0.98rem;
-    width: 98vw;
-  }
-  .table-pedidos th, .table-pedidos td {
-    padding: 8px 4px;
-    font-size: 0.92rem;
-  }
-  .admin-pedidos-buttons {
-    flex-direction: column;
-    gap: 10px;
-  }
-} 

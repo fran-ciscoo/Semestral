@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,18 @@
     <link rel="stylesheet" href="../style/navbar.css">
     <title>Snack script - Pedidos Admin</title>
 </head>
+
 <body>
     <div id="loader">Verificando permisos...</div>
     <div id="contenido" style="display: none;">
         <div id="navbar"></div>
         <main id="lista-pedidos">
-            <h3>Lista de pedidos realizados</h3>
-            <p>Seguimiento de los pedidos en curso</p>
+            <div class="admin-header-card">
+
+                <h3>Lista de pedidos realizados</h3>
+                <p>Seguimiento de los pedidos en curso</p>
+            </div>
+
             <div class="filter-buttons">
                 <button id="PENDIENTE">Pendientes</button>
                 <button id="EN PREPARACIÓN">En preparación</button>
@@ -42,8 +48,9 @@
                 <button type="button" id="cancelEdit">Cancelar</button>
             </form>
         </dialog>
-        
+
         <div id="footer"></div>
     </div>
 </body>
+
 </html>

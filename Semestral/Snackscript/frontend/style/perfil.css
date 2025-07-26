@@ -758,3 +758,118 @@ input:checked + .toggle-slider:before {
     opacity: 1;
   }
 }
+
+/* --- Modal de Editar Perfil --- */
+/* --- Modal de Editar Perfil estilo pastel y suave --- */
+dialog.dialog {
+    border: none;
+    border-radius: 22px;
+    box-shadow: 0 8px 32px rgba(149, 86, 166, 0.18), 0 1.5px 6px rgba(149, 86, 166, 0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    background: linear-gradient(135deg, #F5FAFA 0%, #E8F4F8 100%);
+    max-width: 480px;
+    width: 95%;
+    margin: auto;
+    position: relative;
+    animation: fadeInModal 0.3s;
+    font-family: inherit;
+    z-index: 1000;
+    color: #170C40;
+    overflow: visible;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+dialog.dialog::backdrop {
+    background: rgba(149, 86, 166, 0.18);
+    backdrop-filter: blur(2px);
+}
+
+#formEditarPerfil {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+}
+
+#formEditarPerfil label {
+    font-weight: 600;
+    color: #9556A6;
+    margin-bottom: 0.2rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.2px;
+}
+
+#formEditarPerfil input[type="text"],
+#formEditarPerfil input[type="email"],
+#formEditarPerfil input[type="tel"] {
+    padding: 1rem 1.2rem;
+    border: 1.5px solid #BFA7F2;
+    border-radius: 12px;
+    font-size: 1.08rem;
+    background: rgba(255,255,255,0.7);
+    transition: border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(149, 86, 166, 0.04);
+}
+
+#formEditarPerfil input:focus {
+    border: 2px solid #9556A6;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 0 2px #BFA7F2;
+}
+
+#formEditarPerfil button {
+    margin-top: 0.5rem;
+    padding: 0.9rem 1.2rem;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.08rem;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(149, 86, 166, 0.10);
+}
+
+#formEditarPerfil button[type="button"] {
+    background: #e0e0e0;
+    color: #333;
+    margin-left: 0.5rem;
+    font-weight: 600;
+}
+
+#formEditarPerfil button:hover {
+    background: linear-gradient(135deg, #BFA7F2 0%, #9556A6 100%);
+    box-shadow: 0 6px 20px rgba(149, 86, 166, 0.18);
+}
+
+#formEditarPerfil button[type="button"]:hover {
+    background: #d1c4e9;
+}
+
+#ERROR {
+    color: #e74c3c;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    min-height: 1.2em;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+/* Responsive para modal */
+@media (max-width: 600px) {
+    dialog.dialog {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        max-width: 98vw;
+    }
+    #formEditarPerfil input,
+    #formEditarPerfil button {
+        font-size: 1rem;
+        padding: 0.8rem 0.8rem;
+    }
+}

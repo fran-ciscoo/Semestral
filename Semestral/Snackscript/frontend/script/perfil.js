@@ -31,62 +31,85 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
         const methods = {
             async viewOrders(){
                 try {
-        const response = await fetch('http://localhost:3000/api/order', {
-            credentials: 'include',
-        });
-        if (!response.ok) {
-            throw new Error('Error al obtener los pedidos');
-        }
+                const response = await fetch('http://localhost:3000/api/order', {
+                    credentials: 'include',
+                });
+                if (!response.ok) {
+                    throw new Error('Error al obtener los pedidos');
+                }
 
-        const data = await response.json();
-        const orders = data.orders || data;
-        htmlElements.pedidosCount.textContent = orders.length;
+                const data = await response.json();
+                const orders = data.orders || data;
+                htmlElements.pedidosCount.textContent = orders.length;
+                const recentOrders = [...orders]
+                    .sort((a, b) => new Date(b.orderedAt) - new Date(a.orderedAt))
+                    .slice(0, 3);
 
-        // Ordena por fecha descendente y toma los 3 más recientes
-        const recentOrders = [...orders]
-            .sort((a, b) => new Date(b.orderedAt) - new Date(a.orderedAt))
-            .slice(0, 3);
+                const container = htmlElements.orderList;
+                container.innerHTML = "";
 
-        const container = htmlElements.orderList;
-        container.innerHTML = "";
+                if (!recentOrders || recentOrders.length === 0) {
+                    container.innerHTML = `<p>No tienes pedidos realizados.</p>`;
+                    return;
+                }
 
-        if (!recentOrders || recentOrders.length === 0) {
-            container.innerHTML = `<p>No tienes pedidos realizados.</p>`;
-            return;
-        }
+                recentOrders.forEach(order => {
+                    const dateObj = new Date(order.orderedAt);
+                    const formattedDate = dateObj.toLocaleDateString('es-PA');
+                    const statusClass = order.status === 'ENTREGADO' ? 'delivered' : order.status === 'CANCELADO' ? 'cancelled' : 'pending';
 
-        recentOrders.forEach(order => {
-            const dateObj = new Date(order.orderedAt);
-            const formattedDate = dateObj.toLocaleDateString('es-PA');
-            const statusClass = order.status === 'ENTREGADO' ? 'delivered' : order.status === 'CANCELADO' ? 'cancelled' : 'pending';
+                    const orderDiv = document.createElement('div');
+                    orderDiv.className = "order-item";
+                    orderDiv.innerHTML = `
+                        <div class="order-info">
+                            <span class="idOrder">#${order._id.slice(-5)}</span>
+                            <span class="order-date">${formattedDate}</span>
+                        </div>
+                        <span class="status-badge ${order.status === 'PENDIENTE' ? 'pending' : order.status === 'EN PREPARACION' || order.status === 'EN CAMINO' ? 'processing' : ''}">
+                            ${order.status}
+                        </span>
+                    `;
+                    container.appendChild(orderDiv);
+                });
 
-            const orderDiv = document.createElement('div');
-            orderDiv.className = "order-item";
-            orderDiv.innerHTML = `
-                <div class="order-info">
-                    <span class="idOrder">#${order._id.slice(-5)}</span>
-                    <span class="order-date">${formattedDate}</span>
-                </div>
-                <span class="status-badge ${order.status === 'PENDIENTE' ? 'pending' : order.status === 'EN PREPARACION' || order.status === 'EN CAMINO' ? 'processing' : ''}">
-                    ${order.status}
-                </span>
-            `;
-            container.appendChild(orderDiv);
-        });
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = "card-actions";
+                actionsDiv.innerHTML = `
+                    <a href="../view/pedidos.html" class="card-btn">Ver Historial</a>
+                `;
+                container.appendChild(actionsDiv);
 
-        const actionsDiv = document.createElement('div');
-        actionsDiv.className = "card-actions";
-        actionsDiv.innerHTML = `
-            <a href="../view/pedidos.html" class="card-btn">Ver Historial</a>
-        `;
-        container.appendChild(actionsDiv);
-
-    } catch (error) {
-        console.error('Error al obtener pedidos recientes:', error);
-    }
+                } catch (error) {
+                console.error('Error al obtener pedidos recientes:', error);
+                }
 
             },
+            async saveChanges(userUpdate) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/users/${userUpdate._id}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(userUpdate),
+                        credentials: 'include',
+                    });
 
+                    if (!response.ok) {
+                        throw new Error('Error al actualizar el perfil');
+                    }
+
+                    const data = await response.json();
+                    alert('Perfil actualizado exitosamente');
+                    methods.hideModal(htmlElements.dialogEditar);
+                    methods.viewDetails();
+                    window.location.href = '../view/perfil.html';
+
+                } catch (error) {
+                    console.error('Error al actualizar el perfil:', error);
+                    alert('Error al actualizar el perfil');
+                }
+            },
             async viewDetails() {
                 try {
                     const response = await fetch('http://localhost:3000/api/login/me', {

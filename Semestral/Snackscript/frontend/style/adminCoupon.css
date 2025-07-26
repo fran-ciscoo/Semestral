@@ -1,0 +1,122 @@
+/* --- MODALES DE CUPONES --- */
+dialog, .dialog {
+    border: none;
+    border-radius: 22px;
+    box-shadow: 0 8px 32px rgba(149, 86, 166, 0.18), 0 1.5px 6px rgba(149, 86, 166, 0.10);
+    background: linear-gradient(135deg, #F5FAFA 0%, #E8F4F8 100%);
+    max-width: 420px;
+    width: 95%;
+    margin: auto;
+    padding: 2.5rem 2rem 2rem 2rem;
+    position: relative;
+    color: #170C40;
+    font-family: inherit;
+    animation: fadeInModal 0.3s;
+    z-index: 1000;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+dialog::backdrop {
+    background: rgba(149, 86, 166, 0.18);
+    backdrop-filter: blur(2px);
+}
+
+/* Títulos y botones del modal */
+dialog h2, dialog h3 {
+    text-align: center;
+    color: #9556A6;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+dialog form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+dialog label {
+    font-weight: 600;
+    color: #9556A6;
+    margin-bottom: 0.2rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.2px;
+}
+
+dialog input[type="text"],
+dialog input[type="number"],
+dialog select {
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #BFA7F2;
+    border-radius: 12px;
+    font-size: 1.08rem;
+    background: rgba(255,255,255,0.7);
+    transition: border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(149, 86, 166, 0.04);
+}
+
+dialog input:focus,
+dialog select:focus {
+    border: 2px solid #9556A6;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 0 2px #BFA7F2;
+}
+
+dialog button[type="submit"] {
+    margin-top: 0.5rem;
+    padding: 0.9rem 1.2rem;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.08rem;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(149, 86, 166, 0.10);
+}
+
+dialog button[type="button"] {
+    background: #e0e0e0;
+    color: #333;
+    margin-left: 0.5rem;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 0.9rem 1.2rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+dialog button[type="submit"]:hover {
+    background: linear-gradient(135deg, #BFA7F2 0%, #9556A6 100%);
+    box-shadow: 0 6px 20px rgba(149, 86, 166, 0.18);
+}
+
+dialog button[type="button"]:hover {
+    background: #d1c4e9;
+}
+
+/* Responsive para modal */
+@media (max-width: 600px) {
+    dialog, .dialog {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        max-width: 98vw;
+    }
+    dialog input,
+    dialog button,
+    dialog select {
+        font-size: 1rem;
+        padding: 0.8rem 0.8rem;
+    }
+    dialog h2, dialog h3 {
+        font-size: 1.2rem;
+    }
+}

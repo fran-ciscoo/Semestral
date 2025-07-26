@@ -1543,22 +1543,34 @@ body {
     padding-bottom: 32px !important;
 }
 
-/* Responsive */
-@media (max-width: 700px) {
-  .ultra-modal-header {
-      margin-top: 1.2rem;
-      margin-bottom: 1.2rem;
-  }
-  .ultra-modal-icon {
-      font-size: 2.3rem;
-  }
-  .ultra-modal-title {
-      font-size: 1.3rem;
-  }
-  .modal-form, .ultra-glass-modal, #addProductDialog {
-      padding-top: 18px !important;
-      padding-bottom: 18px !important;
-  }
+.ultra-modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    margin-top: 2.2rem;
+    margin-bottom: 2.2rem;
+    text-align: center;
+}
+
+.ultra-modal-icon {
+    font-size: 3.5rem;
+    margin-bottom: 0.2rem;
+    filter: drop-shadow(0 2px 12px #bfa7f2aa);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ultra-modal-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #9556A6;
+    letter-spacing: 0.5px;
+    text-align: center;
+    margin: 0;
+    line-height: 1.1;
 }
 
 .drop-zone {

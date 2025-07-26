@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/adminCoupon.css">
+    <script type="module" src="../script/adminCoupon.js" defer></script>
+    <link rel="stylesheet" href="../style/navbar.css">
+    <link rel="stylesheet" href="../style/puntos.css">
+    <title>Snack script - Administración de cupones</title>
+</head>
+<body>
+    <div id="loader">Verificando permisos...</div>
+    <div id="contenido" style="display: none;">
+    <div id="navbar"></div>
+
+
+    <main class="add-puntos-section">
+        <h2>Administración de cupones</h2>
+
+        <div class="coupon-event">
+                <h3>Listado de productos</h3>
+                <div class="add-button">
+                    <button id="btnAddCoupon">Añadir cupón</button>
+                </div>
+            </div>
+
+        <div class="add-container">
+            <table class="add-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Puntos</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+                <tbody id="coupon"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <dialog id="coupon-dialog">
+        <h3>Crear nuevo cupón</h3>
+        <form id="coupon-form">
+            <label for="coupon-name">Nombre del cupón:</label>
+            <input type="text" id="coupon-name" name="name" required>
+            <label for="coupon-points">Puntos necesarios:</label>
+            <input type="number" id="coupon-points" name="points" required min="0">
+            <label for="coupon-type">Tipo de cupón:</label>
+            <select id="coupon-type" name="type" required>
+                <option value="" disabled selected>Seleccione un tipo</option>
+                <option value="PRODUCTO">Producto</option>
+                <option value="DESCUENTO">Descuento</option>
+            </select>
+            <div class="section" id="sections">
+                <div id="DESCUENTO" style="display: none;">
+                    <label for="coupon-discount">Descuento:</label>
+                    <input id="coupon-discount" name="discount" min="0">
+                </div>
+                <div id="PRODUCTO" style="display: none;">
+                    <label for="coupon-product">Producto:</label>
+                    <select id="producto" name="product">
+                       
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Crear</button>
+            <button type="button" id="close-coupon-dialog">Cerrar</button>
+        </form>
+    </dialog>
+
+        <dialog id="actions-Cupon" class="dialog">
+            <h2>Acciones a este cupon</h2>
+            <button id="btnEditCupon">Editar</button>
+            <button id="btnDeleteCupon">Eliminar</button>
+            <button id="btnCancelActions">Cancelar</button>
+        </dialog>
+
+        <dialog id="editDialog" class="dialog">
+            <h2>Editar cupon</h2>
+            <form id="editCupon">
+                <label for="active">Estado</label>
+                <select id="editActive" name="active" required>
+                    <option value="" disabled selected>Seleccione un estado</option>
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
+                <button type="submit">Guardar Cambios</button>
+                <button type="button" id="cancelEditUser">Cancelar</button>
+            </form>
+        </dialog>
+
+    <div id="footer"></div>
+</body>
+</html>

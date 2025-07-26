@@ -5,27 +5,30 @@ const CouponSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    discountAmount: {
+    valuePoints: {
         type: Number,
-        required: true,
-        min: 0
+        required: true
     },
-    expiresAt: {
-        type: Date,
+    type:{
+        type: String,
+        enum: ['PRODUCTO', 'DESCUENTO'],
         required: true
     },
     isActive: {
         type: Boolean,
         default: true
     },
-    valuePoints: {
+    discountAmount: {
         type: Number,
-        required: true
+        min: 0
     },
     applicableTo: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }],
+    expiresAt: {
+        type: Date
+    },
 });
 
 const Coupon = mongoose.model('Coupon', CouponSchema);

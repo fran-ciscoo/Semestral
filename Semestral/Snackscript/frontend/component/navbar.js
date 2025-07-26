@@ -41,6 +41,7 @@ export function navbarA(){
                         <nav class="navbar" role="navigation">
                             <a href="/view/indexAdmin.html">Inicio</a>
                             <a href="/view/adminUsers.html">Usuarios</a>
+                            <a href="/view/adminCoupon.html">Cupones</a>
                             <a href="/view/adminPedidos.html">Pedidos</a>
                             <a href="/view/adminPerfil.html">Perfil</a>
                         </nav>

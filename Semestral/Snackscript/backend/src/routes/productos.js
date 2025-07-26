@@ -89,6 +89,22 @@ export default async function productosRoutes(fastify, opts) {
     };
   });
 
+  fastify.get('/name', async (request, reply) => {
+    const { name } = request.query;
+
+    if (!name) {
+      return reply.status(400).send({ error: 'El parámetro "name" es requerido.' });
+    }
+
+    try {
+      const productos = await Product.find({ name: { $regex: name, $options: 'i' } });
+      return reply.status(200).send({ productos });
+    } catch (error) {
+      console.error('Error al obtener productos por nombre:', error);
+      return reply.status(500).send({ error: 'Error interno del servidor.' });
+    }
+  });
+
   fastify.get('/:id', async (request, reply) => {
     const { id } = request.params;
     const producto = await Product.findById(id);

@@ -206,7 +206,7 @@ body {
   margin-bottom: 40px;
 }
 /* === MODAL PARA AGREGAR PRODUCTOS MEJORADO === */
-/* MODAL aún más ancho y con padding generoso */
+
 .modal-form {
   background: linear-gradient(135deg, #e0e7ff 0%, #f5e6ff 100%);
   padding: 48px 64px;
@@ -214,7 +214,7 @@ body {
   box-shadow: 0 20px 60px rgba(149, 86, 166, 0.15), 0 2px 12px rgba(191, 167, 242, 0.10);
   min-width: 600px;
   max-width: 900px;
-  max-height: 90vh;
+  max-height: 70vh;
   overflow-y: auto;
   border: 2.5px solid #bfa7f2;
   position: relative;
@@ -292,8 +292,14 @@ body {
 
 .modal-form textarea {
   resize: vertical;
-  min-height: 90px;
+  min-height: 120px;
+  padding-top: 20px;
+  vertical-align: top;
+  line-height: 1.5;
+  font-family: inherit;
+  box-sizing: border-box;
 }
+
 
 .modal-form button {
   background: linear-gradient(135deg, #F29441 0%, #F26052 100%);
@@ -1413,7 +1419,7 @@ body {
 }
 
 .ultra-input-group {
-  margin-bottom: 10px;
+  margin-bottom: 14px;
   display: flex;
   flex-direction: column;
 }
@@ -1440,7 +1446,7 @@ body {
 }
 
 .ultra-input-group textarea.ultra-input {
-  min-height: 60px;
+  min-height: 70px;
   resize: vertical;
 }
 
@@ -1638,4 +1644,325 @@ body {
   opacity: 1;
   pointer-events: auto;
   top: 40px;
+}
+
+/* ===== FLOATING FIELD - DISEÑO MODERNO ===== */
+
+/* Contenedor principal del campo */
+.floating-field {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+/* Label flotante */
+.floating-field label {
+    position: absolute;
+    top: -40%;
+    left: 16px;
+    transform: translateY(-50%);
+    color: #2A1B5E; /* Color oscuro para mayor contraste */
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease, opacity 0.3s ease; /* Agrega transición de opacidad */
+    opacity: 1; /* Valor inicial */
+    pointer-events: none;
+    background: transparent;
+    z-index: 2;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    overflow: hidden; /* Oculta el texto que sobresale */
+    text-overflow: ellipsis; /* Agrega ... si el texto es muy largo */
+    max-width: calc(100% - 32px); /* Limita el ancho del label */
+}
+
+.floating-field input:focus + label,
+.floating-field input:not(:placeholder-shown) + label,
+.floating-field textarea:focus + label,
+.floating-field textarea:not(:placeholder-shown) + label {
+  top: 8px;
+  transform: translateY(0);
+  font-size: 0.8rem;
+  color: #7C3AED;
+  font-weight: 700;
+}
+
+/* Inputs con efecto glass */
+.floating-field input,
+.floating-field textarea,
+.floating-field select {
+    width: 100%;
+    padding: 20px 16px 8px 16px;
+    background: rgba(255, 255, 255, 0.8); /* Fondo más sólido */
+    border: 2px solid #B8A7F2; /* Borde más visible */
+    border-radius: 12px;
+    color: #2A1B5E; /* Texto oscuro */
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 4px 15px rgba(184, 167, 242, 0.15);
+}
+
+/* Placeholder invisible (necesario para el funcionamiento) */
+.floating-field input::placeholder,
+.floating-field textarea::placeholder {
+    color: #8A7BB8; /* Color suave para placeholder */
+}
+
+/* Estados de focus */
+.floating-field input:focus,
+.floating-field textarea:focus,
+.floating-field select:focus {
+    outline: none;
+    border-color: #7C3AED; /* Color morado al hacer focus */
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Label flotante activo - cuando hay focus o contenido */
+.floating-field input:focus + label,
+.floating-field input:not(:placeholder-shown) + label,
+.floating-field textarea:focus + label,
+.floating-field textarea:not(:placeholder-shown) + label,
+.floating-field select:focus + label,
+.floating-field select:not([value=""]) + label {
+    top: 8px;
+    transform: translateY(0);
+    font-size: 0.8rem;
+    color: #7C3AED; /* Color morado cuando está activo */
+    font-weight: 700;
+    text-shadow: none;
+    max-width: calc(100% - 32px); /* Mantiene el límite de ancho */
+}
+
+/* Textarea específico */
+/* Textarea específico */
+.floating-field textarea {
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+    padding-top: 24px;              /* Aumenta espacio superior para que el texto inicie más abajo */
+    line-height: 1.5;               /* Mejora legibilidad */
+    vertical-align: top;           /* Asegura que el texto no quede centrado verticalmente */
+    box-sizing: border-box;        /* Para que el padding no desborde */
+    display: block;                /* Evita comportamientos inline extraños */
+}
+
+
+/* Select con flecha personalizada */
+.floating-field select {
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232A1B5E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.floating-field select option {
+    background: #FFFFFF;
+    color: #2A1B5E;
+    padding: 10px;
+}
+
+/* ===== VARIANTES DE COLOR ===== */
+
+/* Variante morada */
+.floating-field.accent-purple input:focus,
+.floating-field.accent-purple textarea:focus,
+.floating-field.accent-purple select:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+}
+
+.floating-field.accent-purple input:focus + label,
+.floating-field.accent-purple input:not(:placeholder-shown) + label,
+.floating-field.accent-purple textarea:focus + label,
+.floating-field.accent-purple textarea:not(:placeholder-shown) + label,
+.floating-field.accent-purple select:focus + label {
+    color: #8b5cf6;
+}
+
+/* Variante verde */
+.floating-field.accent-green input:focus,
+.floating-field.accent-green textarea:focus,
+.floating-field.accent-green select:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.floating-field.accent-green input:focus + label,
+.floating-field.accent-green input:not(:placeholder-shown) + label,
+.floating-field.accent-green textarea:focus + label,
+.floating-field.accent-green textarea:not(:placeholder-shown) + label,
+.floating-field.accent-green select:focus + label {
+    color: #10b981;
+}
+
+/* Variante naranja */
+.floating-field.accent-orange input:focus,
+.floating-field.accent-orange textarea:focus,
+.floating-field.accent-orange select:focus {
+    border-color: #f59e0b;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+.floating-field.accent-orange input:focus + label,
+.floating-field.accent-orange input:not(:placeholder-shown) + label,
+.floating-field.accent-orange textarea:focus + label,
+.floating-field.accent-orange textarea:not(:placeholder-shown) + label,
+.floating-field.accent-orange select:focus + label {
+    color: #f59e0b;
+}
+
+/* ===== VALIDACIÓN VISUAL ===== */
+
+/* Campo válido */
+.floating-field.valid input,
+.floating-field.valid textarea,
+.floating-field.valid select {
+    border-color: #10b981;
+}
+
+.floating-field.valid label {
+    color: #10b981;
+}
+
+/* Campo con error */
+.floating-field.error input,
+.floating-field.error textarea,
+.floating-field.error select {
+    border-color: #ef4444;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+}
+
+.floating-field.error label {
+    color: #ef4444;
+}
+
+/* ===== ESTADOS ESPECIALES ===== */
+
+/* Campo deshabilitado */
+.floating-field input:disabled,
+.floating-field textarea:disabled,
+.floating-field select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.floating-field input:disabled + label,
+.floating-field textarea:disabled + label,
+.floating-field select:disabled + label {
+    opacity: 0.6;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .floating-field {
+        margin-bottom: 25px;
+    }
+    
+    .floating-field input,
+    .floating-field textarea,
+    .floating-field select {
+        padding: 18px 14px 6px 14px;
+        font-size: 1rem;
+    }
+    
+    .floating-field label {
+        left: 14px;
+        font-size: 1rem;
+    }
+    
+    .floating-field input:focus + label,
+    .floating-field input:not(:placeholder-shown) + label,
+    .floating-field textarea:focus + label,
+    .floating-field textarea:not(:placeholder-shown) + label,
+    .floating-field select:focus + label {
+        font-size: 0.8rem;
+        top: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-field input,
+    .floating-field textarea,
+    .floating-field select {
+        padding: 16px 12px 6px 12px;
+        font-size: 0.95rem;
+    }
+    
+    .floating-field label {
+        left: 12px;
+        font-size: 0.95rem;
+    }
+}
+
+/* ===== FALLBACK PARA NAVEGADORES ANTIGUOS ===== */
+@supports not (backdrop-filter: blur(10px)) {
+    .floating-field input,
+    .floating-field textarea,
+    .floating-field select {
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+    }
+    
+    .floating-field label {
+        color: #666;
+    }
+    
+    .floating-field input:focus + label,
+    .floating-field input:not(:placeholder-shown) + label,
+    .floating-field textarea:focus + label,
+    .floating-field textarea:not(:placeholder-shown) + label,
+    .floating-field select:focus + label {
+        color: #4facfe;
+    }
+}
+
+.modal-form .floating-field textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 20px 16px 8px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid #B8A7F2;
+  border-radius: 12px;
+  color: #2A1B5E;
+  font-size: 1.05rem;
+  font-family: inherit;
+  line-height: 1.5;
+  vertical-align: top;
+  resize: vertical;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 4px 15px rgba(184, 167, 242, 0.15);
+  box-sizing: border-box;
+}
+
+
+.ultra-modal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ultra-modal-icon {
+  font-size: 3rem; /* Ajusta el tamaño del emoji */
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.ultra-modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2A1B5E;
 }

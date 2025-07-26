@@ -53,7 +53,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                             (order.items || []).forEach(item => {
                                 itemsHtml += `
                                     <div class="item">
-                                        <span class="item-name">${item.name|| ''}</span>
+                                        <span class="item-name">${item.product.name|| ''}</span>
                                         <span class="item-quantity">x${item.quantity || 0}</span>
                                         <span class="item-price">$${((item.price || 0) * (item.quantity || 0)).toFixed(2)}</span>
                                     </div>

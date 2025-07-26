@@ -67,6 +67,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }],
+    coupnsChanged: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Coupon'
+    }],
 })
 
 const User = mongoose.model('User', userSchema)

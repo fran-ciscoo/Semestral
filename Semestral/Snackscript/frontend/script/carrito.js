@@ -106,7 +106,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             <span>${item.product.name} x ${item.quantity}</span>
                             <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
                         </div>
-                        
                         `;
                         cartList.appendChild(li);
                         priceTotal += item.product.price * item.quantity;
@@ -235,6 +234,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         htmlElements.messageCart.classList.remove('show');
                     }, 3000);
                     methods.clearUserCart();
+                    methods.addPoints(data.order);
                 } catch (error) {
                     console.error('Error al crear la orden:', error);
                     htmlElements.messageCart.textContent = 'Error al crear la orden.';
@@ -242,6 +242,27 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     setTimeout(() => {
                         htmlElements.messageCart.classList.remove('show');
                     }, 3000);
+                }
+            },
+            async addPoints(order){
+                try {
+                    const response = await fetch('http://localhost:3000/api/points/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({order})
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Error al añadir puntosssss');
+                    }
+                    console.log('✅Puntos añadidos:', data.points);
+                    return data;
+                } catch (error) {
+                    console.error('❌ Error al añadir puntos:', error.message);
+                    alert('Hubo un error al añadir los puntos.');
                 }
             },
             async clearUserCart() {
@@ -285,7 +306,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         }
                     });
                     const data = await response.json();
-                    /* const shippingAddress = data.shippingAddress; */
                     if (data.error === 'noAddress') {
                         htmlElements.messageCart.textContent = data.message;
                         htmlElements.messageCart.classList.add('show');
@@ -299,12 +319,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         const errorData = await response.json();
                         throw new Error(errorData.message || 'Error al obtener la dirección');
                     }
-                    /* addressInfo.innerHTML = `
-                    <p><strong>País:</strong> ${shippingAddress.country}</p>
-                    <p><strong>Ciudad:</strong> ${shippingAddress.city}</p>
-                    <p><strong>Dirección:</strong> ${shippingAddress.address}</p>
-                    <p><strong>Código Postal:</strong> ${shippingAddress.postalCode}</p>
-                    `; */
                     confirmAddressDialog.showModal();
                     return data.shippingAddress;
                 } catch (error) {

@@ -65,6 +65,13 @@ async function orderRoutes() {
 }
 orderRoutes();
 
+async function pointsRoutes() {
+  await fastify.register(import('./backend/src/routes/points.js'), {
+    prefix: '/api/points'
+  })
+}
+pointsRoutes();
+
 const start = async () => {
     try {
         await connect(MONGO_URI);

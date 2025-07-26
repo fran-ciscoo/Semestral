@@ -40,7 +40,7 @@ fastify.get('/', async (request, reply) => {
             query.status = status;
         }
 
-        const orders = await Order.find(query).populate('userId');
+        const orders = await Order.find(query).populate('userId').populate('items.product');
         return reply.status(200).send({ orders });
     } catch (error) {
         console.error('Error al obtener pedidos:', error);

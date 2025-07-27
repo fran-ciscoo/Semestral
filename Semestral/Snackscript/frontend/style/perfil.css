@@ -1,11 +1,6 @@
-/* ===== ADMIN PERFIL - DISEÑO MEJORADO Y CONSISTENTE ===== */
+/* ===== PERFIL - DISEÑO COMPLETO Y CONSISTENTE ===== */
 
-#logo-navbar img {
-    width: 200px;
-    height: 200px;
-}
-
-/* === GLOBAL MEJORADO === */
+/* === GLOBAL === */
 body {
   margin: 0;
   font-family: 'Segoe UI', 'Roboto', sans-serif;
@@ -15,130 +10,73 @@ body {
   line-height: 1.6;
 }
 
-/* === NAVBAR (si se inyecta) === */
-#navbar, #footer {
+/* === NAVBAR === */
+#navbar {
   background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
-  padding: 20px;
+  padding: 15px 20px;
   color: white;
-  text-align: center;
   box-shadow: 0 8px 25px rgba(3, 12, 38, 0.15);
 }
 
-/* === SECCIÓN PRINCIPAL === */
-#perfil {
-  padding: 40px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-#perfil h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #170C40;
-  margin-bottom: 40px;
-  background: linear-gradient(135deg, #170C40 0%, #2A1B5E 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 1px;
-  position: relative;
-}
-
-#perfil h2::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
-  border-radius: 2px;
-}
-
-/* === TARJETA SIMPLE DEL PERFIL === */
-.profile-card {
+/* === HEADER DEL PERFIL === */
+.profile-header {
   background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
   border-radius: 25px;
-  padding: 40px;
+  padding: 40px 30px;
+  margin: 40px auto 30px auto;
+  max-width: 1000px;
   box-shadow: 0 20px 60px rgba(3, 12, 38, 0.15);
   border: 3px solid rgba(162, 136, 212, 0.3);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  gap: 30px;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  max-width: 600px;
-  margin: 0 auto;
   animation: slideIn 0.6s ease;
 }
 
-.profile-card::before {
+.profile-header::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 5px;
   background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
   border-radius: 25px 25px 0 0;
 }
 
-.profile-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
+.profile-avatar {
+  flex-shrink: 0;
 }
 
-.profile-card:hover::after {
-  left: 100%;
-}
-
-.profile-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 25px 60px rgba(3, 12, 38, 0.2);
-}
-
-/* Header de tarjeta */
-.card-header {
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 30px;
-  text-align: center;
   justify-content: center;
+  box-shadow: 0 8px 25px rgba(242, 96, 82, 0.3);
 }
 
-.card-icon {
+.avatar-initial {
   font-size: 2.5rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
 }
 
-.card-header h3 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #170C40;
-  margin: 0;
-  letter-spacing: 0.5px;
-}
-
-/* Contenido de la tarjeta */
-.card-content {
-  margin-bottom: 30px;
-}
-
-.profile-info-simple {
-  text-align: center;
+.profile-info {
+  flex: 1;
 }
 
 .profile-name {
   font-size: 2.5rem;
   font-weight: 800;
   color: #170C40;
-  margin: 0 0 15px 0;
+  margin: 0 0 10px 0;
   background: linear-gradient(135deg, #170C40 0%, #2A1B5E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -149,8 +87,416 @@ body {
 .profile-email {
   font-size: 1.2rem;
   color: #666;
-  margin: 0;
+  margin: 0 0 20px 0;
   font-weight: 500;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 30px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #F26052;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-actions {
+  flex-shrink: 0;
+}
+
+.edit-profile-btn {
+  background: linear-gradient(135deg, #BFA7F2 0%, #9556A6 100%);
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 15px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 25px rgba(149, 86, 166, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.5px;
+}
+
+.edit-profile-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(149, 86, 166, 0.4);
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+}
+
+.btn-icon {
+  font-size: 1.1rem;
+}
+
+/* === SECCIÓN DE SESIÓN === */
+.session-section {
+  max-width: 1000px;
+  margin: 0 auto 30px auto;
+  padding: 0 20px;
+}
+
+.session-card {
+  background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(3, 12, 38, 0.1);
+  border: 2px solid rgba(162, 136, 212, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.session-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
+  border-radius: 20px 20px 0 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.card-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #170C40;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.session-info {
+  text-align: center;
+}
+
+.session-status {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.session-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.session-actions button,
+.session-actions a {
+  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: 0.3px;
+}
+
+.session-actions button:hover,
+.session-actions a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(242, 96, 82, 0.3);
+  background: linear-gradient(135deg, #D9763D 0%, #F26052 100%);
+}
+
+/* === GRID DE TARJETAS === */
+.profile-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.profile-card {
+  background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(3, 12, 38, 0.1);
+  border: 2px solid rgba(162, 136, 212, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  animation: slideIn 0.6s ease 0.1s both;
+}
+
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.profile-card:hover::before {
+  left: 100%;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 25px 60px rgba(3, 12, 38, 0.15);
+  border-color: rgba(149, 86, 166, 0.5);
+}
+
+/* Contenido específico de las tarjetas */
+.card-content {
+  margin-bottom: 25px;
+}
+
+/* Tarjeta de puntos */
+.points-display {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.points-number {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #F26052;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.points-label {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.points-progress {
+  margin-top: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(149, 86, 166, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #F26052, #D9763D);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+  display: block;
+}
+
+/* Tarjeta de cupones */
+.coupons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.coupon-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(149, 86, 166, 0.2);
+}
+
+.coupon-name {
+  font-weight: 600;
+  color: #170C40;
+}
+
+.coupon-status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.coupon-status.active {
+  background: #4CAF50;
+  color: white;
+}
+
+.coupon-status.used {
+  background: #9E9E9E;
+  color: white;
+}
+
+/* Tarjeta de pedidos */
+.orders-list {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 20px;
+}
+
+/* Tarjeta de direcciones */
+.addresses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.address-item {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(149, 86, 166, 0.2);
+}
+
+.address-name {
+  font-weight: 600;
+  color: #170C40;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.address-text {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Tarjeta de configuración */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(149, 86, 166, 0.2);
+}
+
+.setting-name {
+  font-weight: 600;
+  color: #170C40;
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #F26052;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+/* Tarjeta de ayuda */
+.help-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.help-link {
+  color: #9556A6;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: rgba(149, 86, 166, 0.1);
+}
+
+.help-link:hover {
+  background: rgba(149, 86, 166, 0.2);
+  color: #170C40;
+  transform: translateX(5px);
 }
 
 /* Botones de acción */
@@ -162,10 +508,10 @@ body {
   background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
   color: white;
   border: none;
-  padding: 15px 30px;
-  border-radius: 15px;
-  font-weight: 700;
-  font-size: 1.1rem;
+  padding: 12px 25px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 8px 25px rgba(242, 96, 82, 0.3);
@@ -173,6 +519,8 @@ body {
   text-transform: uppercase;
   position: relative;
   overflow: hidden;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .card-btn::before {
@@ -196,21 +544,124 @@ body {
   background: linear-gradient(135deg, #D9763D 0%, #F26052 100%);
 }
 
-/* === LOADER === */
-#loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+/* === MODAL === */
+.dialog {
+  border: none;
+  border-radius: 25px;
+  box-shadow: 0 25px 80px rgba(149, 86, 166, 0.25);
   background: linear-gradient(135deg, #F5FAFA 0%, #E8F4F8 100%);
+  max-width: 500px;
+  width: 95%;
+  margin: auto;
+  padding: 40px 30px;
+  position: relative;
+  color: #170C40;
+  font-family: inherit;
+  animation: fadeInModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+}
+
+@keyframes fadeInModal {
+  from { 
+    opacity: 0; 
+    transform: translateY(-40px) scale(0.95);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dialog::backdrop {
+  background: rgba(149, 86, 166, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.dialog h2 {
+  text-align: center;
+  color: #170C40;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #170C40 0%, #2A1B5E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#formEditarPerfil {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  font-size: 1.2rem;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#formEditarPerfil label {
   font-weight: 600;
   color: #170C40;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  letter-spacing: 0.3px;
+  display: block;
+}
+
+#formEditarPerfil input {
+  padding: 15px 18px;
+  border: 2px solid #BFA7F2;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(149, 86, 166, 0.1);
+  color: #170C40;
+}
+
+#formEditarPerfil input:focus {
+  border: 2px solid #9556A6;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(149, 86, 166, 0.1);
+  transform: translateY(-2px);
+}
+
+.dialog button {
+  margin-top: 10px;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 15px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.dialog button[type="submit"] {
+  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(242, 96, 82, 0.3);
+}
+
+.dialog button[type="submit"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(242, 96, 82, 0.4);
+  background: linear-gradient(135deg, #D9763D 0%, #F26052 100%);
+}
+
+.dialog button[type="button"] {
+  background: linear-gradient(135deg, #BFA7F2 0%, #9556A6 100%);
+  color: white;
+  margin-left: 10px;
+  box-shadow: 0 8px 25px rgba(149, 86, 166, 0.3);
+}
+
+.dialog button[type="button"]:hover {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(149, 86, 166, 0.4);
 }
 
 /* === ANIMACIONES === */
@@ -227,52 +678,88 @@ body {
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
-  #perfil h2 {
-    font-size: 2rem;
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;
+    margin: 20px auto;
+  }
+  
+  .profile-stats {
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .profile-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 15px;
   }
   
   .profile-card {
-    padding: 30px 20px;
-    margin: 0 20px;
+    padding: 25px 20px;
   }
   
-  .card-header h3 {
+  .session-card {
+    padding: 25px 20px;
+  }
+  
+  .dialog {
+    padding: 30px 20px;
+    max-width: 95vw;
+  }
+  
+  .dialog h2 {
     font-size: 1.5rem;
   }
   
-  .profile-name {
-    font-size: 2rem;
-  }
-  
-  .card-btn {
-    padding: 12px 25px;
+  #formEditarPerfil input,
+  .dialog button {
     font-size: 1rem;
+    padding: 12px 15px;
   }
 }
 
 @media (max-width: 480px) {
-  #perfil h2 {
-    font-size: 1.8rem;
-  }
-  
-  .profile-card {
+  .profile-header {
     padding: 25px 15px;
   }
   
-  .card-header h3 {
-    font-size: 1.3rem;
-  }
-  
   .profile-name {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
   
   .profile-email {
     font-size: 1rem;
   }
   
-  .card-btn {
-    padding: 10px 20px;
+  .profile-stats {
+    gap: 15px;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .profile-card {
+    padding: 20px 15px;
+  }
+  
+  .session-card {
+    padding: 20px 15px;
+  }
+  
+  .dialog {
+    padding: 20px 15px;
+  }
+  
+  .dialog h2 {
+    font-size: 1.3rem;
+  }
+  
+  #formEditarPerfil input,
+  .dialog button {
     font-size: 0.9rem;
+    padding: 10px 12px;
   }
 }

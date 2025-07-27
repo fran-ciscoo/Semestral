@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="../style/navbar.css">
     <title>Snack Script</title>
 </head>
+
 <body>
     <div id="loader">Verificando permisos...</div>
     <div id="contenido" style="display: none;">
@@ -51,16 +53,18 @@
                         <div class="ultra-modal-title">Añadir producto</div>
                     </div>
                     <div class="ultra-modal-fields">
-                        <div class="ultra-input-group">
+                        <div class="floating-field">
                             <label for="productName" class="ultra-label-top">Nombre</label>
-                            <input type="text" id="productName" name="productName" required autocomplete="off" class="ultra-input">
+                            <input type="text" id="productName" name="productName" required autocomplete="off"
+                                class="ultra-input">
                             <div class="error-message" id="nameError"></div>
                         </div>
-                        <div class="ultra-input-group">
+                        <div class="floating-field">
                             <label for="productPrice" class="ultra-label-top">Precio</label>
-                            <input id="productPrice" min="0" name="productPrice" required autocomplete="off" class="ultra-input">
+                            <input id="productPrice" min="0" name="productPrice" required autocomplete="off"
+                                class="ultra-input">
                         </div>
-                        <div class="ultra-input-group">
+                        <div class="floating-field">
                             <label for="productCategory" class="ultra-label-top">Categoría</label>
                             <select id="productCategory" name="productCategory" required class="ultra-input">
                                 <option value="" disabled selected hidden></option>
@@ -71,7 +75,7 @@
                                 <option value="Bebidas">Bebidas</option>
                             </select>
                         </div>
-                        <div class="ultra-input-group">
+                        <div class="floating-field">
                             <label for="productOrigin" class="ultra-label-top">Origen</label>
                             <select id="productOrigin" name="productOrigin" required class="ultra-input">
                                 <option value="" disabled selected hidden></option>
@@ -85,25 +89,29 @@
                             </select>
                             <div class="error-message" id="originError"></div>
                         </div>
-                        <div class="ultra-input-group">
+                        <div class="floating-field">
                             <label for="productStock" class="ultra-label-top">Stock</label>
-                            <input type="number" id="productStock" min="1" name="productStock" required autocomplete="off" class="ultra-input">
+                            <input type="number" id="productStock" min="1" name="productStock" required
+                                autocomplete="off" class="ultra-input">
                         </div>
-                        <div class="ultra-input-group">
+                        <div class="floating-field">
                             <label for="productImage" class="ultra-label-top">Imagen del producto</label>
                             <div id="dropZone" class="drop-zone">
                                 <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
-                                <input type="file" id="productImage" name="productImage" accept="image/*" class="drop-zone__input">
+                                <input type="file" id="productImage" name="productImage" accept="image/*"
+                                    class="drop-zone__input">
                             </div>
                             <div class="error-message" id="imageError"></div>
                         </div>
-                        <div class="ultra-input-group">
+                        <div class="floating-field">
                             <label for="productDescription" class="ultra-label-top">Descripción</label>
-                            <textarea id="productDescription" name="productDescription" required autocomplete="off" class="ultra-input"></textarea>
+                            <textarea id="productDescription" name="productDescription" required autocomplete="off"
+                                class="ultra-input"></textarea>
                         </div>
-                        <div class="ultra-input-group">
+                        <div class="floating-field">
                             <label for="productStory" class="ultra-label-top">Historia</label>
-                            <textarea id="productStory" name="productStory" required autocomplete="off" class="ultra-input"></textarea>
+                            <textarea id="productStory" name="productStory" required autocomplete="off"
+                                class="ultra-input"></textarea>
                         </div>
                     </div>
                     <div class="ultra-modal-actions">
@@ -127,46 +135,60 @@
             <dialog class="modal-form" id="editProductDialog">
                 <form id="editProductForm">
                     <h2>Editar producto</h2>
-                    <label for="productName">Nombre</label>
-                    <input type="text" id="editProductName" name="productName" required>
+                    <div class="floating-field">
+                        <label for="productName">Nombre</label>
+                        <input type="text" id="editProductName" name="productName" required>
+                    </div>
 
-                    <label for="productPrice">Precio</label>
-                    <input  id="editProductPrice" name="productPrice" required>
+                    <div class="floating-field">
+                        <label for="productPrice">Precio</label>
+                        <input id="editProductPrice" name="productPrice" required>
+                    </div>
 
-                    <label for="productCategory">Categoría</label>
-                    <select id="editProductCategory" name="productCategory" required>
-                        <option value="Dulces">Dulces</option>
-                        <option value="Salados">Salados</option>
-                        <option value="Acidos">Acidos</option>
-                        <option value="Picantes">Picantes</option>
-                        <option value="Bebidas">Bebidas</option>
-                    </select>
+                    <div class="floating-field">
+                        <label for="productCategory">Categoría</label>
+                        <select id="editProductCategory" name="productCategory" required>
+                            <option value="Dulces">Dulces</option>
+                            <option value="Salados">Salados</option>
+                            <option value="Acidos">Acidos</option>
+                            <option value="Picantes">Picantes</option>
+                            <option value="Bebidas">Bebidas</option>
+                        </select>
+                    </div>
 
-                    <label for="productOrigin">Origen</label>
+                     <div class="floating-field">
+                        <label for="productOrigin">Origen</label>
                     <select id="editProductOrigin" name="productOrigin" required class="ultra-input">
-                                <option value="" disabled selected hidden></option>
-                                <option value="Panamá">Panamá</option>
-                                <option value="México">México</option>
-                                <option value="Perú">Perú</option>
-                                <option value="Corea del sur">Corea del sur</option>
-                                <option value="Japon">Japon</option>
-                                <option value="Estados unidos">Estados unidos</option>
-                                <option value="España">España</option>
+                        <option value="" disabled selected hidden></option>
+                        <option value="Panamá">Panamá</option>
+                        <option value="México">México</option>
+                        <option value="Perú">Perú</option>
+                        <option value="Corea del sur">Corea del sur</option>
+                        <option value="Japon">Japon</option>
+                        <option value="Estados unidos">Estados unidos</option>
+                        <option value="España">España</option>
                     </select>
-                    <label for="productStock">Stock</label>
+                </div>
+                    <div class="floating-field">
+                        <label for="productStock">Stock</label>
                     <input type="number" id="editProductStock" name="productStock" required>
 
                     <label for="productImage" class="ultra-label-top">Imagen del producto</label>
                     <div id="dropZone" class="drop-zone">
                         <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
-                        <input type="file" id="productImage" name="productImage" accept="image/*" class="drop-zone__input">
+                        <input type="file" id="productImage" name="productImage" accept="image/*"
+                            class="drop-zone__input">
                     </div>
-
-                    <label for="productDescription">Descripción</label>
+                </div>
+                    
+                     <div class="floating-field">
+                        <label for="productDescription">Descripción</label>
                     <textarea id="editProductDescription" name="productDescription" required></textarea>
 
                     <label for="productStory">Historia</label>
                     <textarea id="editProductStory" name="productStory" required></textarea>
+                </div>
+                    
 
                     <button type="submit" id="Actualizar">Actualizar</button>
                     <button type="button" class="cancel-btn" id="cancelEditProduct">Cancelar</button>
@@ -176,6 +198,7 @@
 
         <div id="footer"></div>
     </div>
-    
+
 </body>
+
 </html>

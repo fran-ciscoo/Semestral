@@ -244,6 +244,7 @@ main#carrito {
   box-shadow: 0 4px 12px rgba(242, 96, 82, 0.3);
   position: relative;
   overflow: hidden;
+  margin-bottom: 15px;
 }
 
 #btnBuy::before {
@@ -265,6 +266,80 @@ main#carrito {
   background: linear-gradient(135deg, #D9763D 0%, #F29441 100%);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(242, 96, 82, 0.4);
+}
+
+/* === SECCIÓN SIMPLE DE CUPÓN === */
+.coupon-section {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.coupon-input-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.coupon-input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 2px solid #BFA7F2;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+  color: #170C40;
+  font-weight: 500;
+}
+
+.coupon-input:focus {
+  border: 2px solid #9556A6;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(149, 86, 166, 0.1);
+  transform: translateY(-1px);
+}
+
+.coupon-input::placeholder {
+  color: #999;
+  font-weight: 400;
+}
+
+.apply-coupon-btn {
+  background: linear-gradient(135deg, #BFA7F2 0%, #9556A6 100%);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(149, 86, 166, 0.3);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.apply-coupon-btn:hover {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(149, 86, 166, 0.4);
+}
+
+.apply-coupon-btn:active {
+  transform: translateY(0);
+}
+
+.apply-coupon-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* === SECCIONES ADICIONALES === */
@@ -420,6 +495,15 @@ main#carrito {
   .cart-extra {
     position: sticky;
   }
+  
+  .coupon-input-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .apply-coupon-btn {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -444,6 +528,7 @@ main#carrito {
     justify-content: center;
   }
 }
+
 .alert-message {
   position: fixed;
   top: 20px;

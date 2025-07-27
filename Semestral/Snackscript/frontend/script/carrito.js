@@ -125,7 +125,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     </div>
                     <div class="price-row total">
                         <span>Total</span>
-                        <span>$${priceTotal.toFixed(2)}</span>
+                        <span id="totalAmount">$${priceTotal.toFixed(2)}</span>
                     </div>
                     `;
                     methods.updateQItemFront();
@@ -149,11 +149,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                                 return;
                             }
                             e.target.closest('.cart-item');
-                            htmlElements.messageCart.textContent = 'El producto fue borrado del carrito';
-                            htmlElements.messageCart.classList.add('show');
-                            setTimeout(() => {
-                                htmlElements.messageCart.classList.remove('show');
-                            }, 3000);
+                            methods.showMessage('El producto fue borrado del carrito');
                             methods.viewItemsCart();
                         } catch (error) {
                             console.error('Error al eliminar producto:', error);
@@ -181,12 +177,9 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             quantity -= 1;
                             quantityDisplay.textContent = quantity;
                             methods.updateQuantity(productId, quantity);
+                            return;
                         }
-                        htmlElements.messageCart.textContent = 'No puede poner cantidades negativas';
-                        htmlElements.messageCart.classList.add('show');
-                        setTimeout(() => {
-                            htmlElements.messageCart.classList.remove('show');
-                        }, 3000); 
+                        methods.showMessage('No se puedo poner cantidades negativas', true);
                     });
                 });
             },
@@ -202,12 +195,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     if (!response.ok) {
                         console.warn('No se pudo actualizar la cantidad');
                     }
-                    htmlElements.messageCart.textContent = 'Cantidad Actualizada';
-                    htmlElements.messageCart.classList.add('show');
                     methods.viewItemsCart();
-                    setTimeout(() => {
-                        htmlElements.messageCart.classList.remove('show');
-                    }, 3000);
                 } catch (error) {
                     console.error('Error al actualizar cantidad:', error);
                 }
@@ -228,20 +216,12 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         }, 3000);
                         return;
                     }
-                    htmlElements.messageCart.textContent = 'Pedido en progreso. Consulta tus pedidos para más info.';
-                    htmlElements.messageCart.classList.add('show');
-                    setTimeout(() => {
-                        htmlElements.messageCart.classList.remove('show');
-                    }, 3000);
+                    methods.showMessage('Pedido en progreso. Consulta tus pedidos para más info.', false);
                     methods.clearUserCart();
                     methods.addPoints(data.order);
                 } catch (error) {
                     console.error('Error al crear la orden:', error);
-                    htmlElements.messageCart.textContent = 'Error al crear la orden.';
-                    htmlElements.messageCart.classList.add('show');
-                    setTimeout(() => {
-                        htmlElements.messageCart.classList.remove('show');
-                    }, 3000);
+                    methods.showMessage('Error al crear la orden', true);
                 }
             },
             async addPoints(order){
@@ -326,12 +306,105 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     return null;
                 }
             },
+            async getCouponsUser() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/users/coupons', {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    if (response.status === 401) {
+                        const message = encodeURIComponent('Se ha cerrado la session, inicia nuevamente sesión');
+                        window.location.href = `../view/logIn.html?message=${message}`;
+                        return;
+                    }
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Error desconocido');
+                    return data.couponsChanged;
+                } catch (error) {
+                    console.error('Error al obtener cupones:', error);
+                    return [];
+                }
+            },
+            async renderCoupons() {
+                const container = document.getElementById('couponsUser');
+                container.innerHTML = ''; 
+                const coupons = await methods.getCouponsUser();
+                if (!coupons || coupons.length === 0) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'no-coupons';
+                    messageDiv.innerHTML = `<p>No tienes cupones disponibles en este momento 😔</p>`;
+                    container.appendChild(messageDiv);
+                    return;
+                }
+                const userCouponsDiv = document.createElement('div');
+                userCouponsDiv.className = 'user-coupons';
+                const title = document.createElement('h1');
+                title.textContent = 'Cupones disponibles:';
+                userCouponsDiv.appendChild(title);
+                coupons.forEach(coupon => {
+                    const couponItem = document.createElement('div');
+                    couponItem.className = 'coupon-item';
+                    couponItem.innerHTML = `<p><strong>${coupon.name}</strong></p>`;
+                    couponItem.addEventListener('click', () => {
+                        const isSelected = couponItem.classList.contains('selected');
+
+                        if (coupon.type === 'DESCUENTO') {
+                            // Deseleccionar si ya está seleccionado
+                            if (isSelected) {
+                                couponItem.classList.remove('selected');
+                                methods.showMessage(`Cupón de "${coupon.name}" removido`, false);
+                                methods.applyDiscount(0); // Remueve el descuento
+                            } else {
+                                // Primero deselecciona cualquier otro cupón de tipo DESCUENTO
+                                document.querySelectorAll('.coupon-item[data-type="DESCUENTO"].selected').forEach(el => {
+                                    el.classList.remove('selected');
+                                });
+                                couponItem.classList.add('selected');
+                                methods.showMessage(`Cupón de "${coupon.name}" aplicado`, false);
+                                methods.applyDiscount(coupon.discountAmount);
+                            }
+                        } else {
+                            // PRODUCTO: simplemente alternar el estado
+                            couponItem.classList.toggle('selected');
+                            const nowSelected = couponItem.classList.contains('selected');
+                            methods.showMessage(`Cupón de producto "${coupon.name}" ${nowSelected ? 'aplicado' : 'removido'}`, false);
+                        }
+                    });
+
+                    couponItem.dataset.type = coupon.type;
+                    userCouponsDiv.appendChild(couponItem);
+                });
+                container.appendChild(userCouponsDiv);
+                
+            },
+            applyDiscount(discount) {
+                const totalAmountElement = document.getElementById('totalAmount');
+                if (!totalAmountElement){
+                    methods.showMessage('Agrega un producto al carrito para aplicar el cupon', true);
+                    return;
+                }
+                let currentTotal = parseFloat(totalAmountElement.textContent.replace('$', ''));
+                const discountAmount = currentTotal * discount;
+                const finalTotal = Math.max(currentTotal - discountAmount, 0);
+                totalAmountElement.textContent = `$${finalTotal.toFixed(2)}`;
+            },
+            showMessage(mensaje, color) {
+                htmlElements.messageCart.textContent = mensaje;
+                if (color) {
+                    htmlElements.messageCart.style.backgroundColor = '#f94144';
+                }else{
+                    htmlElements.messageCart.style.backgroundColor = '#43aa8b';
+                }
+                htmlElements.messageCart.classList.add('show');
+                setTimeout(() => {
+                    htmlElements.messageCart.classList.remove('show');
+                }, 3000);
+            },
             addFooter() {
                 const container = htmlElements.footer;
                 const generar = footer();
                 methods.printHtml(container, generar);
             },
-
             printHtml(element, text) {
                 element.innerHTML += `${text}`;
             }
@@ -340,6 +413,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
         return {
             init() {
                 const { btnBuy, confirmBtn, noBtn, confirmAddressDialog} = htmlElements;
+                methods.renderCoupons();
                 methods.viewItemsCart();
                 methods.addNavbar();
                 methods.addFooter();

@@ -33,15 +33,18 @@ export default async function productosRoutes(fastify, opts) {
           console.log('Imagen subida a Cloudinary:', imageUrl);
         }
       }
+      const product = await stripe.products.create({
+        name: formFields.productName,
+        images: [imageUrl],
+      });
+      console.log('Producto creado:', product.id); // Verifica que se imprime algo como 'prod_XXXX'
+      console.log(Math.round(parseFloat(formFields.productPrice) * 100));
       const priceId = await stripe.prices.create({
         currency: 'usd',
-        unit_amount: Math.round(formFields.productPrice * 100),
-        product_data: {
-          name: formFields.productName,
-          image: [imageUrl],
-        },
+        unit_amount: Math.round(parseFloat(formFields.productPrice) * 100),
+        product: product.id,
       });
-
+      
       const productoExistente = await Product.findOne({ name: formFields.productName });
       if (productoExistente) {
         return reply.code(400).send({
@@ -59,7 +62,7 @@ export default async function productosRoutes(fastify, opts) {
         description: formFields.productDescription,
         story: formFields.productStory,
         image: imageUrl,
-        stripeId: priceId,
+        stripeId: priceId.id,
       });
 
       await nuevoProducto.save();

@@ -199,4 +199,28 @@ fastify.get('/favorites', async (request, reply) => {
         return reply.status(500).send({ message: 'Error interno del servidor.' });
     }
 });
+fastify.get('/coupons', async (request, reply) => {
+    try {
+        const token = request.cookies.token;
+        if (!token) {
+            return reply.status(401).send({ error: 'No autorizado. Debes iniciar sesión.' });
+        }
+
+        const decoded = jwt.verify(token, secretKey);
+        const userId = decoded.id;
+
+        const user = await User.findById(userId).populate('couponsChanged');
+        if (!user) {
+            return reply.status(404).send({ error: 'Usuario no encontrado.' });
+        }
+
+        return reply.status(200).send({
+            couponsChanged: user.couponsChanged
+        });
+
+    } catch (error) {
+        console.error('Error al obtener los cupones del usuario:', error);
+        return reply.status(500).send({ error: 'Error del servidor al obtener cupones.' });
+    }
+});
 }

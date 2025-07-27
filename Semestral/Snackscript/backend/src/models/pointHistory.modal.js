@@ -8,7 +8,7 @@ const pointHistorySchema = new mongoose.Schema({
     },
     date: {
         type: Date,
-        default: Date.now
+        default: null
     },
     description: {
         type: String,

@@ -25,6 +25,10 @@ const pointsSchema = new mongoose.Schema({
     lastRedeemDate: {
         type: Date,
         default: null
+    },
+    lastEarnedDate: {
+        type: Date,
+        default: null
     }
 })
 

@@ -197,15 +197,7 @@ main#carrito {
 }
 
 /* === SIDEBAR DE RESUMEN (ESTILO AMAZON) === */
-.cart-summary {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  position: sticky;
-  top: 20px;
-  height: fit-content;
-}
+
 
 .summary-header {
   font-size: 1.3rem;
@@ -316,10 +308,93 @@ main#carrito {
 }
 
 /* === RESPONSIVE MEJORADO === */
+/* ---------- ESTRUCTURA GENERAL ---------- */
+#carrito {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 40px;
+}
+
+#snackList {
+  flex: 1;
+  min-width: 300px;
+}
+
+.cart-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 350px;
+  position: static;
+  height: 13px; 
+}
+
+/* ---------- COMPONENTES: CART SUMMARY Y CUPÓN ---------- */
+.cart-summary,
+.cart-extra {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+  margin-bottom: 20px
+}
+
+/* Estilo del formulario de cupón */
+.cart-extra input {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.cart-extra button {
+  width: 100%;
+  padding: 10px;
+  background-color: #f29441;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cart-extra button:hover {
+  background-color: #d9763d;
+}
+
+/* ---------- ITEM DEL CARRITO ---------- */
+.cart-item {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 20px;
+  padding: 20px;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.cart-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+/* ---------- MEDIA QUERY: RESPONSIVE ---------- */
 @media (max-width: 768px) {
-  main#carrito {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  #carrito {
+    flex-direction: column;
     padding: 0 15px;
   }
 
@@ -341,8 +416,9 @@ main#carrito {
     margin-top: 10px;
   }
 
-  .cart-summary {
-    position: static;
+  .cart-summary,
+  .cart-extra {
+    position: sticky;
   }
 }
 

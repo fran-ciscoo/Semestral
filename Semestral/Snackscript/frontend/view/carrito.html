@@ -27,13 +27,31 @@
         </div>
 
         <!-- Sidebar de resumen -->
-        <div class="cart-summary">
+        <div class="cart-sidebar">
+            <div class="cart-summary">
+                <h3 class="summary-header">Resumen del pedido</h3>
+                <div class="price-breakdown" id="price-breakdown"></div>
+                <button id="btnBuy">Proceder al pago</button>
+            </div>
+        
+            <div class="cart-extra">
+                <p>¿Tienes un cupón de descuento?</p>
+                <input type="text" placeholder="Código de cupón" />
+                <button>Aplicar</button>
+            </div>
+        </div>
+        <!-- <div class="cart-summary">
             <h3 class="summary-header">Resumen del pedido</h3>
             
             <div class="price-breakdown" id="price-breakdown">
             </div>
             <button id="btnBuy">Proceder al pago</button>
         </div>
+        <div class="cart-extra">
+            <p>¿Tienes un cupón de descuento?</p>
+            <input type="text" placeholder="Código de cupón" />
+            <button>Aplicar</button>
+        </div> -->
     </main>
 
     <div id="ultimosComprados">

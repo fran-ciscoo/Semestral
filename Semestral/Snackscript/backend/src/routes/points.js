@@ -44,13 +44,15 @@ export default async function pointsRoutes(fastify, reply) {
                         totalPoints: pointsEarned,
                         pointsPerPurchase: pointsEarned,
                     },
+                    lastEarnedDate: new Date()
                 },
                 { new: true, upsert: true }
             );
             const newEntry = new PointHistory({
                 userId,
                 description: `Compra #${order._id.slice(-5)}`,
-                actionPoints: `+${pointsEarned}`
+                actionPoints: `+${pointsEarned}`,
+                date: new Date()
             });
             await newEntry.save();
             return reply.status(200).send({ message: 'Puntos añadidos correctamente.', points: userPoints });
@@ -88,13 +90,11 @@ export default async function pointsRoutes(fastify, reply) {
             if (!token) {
                 return reply.status(401).send({ error: 'No autorizado. Debes iniciar sesión.' });
             }
-
             const decoded = jwt.verify(token, secretKey);
             const userId = decoded.id;
-
             const history = await PointHistory.find({ userId }).sort({ date: -1 });
-
-            return reply.status(200).send({ history });
+            const points = await Points.findOne({ userId });
+            return reply.status(200).send({ history, points});
         } catch (error) {
             console.error('Error al obtener historial de puntos:', error);
             return reply.status(500).send({ error: 'Error del servidor al obtener historial de puntos.' });

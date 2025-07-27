@@ -67,7 +67,7 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }],
-    coupnsChanged: [{
+    couponsChanged: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Coupon'
     }],

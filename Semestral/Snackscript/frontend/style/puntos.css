@@ -144,6 +144,7 @@ body {
   justify-content: center;
 }
 .puntos-canje-card {
+  cursor: pointer;
   background: linear-gradient(135deg, #F2D9BB 0%, #F5E6D3 100%);
   border: 3px solid #F29441;
   border-radius: 18px;
@@ -152,30 +153,32 @@ body {
   max-width: 220px;
   text-align: center;
   box-shadow: 0 8px 24px rgba(242, 96, 82, 0.10);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
+
 .puntos-canje-card:hover {
   transform: translateY(-6px) scale(1.04);
   box-shadow: 0 16px 32px rgba(242, 96, 82, 0.18);
   border-color: #D9763D;
 }
-.puntos-canje-card img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  border: 2px solid #9556A6;
+
+.puntos-canje-card.disabled {
+  background: #f0f0f0;
+  border-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  /* pointer-events: none;  <--- esto lo quitamos */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
-.canje-nombre {
-  font-weight: 700;
-  color: #170C40;
-  margin-bottom: 6px;
+
+.puntos-canje-card.disabled:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+  border-color: #bbb;
 }
-.canje-puntos {
-  color: #F26052;
-  font-weight: 800;
-  font-size: 1.1rem;
+
+.puntos-canje-card.disabled .canje-puntos {
+  color: #aaa;
 }
 
 /* Mejora tabla de historial de puntos */
@@ -316,4 +319,70 @@ body {
     max-width: 98vw;
     min-width: 0;
   }
+}
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#confirmDialog {
+  border: none;
+  border-radius: 10px;
+  padding: 20px 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dialog-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.dialog-buttons button {
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+#confirmYes {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#confirmNo {
+  background-color: #f44336;
+  color: white;
+}
+.alert-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #43aa8b;
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, top 0.4s ease;
+}
+
+/* Mostrar el mensaje */
+.alert-message.show {
+  opacity: 1;
+  pointer-events: auto;
+  top: 40px;
 }

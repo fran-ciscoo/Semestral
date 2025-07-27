@@ -21,14 +21,54 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             inputPhone: document.querySelector('#inputPhone'),
             btnCancelar: document.querySelector('#cancelar'),
             inputPostalCode: document.querySelector('#inputPostalCode'),
-
+            points: document.querySelector('#points'),
+            points2: document.querySelector('#points2'),
             orderList: document.querySelector('#ordersList'),
             pedidosCount: document.querySelector('#pedidosCount'),
-
-
+            couponsList: document.querySelector('#couponsList')
         }
 
         const methods = {
+            async getCouponsUser() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/users/coupons', {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    if (response.status === 401) {
+                        const message = encodeURIComponent('Se ha cerrado la session, inicia nuevamente sesión');
+                        window.location.href = `../view/logIn.html?message=${message}`;
+                        return;
+                    }
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Error desconocido');
+                    return data.couponsChanged;
+                } catch (error) {
+                    console.error('Error al obtener cupones:', error);
+                    return [];
+                }
+            },
+            renderCoupons(coupons) {
+                const container = htmlElements.couponsList;
+                container.innerHTML = '';
+                const limitedCoupons = coupons.slice(0, 4);
+                limitedCoupons.forEach(coupon => {
+                    const item = document.createElement('div');
+                    item.classList.add('coupon-item');
+
+                    const name = document.createElement('span');
+                    name.classList.add('coupon-name');
+                    name.textContent = coupon.name;
+
+                    const status = document.createElement('span');
+                    status.classList.add('coupon-status');
+                    status.classList.add('active');
+                    status.textContent = 'Disponible';
+                    item.appendChild(name);
+                    item.appendChild(status);
+                    container.appendChild(item);
+                });
+            },
             async viewOrders(){
                 try {
                 const response = await fetch('http://localhost:3000/api/order', {
@@ -44,7 +84,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 const recentOrders = [...orders]
                     .sort((a, b) => new Date(b.orderedAt) - new Date(a.orderedAt))
                     .slice(0, 3);
-
                 const container = htmlElements.orderList;
                 container.innerHTML = "";
 
@@ -212,7 +251,30 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     htmlElements.email.textContent = 'Sin correo';
                 }
             },
-            
+            async viewPoints() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/points/', {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const data = await response.json();
+                    const points = data.points;
+                    if (!response.ok) {
+                        console.error('Error:', data.error || 'Error desconocido');
+                        return null;
+                    }
+                    htmlElements.points.innerHTML = points.totalPoints;
+                    htmlElements.points2.innerHTML = points.totalPoints;
+                    return points;
+
+                } catch (error) {
+                    console.error('Error al hacer la petición:', error);
+                    return null;
+                }
+            },
             async verfySession(){
                 try{
                     const response = await fetch ('http://localhost:3000/api/login/me',{
@@ -296,14 +358,16 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             }
             }
         return{
-            init(){
+            async init(){
                 const {btnCancelar, btnEditar} = htmlElements;
                 methods.addNavbar();
                 methods.addFooter();
                 methods.addInfo();
                 methods.addBottom();
                 methods.viewOrders();
-
+                methods.viewPoints();
+                const coupons = await methods.getCouponsUser();
+                methods.renderCoupons(coupons);
                 btnEditar.addEventListener('click', (e) => {
                     e.preventDefault();
                     methods.showModal(htmlElements.dialogEditar);

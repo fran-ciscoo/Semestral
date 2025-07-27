@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/estadoPuntos.css">
     <script type="module" src="../script/puntos.js" defer></script>
     <link rel="stylesheet" href="../style/navbar.css">
     <link rel="stylesheet" href="../style/puntos.css">
@@ -11,6 +10,7 @@
 </head>
 <body>
     <div id="navbar"></div>
+    <div id="message" class="alert-message"></div>
 
     <div id="selector-puntos">
         <a href="../view/puntos.html">
@@ -24,8 +24,8 @@
     <div class="puntos-main">
         <section class="puntos-header" id="puntos-header">
             <h1>¡Tus puntos!</h1>
-            <div class="puntos-cantidad">0</div>
-            <p><!-- Última compra: 07/06/2025 --></p>
+            <div class="puntos-cantidad" id="puntos-cantidad">0</div>
+            <p id="lastPurchase"><!-- Última compra: 07/06/2025 --></p>
         </section>
 
         <section class="puntos-logro">
@@ -36,7 +36,7 @@
             <h2>Canjea tus puntos</h2>
             <p style="text-align:center;">Selecciona un producto o cupón para canjear tus puntos</p>
             <div class="puntos-canje-lista">
-                <div class="puntos-canje-card">
+                <!-- <div class="puntos-canje-card">
                     <div class="canje-nombre">10% de descuento</div>
                     <div class="canje-puntos">120 puntos</div>
                 </div>
@@ -53,9 +53,18 @@
                     <img src="../img/LucasmuecasAzul.jpg" alt="Lucas Muecas Azul">
                     <div class="canje-nombre">Lucas Muecas Azul</div>
                     <div class="canje-puntos">80 puntos</div>
-                </div>
+                </div> -->
             </div>
         </section>
+        <dialog id="confirmDialog">
+            <form method="dialog" class="dialog-content">
+                <p id="dialogMessage">¿Estás seguro que deseas canjear este cupón?</p>
+                <div class="dialog-buttons">
+                    <button id="confirmYes" value="yes">Sí</button>
+                    <button id="confirmNo" value="no">Cancelar</button>
+                </div>
+            </form>
+        </dialog>
     </div>
 
     <div id="footer"></div>

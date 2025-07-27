@@ -56,7 +56,7 @@ export function footer(){
                         <div class="footer-content">
                             <div class="footer-section">
                                 <div class="footer-logo">
-                                    <img src="/img/logoSnack.png" alt="Snack Script Logo" class="footer-logo-img">
+                                    <img src="/img/logoSnack2.png" alt="Snack Script Logo" class="footer-logo-img">
                                     <h3>Snack Script</h3>
                                 </div>
                                 <p class="footer-description">Tu plataforma favorita para descubrir y disfrutar de los mejores snacks. Conectamos a los amantes de los snacks con experiencias únicas.</p>

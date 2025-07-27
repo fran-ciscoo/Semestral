@@ -37,6 +37,7 @@ body {
   border: 3px solid rgba(162, 136, 212, 0.3);
   position: relative;
   overflow: hidden;
+  animation: logoFloat 3s ease-in-out infinite;
 }
 
 .orders-header::before {

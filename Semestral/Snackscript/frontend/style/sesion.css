@@ -9,6 +9,13 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%   { background-position-y: 50%; }
+  50%  { background-position-y: 54%; }
+  100% { background-position-y: 50%; }
 }
 
 /* === NAVBAR (si se inyecta) === */

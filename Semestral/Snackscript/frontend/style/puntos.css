@@ -70,6 +70,7 @@ body {
   position: relative;
   overflow: hidden;
   text-align: center;
+  animation: logoFloat 3s ease-in-out infinite;
 }
 .puntos-actuales::before, .puntos-header::before {
   content: '';

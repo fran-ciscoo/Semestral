@@ -59,7 +59,7 @@ import {navbarA, footer} from "../component/navbar.js"
                     container.innerHTML = "";
 
                     if (!orders || orders.length === 0) {
-                        container.innerHTML = `<p>No hay pedidos con estado "${status}".</p>`;
+                        container.innerHTML = `<p class= "no-pedidos-msg">No hay pedidos con estado "${status}".</p>`;
                         return;
                     }
 

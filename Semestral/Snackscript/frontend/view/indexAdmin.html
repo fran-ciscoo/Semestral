@@ -123,11 +123,12 @@
 
             <div id="snackList"></div>
 
-           
+
 
             <dialog class="modal-form" id="editProductDialog">
                 <form id="editProductForm">
                     <h2>Editar producto</h2>
+
                     <div class="floating-field">
                         <label for="productName">Nombre</label>
                         <input type="text" id="editProductName" name="productName" required>
@@ -149,44 +150,49 @@
                         </select>
                     </div>
 
-                     <div class="floating-field">
+                    <div class="floating-field">
                         <label for="productOrigin">Origen</label>
-                    <select id="editProductOrigin" name="productOrigin" required class="ultra-input">
-                        <option value="" disabled selected hidden></option>
-                        <option value="Panamá">Panamá</option>
-                        <option value="México">México</option>
-                        <option value="Perú">Perú</option>
-                        <option value="Corea del sur">Corea del sur</option>
-                        <option value="Japon">Japon</option>
-                        <option value="Estados unidos">Estados unidos</option>
-                        <option value="España">España</option>
-                    </select>
-                </div>
+                        <select id="editProductOrigin" name="productOrigin" required class="ultra-input">
+                            <option value="" disabled selected hidden></option>
+                            <option value="Panamá">Panamá</option>
+                            <option value="México">México</option>
+                            <option value="Perú">Perú</option>
+                            <option value="Corea del sur">Corea del sur</option>
+                            <option value="Japon">Japon</option>
+                            <option value="Estados unidos">Estados unidos</option>
+                            <option value="España">España</option>
+                        </select>
+                    </div>
+
                     <div class="floating-field">
                         <label for="productStock">Stock</label>
-                    <input type="number" id="editProductStock" name="productStock" required>
-
-                    <label for="productImage" class="ultra-label-top">Imagen del producto</label>
-                    <div id="dropZone" class="drop-zone">
-                        <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
-                        <input type="file" id="productImage" name="productImage" accept="image/*"
-                            class="drop-zone__input">
+                        <input type="number" id="editProductStock" name="productStock" required>
                     </div>
-                </div>
-                    
-                     <div class="floating-field">
-                        <label for="productDescription">Descripción</label>
-                    <textarea id="editProductDescription" name="productDescription" required></textarea>
 
-                    <label for="productStory">Historia</label>
-                    <textarea id="editProductStory" name="productStory" required></textarea>
-                </div>
-                    
+                    <div class="floating-field">
+                        <label for="productImage" class="ultra-label-top">Imagen del producto</label>
+                        <div id="dropZone" class="drop-zone">
+                            <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
+                            <input type="file" id="productImage" name="productImage" accept="image/*"
+                                class="drop-zone__input">
+                        </div>
+                    </div>
+
+                    <div class="floating-field">
+                        <label for="productDescription">Descripción</label>
+                        <textarea id="editProductDescription" name="productDescription" required></textarea>
+                    </div>
+
+                    <div class="floating-field">
+                        <label for="productStory">Historia</label>
+                        <textarea id="editProductStory" name="productStory" required></textarea>
+                    </div>
 
                     <button type="submit" id="Actualizar">Actualizar</button>
                     <button type="button" class="cancel-btn" id="cancelEditProduct">Cancelar</button>
                 </form>
             </dialog>
+
         </div>
 
         <div id="footer"></div>

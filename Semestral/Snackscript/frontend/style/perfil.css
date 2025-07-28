@@ -565,6 +565,8 @@ input:checked + .toggle-slider:before {
   font-family: inherit;
   animation: fadeInModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 1000;
+  height: 600px; /* o la altura que necesites */
+  overflow-y: auto; /* para que tenga scroll interno si el contenido se desborda */
 }
 
 @keyframes fadeInModal {
@@ -873,4 +875,21 @@ input:checked + .toggle-slider:before {
   border: none;
   box-shadow: 0 6px 15px rgba(242, 96, 82, 0.3);
   transform: translateY(-2px);
+}
+
+
+.btn-primary {
+  background: linear-gradient(135deg, #F26457, #b1419d);
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #d96f63, #a03c92);
 }

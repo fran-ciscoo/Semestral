@@ -105,7 +105,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 container.innerHTML = "";
 
                 if (!recentOrders || recentOrders.length === 0) {
-                    container.innerHTML = `<p>No tienes pedidos realizados.</p>`;
+                    container.innerHTML = `<p class= "no-pedidos-msg">No tienes pedidos realizados.</p>`;
                     return;
                 }
 
@@ -295,6 +295,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         htmlElements.points2.innerHTML = '0';
                         return null;
                     }
+
+
                     if (!response.ok) {
                         console.error('Error:', data.error || 'Error desconocido');
                         return null;

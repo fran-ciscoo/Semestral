@@ -15,6 +15,15 @@ body {
   line-height: 1.6;
 }
 
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+
 /* Tabs */
 #selector-puntos {
   display: flex;
@@ -27,18 +36,49 @@ body {
   text-decoration: none;
 }
 #selector-puntos button {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
+   display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f7f7fb;
   color: #170C40;
+  font-weight: 700;
+  font-size: 1.08rem;
+  border: 2px solid #e3d8fa;
+  border-radius: 18px;
+  padding: 18px 38px;
+  box-shadow: 0 4px 18px #bfa7f233;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  transition: 
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s,
+    border 0.2s;
+  outline: none;
 }
+
+#selector-puntos button.active,
+#selector-puntos button.selected,
+#selector-puntos a:first-child button { /* Puedes ajustar la lógica JS para agregar .active */
+  background: linear-gradient(135deg, #BFA7F2 0%, #9556A6 100%);
+  color: #fff;
+  border: 2px solid #bfa7f2;
+  box-shadow: 0 6px 24px #bfa7f255;
+}
+
+#selector-puntos button:hover:not(.active):not(.selected) {
+  background: linear-gradient(135deg, #ded6ff 0%, #bfa7f2 100%);
+  color: #9556A6;
+  border: 2px solid #bfa7f2;
+  box-shadow: 0 8px 24px #bfa7f255;
+  transform: translateY(-2px) scale(1.03);
+  transition: 
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s,
+    border 0.2s,
+    transform 0.2s;
+}
+
 #selector-puntos button::before {
   content: '';
   position: absolute;
@@ -58,12 +98,7 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(153, 255, 194, 0.3);
 }
-#selector-puntos button.active, #selector-puntos button.selected {
-  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
-  color: white;
-  border-color: #F26052;
-  box-shadow: 0 4px 12px rgba(242, 96, 82, 0.3);
-}
+
 
 /* Tarjeta de puntos */
 .puntos-actuales, .puntos-header {

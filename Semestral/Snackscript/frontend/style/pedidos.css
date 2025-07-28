@@ -271,7 +271,9 @@ body {
 .order-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
   border-radius: 20px;
-  padding: 30px;
+  padding: 38px 28px;      /* Más espacio interno */
+  max-width: 750px;        /* Más ancha que antes */
+  margin: 30px auto;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -712,4 +714,41 @@ body {
     padding: 10px 6px;
     font-size: 0.95rem;
   }
+}
+
+.no-pedidos-msg {
+  background: linear-gradient(90deg, #f3eaff 0%, #ded6ff 100%);
+  color: #9556A6;
+  font-weight: 700;
+  padding: 18px 24px;
+  border-radius: 16px;
+  text-align: center;
+  margin: 30px auto 40px auto;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px #bfa7f233;
+  max-width: 320px;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.idOrder {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #7c6bb1;
+  margin-bottom: 2px;
+  letter-spacing: 1px;
+}
+
+.order-date {
+  font-size: 1rem;
+  color: #bfa7f2;
+  margin-bottom: 2px;
+  font-style: italic;
 }

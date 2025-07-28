@@ -172,14 +172,15 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 }
             },
             showMessage(mensaje, color) {
-                htmlElements.message.textContent = mensaje;
+                htmlElements.messageCart.textContent = mensaje;
                 if (color) {
-                    console.log("holaaaaxdddd");
-                    htmlElements.message.style.backgroundColor = '#f94144';
+                    htmlElements.messageCart.style.backgroundColor = '#f94144';
+                } else {
+                    htmlElements.messageCart.style.backgroundColor = '#43aa8b';
                 }
-                htmlElements.message.classList.add('show');
+                htmlElements.messageCart.classList.add('show');
                 setTimeout(() => {
-                    htmlElements.message.classList.remove('show');
+                    htmlElements.messageCart.classList.remove('show');
                 }, 3000);
             },
             async getAndRenderCoupons(){

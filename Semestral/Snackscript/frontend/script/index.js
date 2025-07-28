@@ -244,10 +244,12 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     return 'none';
                 }
             },
-            showMessage(mensaje, color){
+            showMessage(mensaje, color) {
                 htmlElements.messageCart.textContent = mensaje;
-                if(color){
+                if (color) {
                     htmlElements.messageCart.style.backgroundColor = '#f94144';
+                } else {
+                    htmlElements.messageCart.style.backgroundColor = '#43aa8b';
                 }
                 htmlElements.messageCart.classList.add('show');
                 setTimeout(() => {

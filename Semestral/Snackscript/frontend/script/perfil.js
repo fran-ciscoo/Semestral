@@ -36,9 +36,11 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         headers: { 'Content-Type': 'application/json' }
                     });
                     if (response.status === 401) {
-                        const message = encodeURIComponent('Se ha cerrado la session, inicia nuevamente sesión');
-                        window.location.href = `../view/logIn.html?message=${message}`;
-                        return;
+                        const containerCoupon = htmlElements.couponsList;
+                        containerCoupon.innerHTML = '<div><p>No tienes cupones</p></div>';
+                        htmlElements.points.innerHTML = '0';
+                        htmlElements.points2.innerHTML = '0';
+                        return null;
                     }
                     const data = await response.json();
                     if (!response.ok) throw new Error(data.error || 'Error desconocido');
@@ -49,6 +51,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 }
             },
             renderCoupons(coupons) {
+                if(!coupons === null){
                 const container = htmlElements.couponsList;
                 container.innerHTML = '';
                 const limitedCoupons = coupons.slice(0, 4);
@@ -68,6 +71,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     item.appendChild(status);
                     container.appendChild(item);
                 });
+                }
             },
             async viewOrders(){
                 try {

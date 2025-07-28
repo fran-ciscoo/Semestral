@@ -342,6 +342,7 @@ main#carrito {
   box-shadow: none;
 }
 
+
 /* === SECCIONES ADICIONALES === */
 #ultimosComprados {
   max-width: 1200px;
@@ -407,47 +408,105 @@ main#carrito {
 }
 
 /* ---------- COMPONENTES: CART SUMMARY Y CUPÓN ---------- */
-.cart-summary,
-.cart-extra {
+.cart-summary {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px;
   position: sticky;
   top: 20px;
   height: fit-content;
-  margin-bottom: 20px
+  margin-bottom: 1px;
+  transition: box-shadow 0.3s ease;
 }
 
-/* Estilo del formulario de cupón */
-.cart-extra input {
-  width: 100%;
-  padding: 8px;
-  margin: 8px 0;
-  border-radius: 6px;
-  border: 1px solid #ddd;
+.cart-extra {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+  margin-top: 16px;
+  margin-bottom: 0;
+  transition: box-shadow 0.3s ease;
 }
 
-.cart-extra button {
-  width: 100%;
-  padding: 10px;
-  background-color: #f29441;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
+.cart-extra:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+.user-coupons {
+  margin-top: 0;
+  background-color: #fafafa;
+  padding: 2px;
+  border-radius: 12px;
+}
+
+.user-coupons h1 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+/* Tarjetas tipo botón */
+.coupon-item {
+  background-color: #fff;
+  border: 2px solid #f29441;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 14px;
   cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.cart-extra button:hover {
-  background-color: #d9763d;
+.coupon-item:hover {
+  background-color: #fff4ea;
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(242, 148, 65, 0.15);
+  border-color: #e88332;
 }
 
+.coupon-item p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.no-coupons {
+  background-color: #fff5e6;
+  border: 1.5px dashed #f29441;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  color: #a65b14;
+  font-weight: 500;
+  margin-top: 16px;
+  transition: all 0.3s ease;
+}
+
+.no-coupons p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+.coupon-item.selected {
+  border-color: #e88332;
+  background-color: #fff0e0;
+  box-shadow: 0 4px 12px rgba(242, 148, 65, 0.25);
+}
 /* ---------- ITEM DEL CARRITO ---------- */
 .cart-item {
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-rows: 100px 1fr;
   gap: 20px;
-  padding: 20px;
+  padding: 40px;
   align-items: center;
   background: #fff;
   border-radius: 8px;

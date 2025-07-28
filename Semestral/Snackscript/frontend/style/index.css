@@ -1562,6 +1562,7 @@ body {
     margin: 0;
     line-height: 1.1;
 }
+}
 
 /* Mejora el padding del modal para que no quede pegado arriba */
 .modal-form, .ultra-glass-modal, #addProductDialog {

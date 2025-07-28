@@ -50,14 +50,10 @@ export default async function couponRoutes(fastify, opts) {
             if (!userPoints || userPoints.totalPoints < coupon.valuePoints) {
                 return reply.status(400).send({ error: 'Puntos insuficientes para canjear este cupón.' });
             }
-
-            // Actualizar puntos del usuario
             userPoints.totalPoints -= coupon.valuePoints;
             userPoints.usedPoints += coupon.valuePoints;
             userPoints.lastRedeemDate = new Date();
             await userPoints.save();
-
-            // Agregar entrada al historial
             const historyEntry = new PointsHistory({
                 userId,
                 description: `Canje de cupón: ${coupon.name}`,

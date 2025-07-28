@@ -118,7 +118,6 @@ import {navbarA, footer} from "../component/navbar.js"
                 const text = session !== 'none'
                     ? `<button><a id="cerrarSesion" href="../view/index.html">Cerrar Sesión</a></button>`
                     : `<button><a id="iniciarSesion" href="../view/logIn.html">Iniciar Sesión</a></button>`;
-
                 const element = htmlElements.buttons;
                 methods.printHtml(element, text);
 

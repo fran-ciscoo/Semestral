@@ -220,7 +220,6 @@ import {navbarA, footer} from "../component/navbar.js"
                 htmlElements.nameError.innerHTML = "";
                 htmlElements.imageError.innerHTML = "";
                 htmlElements.originError.innerHTML = "";
-                console.log(image);
 
                 const nameRegex = /^[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ]+$/;
                 if (!nameRegex.test(name)) {

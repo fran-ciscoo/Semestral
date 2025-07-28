@@ -865,3 +865,12 @@ input:checked + .toggle-slider:before {
   letter-spacing: 0.5px;
   display: inline-block;
 }
+
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #F26052, #F29441);
+  color: white;
+  border: none;
+  box-shadow: 0 6px 15px rgba(242, 96, 82, 0.3);
+  transform: translateY(-2px);
+}

@@ -752,3 +752,23 @@ body {
   margin-bottom: 2px;
   font-style: italic;
 }
+
+.orders-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.orders-grid.no-orders {
+  background: linear-gradient(135deg, #FFE0EC, #FFD1D1);
+  border: 2px dashed #F26052;
+  color: #7B1E1E;
+  font-weight: 600;
+  font-size: 1.3rem;
+  padding: 30px 50px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}

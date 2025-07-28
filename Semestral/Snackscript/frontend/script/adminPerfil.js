@@ -122,7 +122,7 @@ import {navbarA, footer} from "../component/navbar.js"
                 methods.printHtml(element, text);
 
                 if (session !== 'none') {
-                    const cerrarBtn = document.querySelector('#cerrarSesion');
+                    const cerrarBtn = htmlElements.buttons.querySelector('#cerrarSesion');
                     if (cerrarBtn) {
                         cerrarBtn.addEventListener('click', (e) => {
                             e.preventDefault();
@@ -135,7 +135,6 @@ import {navbarA, footer} from "../component/navbar.js"
 
         return{
             init(){
-                const {cerrarSesion} = htmlElements;
                 document.addEventListener('DOMContentLoaded', () => {
                     methods.verifyAdmin();
                 });

@@ -396,6 +396,7 @@ main#carrito {
 #snackList {
   flex: 1;
   min-width: 300px;
+  min-height: 560px;
 }
 
 .cart-sidebar {
@@ -497,9 +498,25 @@ main#carrito {
   font-size: 0.95rem;
 }
 .coupon-item.selected {
-  border-color: #e88332;
-  background-color: #fff0e0;
-  box-shadow: 0 4px 12px rgba(242, 148, 65, 0.25);
+  border: 2px solid #ff6b00;
+  /* Naranja fuerte */
+  background-color: #ece7e0;
+  /* Fondo claro pero vibrante */
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.5);
+  transform: scale(1.03);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+/* Icono visual ✓ */
+.coupon-item.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 18px;
+  color: #ff6b00;
+  font-weight: bold;
 }
 /* ---------- ITEM DEL CARRITO ---------- */
 .cart-item {

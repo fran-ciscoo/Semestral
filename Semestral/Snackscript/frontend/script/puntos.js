@@ -108,21 +108,21 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     contenedor.innerHTML = '<p>No hay cupones disponibles.</p>';
                     return;
                 }
+                coupons.sort((a, b) => a.valuePoints - b.valuePoints);
 
                 let selectedCouponId = null;
-
-                // Crea un Set con los IDs de los cupones del usuario para búsqueda rápida
                 const userCouponIds = new Set(couponsUser.map(c => c._id));
 
                 coupons.forEach(cupon => {
                     const card = document.createElement('div');
                     card.classList.add('puntos-canje-card');
                     card.setAttribute('data-id', cupon._id);
+
                     const isOwned = userCouponIds.has(cupon._id);
                     if (isOwned) {
                         card.classList.add('disabled');
                     }
-                    console.log(isOwned);
+
                     const nombre = document.createElement('div');
                     nombre.classList.add('canje-nombre');
                     nombre.textContent = cupon.name;
@@ -133,17 +133,19 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
                     card.appendChild(nombre);
                     card.appendChild(puntos);
-                    
+
                     card.addEventListener('click', () => {
                         if (!isOwned) {
                             selectedCouponId = cupon._id;
                             htmlElements.confirmDialog.showModal();
-                        }else {
-                            methods.showMessage('Ya tienes este cupon!!', true);
+                        } else {
+                            methods.showMessage('¡Ya tienes este cupón!', true);
                         }
                     });
+
                     contenedor.appendChild(card);
                 });
+
                 htmlElements.confirmYes.addEventListener('click', () => {
                     methods.redeemCoupon(selectedCouponId);
                 });
@@ -172,15 +174,15 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 }
             },
             showMessage(mensaje, color) {
-                htmlElements.messageCart.textContent = mensaje;
+                htmlElements.message.textContent = mensaje;
                 if (color) {
-                    htmlElements.messageCart.style.backgroundColor = '#f94144';
+                    htmlElements.message.style.backgroundColor = '#f94144';
                 } else {
-                    htmlElements.messageCart.style.backgroundColor = '#43aa8b';
+                    htmlElements.message.style.backgroundColor = '#43aa8b';
                 }
-                htmlElements.messageCart.classList.add('show');
+                htmlElements.message.classList.add('show');
                 setTimeout(() => {
-                    htmlElements.messageCart.classList.remove('show');
+                    htmlElements.message.classList.remove('show');
                 }, 3000);
             },
             async getAndRenderCoupons(){

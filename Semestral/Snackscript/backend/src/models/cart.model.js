@@ -10,6 +10,13 @@ const cartItemSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: 1
+    },
+    price: {
+        type: Number,
+    },
+    isFree: {
+        type: Boolean,
+        default: false
     }
 })
 
@@ -21,6 +28,10 @@ const cartSchema = new mongoose.Schema({
         unique: true
     },
     items: [cartItemSchema],
+    totalAmount: {
+        type: Number,
+        default: 0
+    },
     createdAt: {
         type: Date,
         default: Date.now

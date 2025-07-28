@@ -223,4 +223,27 @@ fastify.get('/coupons', async (request, reply) => {
         return reply.status(500).send({ error: 'Error del servidor al obtener cupones.' });
     }
 });
+fastify.delete('/coupons/used', async (request, reply) => {
+    try {
+        const token = request.cookies.token;
+        if (!token) {
+            return reply.status(401).send({ message: 'No autorizado' });
+        }
+        const decoded = jwt.verify(token, secretKey);
+        const userId = decoded.id;
+        const { couponIds } = request.body;
+        console.log(couponIds);
+        if (!Array.isArray(couponIds) || couponIds.length === 0) {
+            return reply.status(400).send({ message: 'No se especificaron cupones a eliminar' });
+        }
+        await User.updateOne(
+            { _id: userId },
+            { $pull: { couponsChanged: { $in: couponIds } } }
+        );
+        return reply.send({ message: 'Cupones eliminados correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar cupones usados:', error);
+        reply.status(500).send({ message: 'Error interno del servidor' });
+    }
+});
 }

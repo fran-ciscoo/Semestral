@@ -73,6 +73,7 @@ fastify.post('/', async (request, reply) => {
             const token = request.cookies.token;
             const decoded = jwt.verify(token, secretKey);
             const userId = decoded.id;
+            const {totalAmount} = request.body;
 
             const user = await User.findById(userId).select('-password');
             const cart = await Cart.findOne({ userId }).populate('items.product');
@@ -84,15 +85,16 @@ fastify.post('/', async (request, reply) => {
                 product: item.product._id,
                 name: item.product.name,
                 quantity: item.quantity,
-                price: item.product.price
+                price: item.price
             }));
-            const totalAmount = items.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2);
+            
             const newOrder = await Order.create({
                 userId,
                 items,
                 shippingAddress: user.shippingAddress,
                 paymentMethod: 'stripe',
-                totalAmount
+                totalAmount: totalAmount,
+                subtotal: cart.totalAmount
             });
 
             return reply.status(201).send({ message: 'Orden creada exitosamente.', order: newOrder });

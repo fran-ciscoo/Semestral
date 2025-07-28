@@ -136,7 +136,7 @@ import {navbarA, footer} from "../component/navbar.js"
                                         <img src="${product.image}" alt="${product.name} imagen" class="product-image">
                                         <h2 class="product-title">${product.name}</h2>
                                         <p class="product-description">${product.description}</p>
-                                        <p class="product-price">$${product.price}</p>
+                                        <p class="product-price">$${product.price.toFixed(2)}</p>
                                         <div class="product-actions">
                                             <button class="edit-btn" data-id="${product._id}">Editar</button>
                                         </div>
@@ -162,7 +162,7 @@ import {navbarA, footer} from "../component/navbar.js"
                                         <img src="${product.image}" alt="${product.name} imagen" class="product-image">
                                         <h2 class="product-title">${product.name}</h2>
                                         <p class="product-description">${product.description}</p>
-                                        <p class="product-price">$${product.price}</p>
+                                        <p class="product-price">$${product.price.toFixed(2)}</p>
                                         <div class="product-actions">
                                             <button class="edit-btn" data-id="${product._id}">Editar</button>
                                         </div>

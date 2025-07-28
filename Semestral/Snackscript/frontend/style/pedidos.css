@@ -1,3 +1,9 @@
+#footer {
+  background: #fff;
+  color: #170C40;
+  box-shadow: 0 -8px 25px rgba(3, 12, 38, 0.08);
+}
+
 #logo-navbar img {
     width: 200px;
     height: 200px;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +10,15 @@
     <link rel="stylesheet" href="../style/navbar.css">
     <title>Snack script - Usuarios Admin</title>
 </head>
+
 <body>
     <div id="loader">Verificando permisos...</div>
     <div id="contenido" style="display: none;">
         <div id="navbar"></div>
         <main id="lista-usuarios">
             <div class="usuarios-header-card">
-              <h2>Lista de usuarios registrados</h2>
-              <p>Gestión de los usuarios en la plataforma</p>
+                <h2>Lista de usuarios registrados</h2>
+                <p>Gestión de los usuarios en la plataforma</p>
             </div>
             <div class="filter-buttons">
                 <button id="todos">Todos</button>
@@ -26,26 +28,29 @@
             </div>
 
             <div class="usuarios-container">
-            <table class="table-usuarios">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Rol</th>
-                        <th>Fecha de registro</th>
-                    </tr>
-                </thead>
-                <tbody id="Usuarios"></tbody>
-            </table>
-        </div>
+                <table class="table-usuarios">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Fecha de registro</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Usuarios"></tbody>
+                </table>
+            </div>
         </main>
+        <div class="acc-btn">
+            <dialog id="actions-User" class="dialog">
+                <h2>Acciones a este usuario</h2>
+                <button id="btnEditUser">Editar</button>
+                <button id="btnDeleteUser">Eliminar</button>
+                <button id="btnCancelActions">Cancelar</button>
 
-        <dialog id="actions-User" class="dialog">
-            <h2>Acciones a este usuario</h2>
-            <button id="btnEditUser">Editar</button>
-            <button id="btnDeleteUser">Eliminar</button>
-            <button id="btnCancelActions">Cancelar</button>
-        </dialog>
+            </dialog>
+        </div>
+
 
         <dialog id="editUserDialog" class="dialog">
             <h2>Editar rol del usuario</h2>
@@ -64,4 +69,5 @@
         <div id="footer"></div>
     </div>
 </body>
+
 </html>

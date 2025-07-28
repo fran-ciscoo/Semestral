@@ -12,42 +12,32 @@ body {
   margin: 24px 0 32px 0;
 }
 .filter-buttons button {
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #170C40;
+  background: linear-gradient(135deg, #fff 0%, #f3eaff 100%);
+  color: #9556A6;
+  border: 2px solid #BFA7F2;
+  border-radius: 1.5rem;
+  padding: 10px 26px;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-right: 10px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #bfa7f233;
 }
-.filter-buttons button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.6s ease;
-}
-.filter-buttons button:hover::before {
-  left: 100%;
-}
-.filter-buttons button:hover {
-  background: linear-gradient(135deg, #99FFC2 0%, #B8FFD1 100%);
-  border-color: #99FFC2;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(153, 255, 194, 0.3);
-}
-.filter-buttons button.active {
-  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
-  color: white;
+
+.filter-buttons button:hover,
+.filter-buttons button:focus {
+  background: linear-gradient(135deg, #F26052 0%, #BFA7F2 100%);
+  color: #fff;
   border-color: #F26052;
-  box-shadow: 0 4px 12px rgba(242, 96, 82, 0.3);
+  outline: none;
+}
+
+.filter-buttons button.active {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  color: #fff;
+  border-color: #9556A6;
+  box-shadow: 0 4px 16px #9556A633;
 }
 
 /* Tabla de usuarios */
@@ -124,7 +114,11 @@ body {
   border: 3px solid rgba(162, 136, 212, 0.3);
   position: relative;
   overflow: hidden;
+  animation: slideIn 0.6s ease;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
 }
+
+
 .usuarios-header-card::before {
   content: '';
   position: absolute;
@@ -154,3 +148,151 @@ body {
   font-weight: 500;
   text-align: center;
 } 
+
+#actions-User {
+  background: #f0faff;
+  border-radius: 20px;
+  padding: 25px 35px;
+  text-align: center;
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  width: fit-content;
+  max-width: 90%;
+}
+
+#actions-User h2 {
+  font-size: 1.4rem;
+  color: #170C40;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+#actions-User button {
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 10px;
+  min-width: 120px;
+}
+
+/* Editar */
+#btnEditUser {
+  background: linear-gradient(135deg, #66D9EF 0%, #45A9F2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 217, 239, 0.3);
+}
+
+#btnEditUser:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 217, 239, 0.4);
+}
+
+/* Eliminar */
+#btnDeleteUser {
+  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(242, 96, 82, 0.3);
+}
+
+#btnDeleteUser:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(242, 96, 82, 0.4);
+}
+
+/* Cancelar */
+#btnCancelActions {
+  background: linear-gradient(135deg, #B490FF 0%, #B78FFF 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(180, 144, 255, 0.3);
+}
+
+#btnCancelActions:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(180, 144, 255, 0.4);
+}
+
+
+#editUserDialog {
+  background: #f0faff;
+  border-radius: 20px;
+  padding: 25px 35px;
+  text-align: center;
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  width: fit-content;
+  max-width: 90%;
+}
+
+#editUserDialog h2 {
+  font-size: 1.4rem;
+  color: #170C40;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+#editUserForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+#editUserForm label {
+  font-weight: 600;
+  color: #170C40;
+  margin-right: 5px;
+}
+
+#editUserForm select {
+  padding: 8px 14px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#editUserForm select:focus {
+  border-color: #99ccff;
+}
+
+#editUserForm button {
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+/* Botón guardar */
+#editUserForm button[type="submit"] {
+  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(242, 96, 82, 0.3);
+}
+
+#editUserForm button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(242, 96, 82, 0.4);
+}
+
+/* Botón cancelar */
+#cancelEditUser {
+  background: linear-gradient(135deg, #B490FF 0%, #B78FFF 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(180, 144, 255, 0.3);
+}
+
+#cancelEditUser:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(180, 144, 255, 0.4);
+}
+

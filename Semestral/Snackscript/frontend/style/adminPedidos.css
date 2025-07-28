@@ -1,5 +1,6 @@
 /* ===== ADMIN PEDIDOS - DISEÑO MEJORADO Y CONSISTENTE ===== */
 
+
 /* === GLOBAL === */
 body {
   margin: 0;
@@ -42,26 +43,6 @@ body {
   height: 5px;
   background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
   border-radius: 25px 25px 0 0;
-}
-
-.admin-header-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
-}
-
-.admin-header-card:hover::after {
-  left: 100%;
-}
-
-.admin-header-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 60px rgba(3, 12, 38, 0.2);
 }
 
 /* Título */
@@ -432,4 +413,36 @@ body {
     font-size: 0.9rem;
     padding: 10px 12px;
   }
+}
+
+
+.filter-buttons button {
+  background: linear-gradient(135deg, #BFA7F2 0%, #9556A6 100%);
+  border: none;
+  color: white;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px #bfa7f233;
+}
+
+.filter-buttons button:hover,
+.filter-buttons button:focus {
+  background: linear-gradient(135deg, #F26052 0%, #BFA7F2 100%);
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 20px #F2605233;
+  outline: none;
+}
+
+.filter-buttons button.active {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px #9556A633, 0 0 0 3px #BFA7F2;
+  transform: translateY(-2px) scale(1.06);
+  border: 2px solid #9556A6;
 }

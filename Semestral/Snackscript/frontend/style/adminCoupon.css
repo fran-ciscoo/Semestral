@@ -1,4 +1,10 @@
 /* ===== ADMIN COUPON - DISEÑO MEJORADO ===== */
+#navbar {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  padding: 15px 20px;
+  color: white;
+  box-shadow: 0 8px 25px rgba(3, 12, 38, 0.15);
+}
 
 /* === NAVBAR MEJORADO === */
 .navbar-container {
@@ -50,50 +56,6 @@
   margin-left: auto;
 }
 
-.navbar a {
-  text-decoration: none;
-  color: #170C40;
-  font-weight: 700;
-  font-size: 1.05rem;
-  padding: 15px 25px;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(15px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.navbar a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.6s ease;
-}
-
-.navbar a:hover::before {
-  left: 100%;
-}
-
-.navbar a::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -3px;
-  width: 0%;
-  height: 4px;
-  background: linear-gradient(90deg, #F26052, #F29441, #F2D9BB);
-  border-radius: 2px;
-  transition: all 0.4s ease;
-  transform: translateX(-50%);
-}
 
 .navbar a:hover::after {
   width: 90%;
@@ -142,74 +104,6 @@
   overflow: hidden;
 }
 
-.footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #F29441, #D9763D, #F26052);
-}
-
-.footer-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.footer-section {
-  flex: 1;
-  min-width: 250px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.footer-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(3, 12, 38, 0.1);
-}
-
-.footer-section h4 {
-  color: #170C40;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  position: relative;
-  padding-bottom: 8px;
-}
-
-.footer-section h4::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 3px;
-  background: linear-gradient(90deg, #F26052, #F29441);
-  border-radius: 2px;
-}
-
-.footer-section p, .footer-section a {
-  font-size: 0.95rem;
-  color: #030C26;
-  line-height: 1.6;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.footer-section a:hover {
-  color: #F26052;
-  text-decoration: none;
-  font-weight: 600;
-}
 
 /* === RESPONSIVE NAVBAR === */
 @media (max-width: 768px) {
@@ -304,12 +198,16 @@ body {
   margin-bottom: 30px;
   position: relative;
   overflow: hidden;
+
+  animation: logoFloat 3s ease-in-out infinite;
 }
 
 .coupon-event::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 5px;
   background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
   border-radius: 25px 25px 0 0;
@@ -324,6 +222,20 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+
+/* 👇 Animación flotante */
+@keyframes logoFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
 
 /* ===== BOTÓN AÑADIR ===== */
 .add-button {
@@ -385,7 +297,9 @@ body {
 .add-container::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 5px;
   background: linear-gradient(90deg, #F26052, #F29441, #D9763D);
   border-radius: 25px 25px 0 0;
@@ -455,7 +369,8 @@ body {
 }
 
 /* ===== MODALES MEJORADOS ===== */
-dialog, .dialog {
+dialog,
+.dialog {
   border: none;
   border-radius: 25px;
   box-shadow: 0 25px 80px rgba(149, 86, 166, 0.25);
@@ -472,12 +387,13 @@ dialog, .dialog {
 }
 
 @keyframes fadeInModal {
-  from { 
-    opacity: 0; 
+  from {
+    opacity: 0;
     transform: translateY(-40px) scale(0.95);
   }
-  to { 
-    opacity: 1; 
+
+  to {
+    opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
@@ -488,7 +404,8 @@ dialog::backdrop {
 }
 
 /* ===== TÍTULOS Y FORMULARIOS ===== */
-dialog h2, dialog h3 {
+dialog h2,
+dialog h3 {
   text-align: center;
   color: #170C40;
   font-size: 1.8rem;
@@ -609,35 +526,37 @@ dialog button[type="button"]:hover {
   .add-puntos-section {
     padding: 20px 15px;
   }
-  
+
   .add-puntos-section h2 {
     font-size: 2rem;
   }
-  
+
   .coupon-event h3 {
     font-size: 1.5rem;
     flex-direction: column;
     gap: 15px;
   }
-  
+
   .add-table {
     font-size: 0.9rem;
   }
-  
+
   .add-table th,
   .add-table td {
     padding: 12px 8px;
   }
-  
-  dialog, .dialog {
+
+  dialog,
+  .dialog {
     padding: 30px 20px;
     max-width: 95vw;
   }
-  
-  dialog h2, dialog h3 {
+
+  dialog h2,
+  dialog h3 {
     font-size: 1.5rem;
   }
-  
+
   dialog input,
   dialog select,
   dialog button {
@@ -650,21 +569,21 @@ dialog button[type="button"]:hover {
   .add-puntos-section h2 {
     font-size: 1.8rem;
   }
-  
+
   .coupon-event,
   .add-container {
     padding: 20px 15px;
   }
-  
+
   .add-table {
     font-size: 0.8rem;
   }
-  
+
   .add-table th,
   .add-table td {
     padding: 10px 5px;
   }
-  
+
   #btnAddCoupon {
     padding: 10px 20px;
     font-size: 1rem;
@@ -694,6 +613,7 @@ dialog button[type="button"]:hover {
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -706,4 +626,86 @@ dialog button[type="button"]:hover {
 
 .coupon-event {
   animation: slideIn 0.6s ease 0.1s both;
+}
+
+#actions-Cupon {
+  background: #f0faff;
+  border-radius: 20px;
+  padding: 25px 35px;
+  text-align: center;
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  width: fit-content;
+  max-width: 90%;
+}
+
+#actions-Cupon h2 {
+  font-size: 1.4rem;
+  color: #170C40;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+#actions-Cupon button {
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 10px;
+  min-width: 120px;
+}
+
+/* Editar */
+#btnEditCupon {
+  background: linear-gradient(135deg, #66D9EF 0%, #45A9F2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 217, 239, 0.3);
+}
+
+#btnEditCupon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 217, 239, 0.4);
+}
+
+/* Eliminar */
+#btnDeleteCupon {
+  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(242, 96, 82, 0.3);
+}
+
+#btnDeleteCupon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(242, 96, 82, 0.4);
+}
+
+/* Cancelar */
+#btnCancelActions {
+  background: linear-gradient(135deg, #B490FF 0%, #B78FFF 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(180, 144, 255, 0.3);
+
+}
+
+#cancelEditUser {
+  font-size: 1.1rem;
+  /* Ajusta el valor según el tamaño que desees */
+}
+
+#btnCancelActions:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(180, 144, 255, 0.4);
+}
+
+#footer {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 -8px 25px rgba(3, 12, 38, 0.10);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
 }

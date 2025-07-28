@@ -25,7 +25,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             points2: document.querySelector('#points2'),
             orderList: document.querySelector('#ordersList'),
             pedidosCount: document.querySelector('#pedidosCount'),
-            couponsList: document.querySelector('#couponsList')
+            couponsList: document.querySelector('#couponsList'),
+            couponsNumber: document.querySelector('#couponsNumber'),
         }
 
         const methods = {
@@ -51,27 +52,39 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 }
             },
             renderCoupons(coupons) {
-                if(!coupons === null){
-                const container = htmlElements.couponsList;
-                container.innerHTML = '';
-                const limitedCoupons = coupons.slice(0, 4);
-                limitedCoupons.forEach(coupon => {
-                    const item = document.createElement('div');
-                    item.classList.add('coupon-item');
+                if (coupons !== null) {
+                    const container = htmlElements.couponsList;
+                    container.innerHTML = '';
+                    htmlElements.couponsNumber.textContent = coupons.length;
+                    const limitedCoupons = coupons.slice(0, 4);
+                    limitedCoupons.forEach(coupon => {
+                        const item = document.createElement('div');
+                        item.classList.add('coupon-item');
 
-                    const name = document.createElement('span');
-                    name.classList.add('coupon-name');
-                    name.textContent = coupon.name;
+                        const name = document.createElement('span');
+                        name.classList.add('coupon-name');
+                        name.textContent = coupon.name;
 
-                    const status = document.createElement('span');
-                    status.classList.add('coupon-status');
-                    status.classList.add('active');
-                    status.textContent = 'Disponible';
-                    item.appendChild(name);
-                    item.appendChild(status);
-                    container.appendChild(item);
-                });
+                        const status = document.createElement('span');
+                        status.classList.add('coupon-status', 'active');
+                        status.textContent = 'Disponible';
+
+                        item.appendChild(name);
+                        item.appendChild(status);
+                        container.appendChild(item);
+                    });
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.classList.add('card-actions');
+
+                    const historialLink = document.createElement('a');
+                    historialLink.href = 'historialPuntos.html';
+                    historialLink.classList.add('card-btn');
+                    historialLink.textContent = 'Ver Historial';
+
+                    actionsDiv.appendChild(historialLink);
+                    container.appendChild(actionsDiv);
                 }
+                htmlElements.couponsList.innerHTML = '<div><p>No tienes cupones</p></div>';
             },
             async viewOrders(){
                 try {
@@ -143,11 +156,9 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     }
 
                     const data = await response.json();
-                    alert('Perfil actualizado exitosamente');
                     methods.hideModal(htmlElements.dialogEditar);
                     methods.viewDetails();
-                    window.location.href = '../view/perfil.html';
-
+                    methods.showMessage('Perfil Actualizado', false);
                 } catch (error) {
                     console.error('Error al actualizar el perfil:', error);
                     alert('Error al actualizar el perfil');
@@ -210,7 +221,18 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     console.error('Error al obtener datos del usuario:', error);
                 }
             },
-            
+            showMessage(mensaje, color) {
+                htmlElements.messageCart.textContent = mensaje;
+                if (color) {
+                    htmlElements.messageCart.style.backgroundColor = '#f94144';
+                } else {
+                    htmlElements.messageCart.style.backgroundColor = '#43aa8b';
+                }
+                htmlElements.messageCart.classList.add('show');
+                setTimeout(() => {
+                    htmlElements.messageCart.classList.remove('show');
+                }, 3000);
+            },
             async logout() {
                 try {
                     await fetch('http://localhost:3000/api/login/logout', {
@@ -266,6 +288,13 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     });
                     const data = await response.json();
                     const points = data.points;
+                    if(response.status === 404){
+                        const containerCoupon = htmlElements.couponsList;
+                        containerCoupon.innerHTML = '<div><p>No tienes cupones</p></div>';
+                        htmlElements.points.innerHTML = '0';
+                        htmlElements.points2.innerHTML = '0';
+                        return null;
+                    }
                     if (!response.ok) {
                         console.error('Error:', data.error || 'Error desconocido');
                         return null;
@@ -364,12 +393,12 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
         return{
             async init(){
                 const {btnCancelar, btnEditar} = htmlElements;
+                methods.viewPoints();
                 methods.addNavbar();
                 methods.addFooter();
                 methods.addInfo();
                 methods.addBottom();
                 methods.viewOrders();
-                methods.viewPoints();
                 const coupons = await methods.getCouponsUser();
                 methods.renderCoupons(coupons);
                 btnEditar.addEventListener('click', (e) => {

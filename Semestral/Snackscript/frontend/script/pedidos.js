@@ -85,7 +85,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                                     <div class="order-summary">
                                         <div class="summary-row">
                                             <span class="subtotal">Subtotal:</span>
-                                            <span class="subtotal-value">$${order.subtotal?.toFixed(2) || '0.00'}</span>
+                                            <span class="subtotal-value">$${order.s?.toFixed(2) || '0.00'}</span>
                                         </div>
                                         <div class="summary-row">
                                             <span class="shipping">Envío:</span>

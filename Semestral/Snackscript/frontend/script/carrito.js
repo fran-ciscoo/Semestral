@@ -51,46 +51,62 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     if (!response.ok) {
                         cartList.innerHTML = `
                             <li class="cart-empty">
-                                <div class="empty-content">
-                                    <span class="empty-icon">🛒</span>
-                                    <p>Tu carrito está vacío</p>
-                                    <a href="../view/index.html" class="btn-empty">Ir a comprar</a>
-                                </div>
+                            <div class="empty-content">
+                                <span class="empty-icon">🛒</span>
+                                <p>Tu carrito está vacío</p>
+                                <a href="../view/index.html" class="btn-empty">Ir a comprar</a>
+                            </div>
                             </li>
                         `;
                         htmlElements.cartProdCount.innerHTML = '0 artículos';
                         return;
                     }
-
                     const data = await response.json();
                     const cart = data.cart;
-                    let priceTotal = 0, totalItems = 0;
+                    methods.renderCoupons(cart);
+                    let totalItems = 0;
                     const summary = htmlElements.priceItems;
                     summary.innerHTML = '';
+
                     if (!cart.items || cart.items.length === 0) {
                         cartList.innerHTML = `
                             <li class="cart-empty">
-                                <div class="empty-content">
-                                    <span class="empty-icon">🛒</span>
-                                    <p>Tu carrito está vacío</p>
-                                    <a href="../view/index.html" class="btn-empty">Ir a comprar</a>
-                                </div>
+                            <div class="empty-content">
+                                <span class="empty-icon">🛒</span>
+                                <p>Tu carrito está vacío</p>
+                                <a href="../view/index.html" class="btn-empty">Ir a comprar</a>
+                            </div>
                             </li>
                         `;
                         summary.innerHTML = '';
                         htmlElements.cartProdCount.innerHTML = '0 artículos';
                         return;
                     }
+
                     cart.items.forEach(item => {
                         const li = document.createElement('li');
                         li.classList.add('cart-item');
 
-                        li.innerHTML = `
+                        const priceText = item.isFree ? '<strong style="color: green">GRATIS</strong>' : `$${item.product.price.toFixed(2)}`;
+                        const totalItemPrice = item.isFree ? '<strong style="color: green">GRATIS</strong>' : `$${(item.product.price * item.quantity).toFixed(2)}`;
+                        if(item.isFree){
+                            li.innerHTML = `
                             <img src="${item.product.image}" alt="${item.product.name}">
                             <div class="product-info">
                             <h3 class="product-title">${item.product.name}</h3>
                             <p class="product-description">${item.product.description}</p>
-                            <p class="product-price">$${item.product.price.toFixed(2)}</p>
+                            <p class="product-price">${priceText}</p>
+                            </div>
+                            <div class="product-actions">
+                            </div>
+                        `;
+                        }else{
+                            li.innerHTML = `
+                            <img src="${item.product.image}" alt="${item.product.name}">
+                            <div class="product-info">
+                            <h3 class="product-title">${item.product.name}</h3>
+                            <p class="product-description">${item.product.description}</p>
+                            <p class="product-price">${priceText}</p>
                             <div class="quantity-controls">
                                 <button class="quantity-btn">-</button>
                                 <span class="quantity-display">${item.quantity}</span>
@@ -101,36 +117,42 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             <button class="remove-btn" data-id="${item.product._id}">Eliminar</button>
                             </div>
                         `;
+                        }
+
                         summary.innerHTML += `
-                        <div class="price-row">
+                            <div class="price-row">
                             <span>${item.product.name} x ${item.quantity}</span>
-                            <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
-                        </div>
+                            <span>${totalItemPrice}</span>
+                            </div>
                         `;
+
                         cartList.appendChild(li);
-                        priceTotal += item.product.price * item.quantity;
                         totalItems += item.quantity;
-                        
                     });
+
                     htmlElements.cartProdCount.innerHTML = `${totalItems} artículos`;
                     summary.innerHTML += `
-                    <br>
-                    <div class="price-row">
-                        <span>Subtotal (${totalItems} artículos)</span>
-                        <span>$${priceTotal.toFixed(2)}</span>
-                    </div>
-                    <div class="price-row">
-                        <span>Envío</span>
-                        <span>Gratis</span>
-                    </div>
-                    <div class="price-row total">
-                        <span>Total</span>
-                        <span id="totalAmount">$${priceTotal.toFixed(2)}</span>
-                    </div>
+                        <br>
+                        <div class="price-row">
+                            <span>Subtotal (${totalItems} artículos)</span>
+                            <span>$${cart.totalAmount.toFixed(2)}</span>
+                        </div>
+                        <div class="price-row" id="discount">
+                            
+                        </div>
+                        <div class="price-row">
+                            <span>Envío</span>
+                            <span>Gratis</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span id="totalAmount">$${cart.totalAmount.toFixed(2)}</span>
+                        </div>
                     `;
+
                     methods.updateQItemFront();
                     methods.deleteItem();
-                    return {cart, priceTotal};
+                    return { cart };
                 } catch (error) {
                     console.error('Error al mostrar el carrito:', error);
                 }
@@ -162,7 +184,9 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     const btnMinus = cartItem.querySelector('.quantity-btn:first-child');
                     const btnPlus = cartItem.querySelector('.quantity-btn:last-child');
                     const quantityDisplay = cartItem.querySelector('.quantity-display');
-                    const productId = cartItem.querySelector('.remove-btn').dataset.id;
+                    const removeBtn = cartItem.querySelector('.remove-btn');
+                    if (!removeBtn) return;
+                    const productId = removeBtn.dataset.id;
 
                     btnPlus.addEventListener('click', () => {
                         let quantity = parseInt(quantityDisplay.textContent);
@@ -202,9 +226,13 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
             },
             async createOrder() {
                 try {
+                    const totalAmountElement = document.getElementById('totalAmount');
+                    const totalAmount = parseFloat(totalAmountElement.textContent.replace('$', ''));
                     const response = await fetch('http://localhost:3000/api/order', {
                         method: 'POST',
+                        headers: { 'Content-Type': 'application/json'},
                         credentials: 'include',
+                        body: JSON.stringify({ totalAmount })
                     });
                     const data = await response.json();
                     if (!response.ok) {
@@ -219,6 +247,10 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     methods.showMessage('Pedido en progreso. Consulta tus pedidos para más info.', false);
                     methods.clearUserCart();
                     methods.addPoints(data.order);
+                    const selectedCoupons = document.querySelectorAll('.coupon-item.selected');
+                    const selectedIds = Array.from(selectedCoupons).map(coupon => coupon.dataset.id);
+                    console.log(selectedIds);
+                    methods.deleteUsedCoupons(selectedIds);
                 } catch (error) {
                     console.error('Error al crear la orden:', error);
                     methods.showMessage('Error al crear la orden', true);
@@ -287,12 +319,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     });
                     const data = await response.json();
                     if (data.error === 'noAddress') {
-                        htmlElements.messageCart.textContent = data.message;
-                        htmlElements.messageCart.classList.add('show');
-                        setTimeout(() => {
-                            htmlElements.messageCart.classList.remove('show');
-                            window.location.href = '../view/perfil.html?msg=noAddress';
-                        }, 2000);
+                        methods.showMessage(data.message, true);
                         return;
                     }
                     if (!response.ok) {
@@ -325,7 +352,29 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     return [];
                 }
             },
-            async renderCoupons() {
+            async deleteUsedCoupons(usedCouponIds) {
+                try {
+                    const response = await fetch('http://localhost:3000/api/users/coupons/used', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ couponIds: usedCouponIds })
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        console.log('Cupones eliminados correctamente:', data);
+                        //methods.viewItemsCart();
+                    } else {
+                        console.error('No hay cupones a eliminar:', data.message);
+                    }
+                    
+                } catch (error) {
+                    console.error('Error de red al eliminar cupones:', error);
+                }
+            },
+            async renderCoupons(cart) {
                 const container = document.getElementById('couponsUser');
                 container.innerHTML = ''; 
                 const coupons = await methods.getCouponsUser();
@@ -343,50 +392,105 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                 userCouponsDiv.appendChild(title);
                 coupons.forEach(coupon => {
                     const couponItem = document.createElement('div');
+                    couponItem.dataset.id = coupon._id;
                     couponItem.className = 'coupon-item';
                     couponItem.innerHTML = `<p><strong>${coupon.name}</strong></p>`;
+                    if (coupon.type === 'PRODUCTO') {
+                        const productId = coupon.applicableTo[0];
+                        const alreadyInCart = cart.items.some(item =>
+                            item.isFree === true && item.product._id.toString() === productId
+                        );
+                        console.log(alreadyInCart);
+                        if (alreadyInCart) {
+                            couponItem.classList.add('selected');
+                        }
+                    }
                     couponItem.addEventListener('click', () => {
                         const isSelected = couponItem.classList.contains('selected');
-
                         if (coupon.type === 'DESCUENTO') {
-                            // Deseleccionar si ya está seleccionado
+                            const totalAmountElement = document.getElementById('totalAmount');
+                            if (!totalAmountElement) {
+                                methods.showMessage('Agrega un producto al carrito para aplicar el cupón', true);
+                                return;
+                            }
                             if (isSelected) {
                                 couponItem.classList.remove('selected');
-                                methods.showMessage(`Cupón de "${coupon.name}" removido`, false);
-                                methods.applyDiscount(0); // Remueve el descuento
+                                methods.showMessage(`Cupón de "${coupon.name}" removido`, true);
+                                methods.viewItemsCart();
                             } else {
-                                // Primero deselecciona cualquier otro cupón de tipo DESCUENTO
-                                document.querySelectorAll('.coupon-item[data-type="DESCUENTO"].selected').forEach(el => {
-                                    el.classList.remove('selected');
-                                });
-                                couponItem.classList.add('selected');
-                                methods.showMessage(`Cupón de "${coupon.name}" aplicado`, false);
-                                methods.applyDiscount(coupon.discountAmount);
+                                const messageDiscount = document.querySelector('#discount');
+                                const alreadySelected = document.querySelector('.coupon-item.selected[data-type="DESCUENTO"]');
+                                if (alreadySelected) {
+                                    methods.showMessage('Ya tienes un cupón de descuento activo', true);
+                                } else {
+                                    couponItem.classList.add('selected');
+                                    methods.showMessage(`Cupón de "${coupon.name}" aplicado`, false);
+                                    messageDiscount.innerHTML = `
+                                        <span>Descuento</span>
+                                        <span>$${coupon.discountAmount * 100}%</span>
+                                    `;
+                                    methods.applyDiscount(coupon.discountAmount);
+                                }
                             }
-                        } else {
-                            // PRODUCTO: simplemente alternar el estado
-                            couponItem.classList.toggle('selected');
-                            const nowSelected = couponItem.classList.contains('selected');
-                            methods.showMessage(`Cupón de producto "${coupon.name}" ${nowSelected ? 'aplicado' : 'removido'}`, false);
+                        }
+                        else if (coupon.type === 'PRODUCTO') {
+                            const productId = coupon.applicableTo[0];
+                            if (isSelected) {
+                                couponItem.classList.remove('selected');
+                                methods.showMessage(`Producto gratis "${coupon.name}" removido`, true);
+                                methods.removeFreeProduct(productId);
+                            } else {
+                                couponItem.classList.add('selected');
+                                methods.applyFreeProduct(productId);
+                            }
                         }
                     });
-
                     couponItem.dataset.type = coupon.type;
                     userCouponsDiv.appendChild(couponItem);
                 });
                 container.appendChild(userCouponsDiv);
-                
             },
             applyDiscount(discount) {
                 const totalAmountElement = document.getElementById('totalAmount');
-                if (!totalAmountElement){
-                    methods.showMessage('Agrega un producto al carrito para aplicar el cupon', true);
-                    return;
-                }
                 let currentTotal = parseFloat(totalAmountElement.textContent.replace('$', ''));
                 const discountAmount = currentTotal * discount;
                 const finalTotal = Math.max(currentTotal - discountAmount, 0);
                 totalAmountElement.textContent = `$${finalTotal.toFixed(2)}`;
+            },
+            async applyFreeProduct(productId) {
+                try {
+                    const response = await fetch('http://localhost:3000/api/cart/free-product', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ productId })
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        methods.showMessage(`Producto gratuito "${data.productName}" agregado al carrito`, false);
+                        methods.viewItemsCart();
+                    } else {
+                        methods.showMessage('No se pudo aplicar el producto gratuito', true);
+                    }
+                } catch (error) {
+                    console.error('Error en applyFreeProduct:', error);
+                    methods.showMessage('Ocurrió un error al aplicar el producto gratuito', true);
+                }
+            },
+            async removeFreeProduct(productId){
+                try {
+                    const response = await fetch(`http://localhost:3000/api/cart/remove-free-product/${productId}`, {
+                        method: 'DELETE',
+                        
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.message || 'Error al remover el producto gratuito');
+                    methods.viewItemsCart();
+                    methods.showMessage('Producto gratuito removido correctamente', true);
+                } catch (error) {
+                    methods.showMessage(`Error: ${error.message}`, true);
+                }
             },
             showMessage(mensaje, color) {
                 htmlElements.messageCart.textContent = mensaje;
@@ -413,7 +517,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
         return {
             init() {
                 const { btnBuy, confirmBtn, noBtn, confirmAddressDialog} = htmlElements;
-                methods.renderCoupons();
+                //methods.renderCoupons();
                 methods.viewItemsCart();
                 methods.addNavbar();
                 methods.addFooter();

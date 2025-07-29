@@ -436,3 +436,30 @@ body {
     font-size: 0.92rem;
   }
 }
+
+#message.alert-message {
+  position: fixed;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  z-index: 9999;
+  min-width: 180px;
+  max-width: 320px;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 2rem;
+  box-shadow: 0 4px 24px rgba(149, 86, 166, 0.18);
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  text-align: center;
+}
+
+/* Cuando se muestre, agrega la clase .show por JS */
+#message.alert-message.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}

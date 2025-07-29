@@ -106,7 +106,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     if (limitedCoupons.length > 0) {
                         limitedCoupons.forEach(coupon => {
                             const item = document.createElement('div');
-                            item.classList.add('coupon-item');
+                            item.classList.add('order-item');
 
                             const name = document.createElement('span');
                             name.classList.add('coupon-name');
@@ -457,6 +457,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         const containerCoupon = htmlElements.couponsList;
                         containerCoupon.innerHTML = '<div><p>No tienes cupones</p></div>';
                         htmlElements.points.innerHTML = '0';
+                        htmlElements.points2.innerHTML = '0';
                         return null;
                     }
 
@@ -589,7 +590,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             }
         return{
             async init(){
-                const { btnCancelar, beSub, btnViewPoints } = htmlElements;
+                const { btnCancelar, beSub } = htmlElements;
                 document.addEventListener('DOMContentLoaded', async () => {
                     methods.checkSubscriptionSession();
                     const role = await methods.verfySession();
@@ -620,14 +621,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     methods.createSubscriptionSession();
                 });
                 methods.verifyAddress();
-                btnViewPoints.addEventListener('click', async (e)=>{
-                    const role = await methods.verfySession();
-                    if (role === 'user') {
-                        methods.showMessage("Hazte subcritor para ganar puntos", true);
-                    } else if (role === 'subscriber'){
-                        window.location.href = '../view/puntos.html';
-                    }
-                });
+                
             }
         }
     })();

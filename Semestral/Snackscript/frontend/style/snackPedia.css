@@ -514,3 +514,71 @@ h1::after, h2::after, h3::after {
     gap: 15px;
   }
 }
+
+#contenido {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 300px;
+  background: linear-gradient(135deg, #6a11cb 0%, #ffa99f 100%);
+  border-radius: 18px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  margin: 50px auto;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+#contenido p {
+  font-size: 2.2rem;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: bold;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+#contenido p::before {
+  content: "🍭 ";
+  font-size: 2.4rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+#titulo-snackpedia {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #6a11cb 0%, #ffa99f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+  animation: fadeInTitle 1s ease-in-out;
+}
+
+@keyframes fadeInTitle {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

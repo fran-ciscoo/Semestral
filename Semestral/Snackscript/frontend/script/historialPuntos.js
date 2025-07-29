@@ -52,7 +52,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         return [];
                     }
                     const history = data.history;
-                    const ultimosDiez = history.slice(-10)
+                    const ultimosDiez = history.slice(0, 10);
                     const points = data.points;
                     const tbody = htmlElements.tbodyHistorial;
                     tbody.innerHTML = '';
@@ -88,7 +88,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         tbody.appendChild(fila);
                     });
 
-                    console.log('Historial de puntos:', data.history);
                     return data.history;
 
                 } catch (error) {

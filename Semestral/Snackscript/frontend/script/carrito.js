@@ -188,12 +188,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     const updateButtonsState = () => {
                         btnPlus.disabled = currentQuantity >= maxStock;
                         btnMinus.disabled = currentQuantity <= 1;
-
-                        if (currentQuantity >= maxStock) {
-                            methods.showMessage('Has alcanzado el stock máximo disponible.', true);
-                        } else if (currentQuantity <= 1) {
-                            methods.showMessage('La cantidad mínima es 1.', true);
-                        }
                     };
 
                     updateButtonsState();
@@ -204,6 +198,12 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             quantityDisplay.textContent = currentQuantity;
                             methods.updateQuantity(productId, currentQuantity);
                             updateButtonsState();
+
+                            if (currentQuantity === maxStock) {
+                                methods.showMessage(`Has alcanzado el stock máximo (${maxStock}) de este producto.`, true);
+                            }
+                        } else {
+                            // Aquí puede no hacer falta mostrar mensaje porque botón está deshabilitado
                         }
                     });
 
@@ -214,10 +214,11 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                             methods.updateQuantity(productId, currentQuantity);
                             updateButtonsState();
                         } else {
-                            methods.showMessage('No se puede poner cantidades negativas', true);
+                            methods.showMessage('No puedes disminuir la cantidad por debajo de 1.', true);
                         }
                     });
                 });
+            
             },
 
             async updateQuantity(productId, quantity) {
@@ -468,7 +469,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         const alreadyInCart = cart.items.some(item =>
                             item.isFree === true && item.product._id.toString() === productId
                         );
-                        console.log(alreadyInCart);
                         if (alreadyInCart) {
                             couponItem.classList.add('selected');
                         }

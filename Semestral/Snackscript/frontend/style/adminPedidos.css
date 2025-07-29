@@ -446,3 +446,16 @@ body {
   transform: translateY(-2px) scale(1.06);
   border: 2px solid #9556A6;
 }
+
+.no-pedidos-msg {
+  background: linear-gradient(90deg, #f3eaff 0%, #ded6ff 100%);
+  color: #9556A6;
+  font-weight: 700;
+  padding: 18px 24px;
+  border-radius: 16px;
+  text-align: center;
+  margin: 30px auto 40px auto;
+  font-size: 1.15rem;
+  box-shadow: 0 2px 12px #bfa7f233;
+  max-width: 400px;
+}

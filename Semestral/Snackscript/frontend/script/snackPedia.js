@@ -1,7 +1,7 @@
-import {navbarN, navbarS, footer} from "../component/navbar.js"
-(()=>{
+import { navbarN, navbarS, footer } from "../component/navbar.js"
+(() => {
 
-    const App = (()=>{
+    const App = (() => {
         const htmlElements = {
             navbar: document.querySelector('#navbar'),
             footer: document.querySelector('#footer'),
@@ -14,9 +14,9 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
         }
 
         const methods = {
-            async verfySession(){
-                try{
-                    const response = await fetch ('http://localhost:3000/api/login/me',{
+            async verfySession() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/login/me', {
                         credentials: 'include',
                     });
                     if (response.status === 401) {
@@ -29,14 +29,14 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     }
                     const data = await response.json();
                     return data.user?.role || 'none';
-                    
-                }catch (error) {
+
+                } catch (error) {
                     console.error('Error al verificar la sesión:', error);
                     return 'none';
                 }
             },
 
-            async addNavbar(){
+            async addNavbar() {
                 const container = htmlElements.navbar;
                 const role = await methods.verfySession();
                 console.log(role);
@@ -51,7 +51,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 methods.printHtml(container, generar);
             },
 
-            addFooter(){
+            addFooter() {
                 const container = htmlElements.footer;
                 const generar = footer();
                 methods.printHtml(container, generar);
@@ -81,7 +81,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             handleRegionFilter(button) {
                 // Remover clase active de todos los botones
                 htmlElements.mapButtons.forEach(btn => btn.classList.remove('active'));
-                
+
                 // Agregar clase active al botón clickeado
                 button.classList.add('active');
 
@@ -92,7 +92,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             handleCountryFilter(countryItem) {
                 // Remover selección de todos los países
                 htmlElements.countryItems.forEach(item => item.classList.remove('selected'));
-                
+
                 // Agregar selección al país clickeado
                 countryItem.classList.add('selected');
 
@@ -104,7 +104,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 htmlElements.snacks.forEach(snack => {
                     const snackCountry = snack.dataset.country;
                     const snackRegion = methods.getRegionByCountry(snackCountry);
-                    
+
                     if (region === 'todo' || snackRegion === region) {
                         snack.classList.remove('hidden');
                     } else {
@@ -119,7 +119,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             filterSnacksByCountry(country) {
                 htmlElements.snacks.forEach(snack => {
                     const snackCountry = snack.dataset.country;
-                    
+
                     if (snackCountry === country) {
                         snack.classList.remove('hidden');
                     } else {
@@ -135,21 +135,13 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 const regionMap = {
                     'japon': 'asia',
                     'corea': 'asia',
-                    'china': 'asia',
-                    'tailandia': 'asia',
                     'mexico': 'america',
-                    'brasil': 'america',
                     'peru': 'america',
                     'colombia': 'america',
-                    'italia': 'europa',
-                    'francia': 'europa',
-                    'alemania': 'europa',
                     'espana': 'europa',
-                    'marruecos': 'africa',
-                    'egipto': 'africa',
-                    'australia': 'oceania',
-                    'nueva-zelanda': 'oceania',
-                    'estados-unidos': 'america'
+                    'estados-unidos': 'america',
+                    'panama': 'america'
+
                 };
                 return regionMap[country] || 'other';
             },
@@ -174,7 +166,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
             performSearch() {
                 const searchTerm = htmlElements.searchInput.value.toLowerCase().trim();
-                
+
                 if (searchTerm === '') {
                     // Si no hay término de búsqueda, mostrar todos los snacks
                     htmlElements.snacks.forEach(snack => {
@@ -187,10 +179,10 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     const country = snack.dataset.country;
                     const category = snack.dataset.category;
                     const countryName = methods.getCountryName(country);
-                    
+
                     // Buscar por país, categoría o nombre del archivo
                     const fileName = snack.src.split('/').pop().toLowerCase();
-                    
+
                     if (countryName.toLowerCase().includes(searchTerm) ||
                         category.toLowerCase().includes(searchTerm) ||
                         fileName.includes(searchTerm)) {
@@ -207,34 +199,48 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 const countryNames = {
                     'japon': 'Japón',
                     'corea': 'Corea',
-                    'china': 'China',
-                    'tailandia': 'Tailandia',
                     'mexico': 'México',
-                    'brasil': 'Brasil',
                     'peru': 'Perú',
-                    'colombia': 'Colombia',
-                    'italia': 'Italia',
-                    'francia': 'Francia',
-                    'alemania': 'Alemania',
                     'espana': 'España',
-                    'marruecos': 'Marruecos',
-                    'egipto': 'Egipto',
-                    'australia': 'Australia',
-                    'nueva-zelanda': 'Nueva Zelanda',
+                    'panama': 'Panamá',
                     'estados-unidos': 'Estados Unidos'
                 };
                 return countryNames[countryCode] || countryCode;
             }
         }
 
-        return{
-            init(){
+        return {
+            init() {
                 methods.addNavbar();
                 methods.addFooter();
                 methods.initMapControls();
                 methods.initSearch();
             }
         }
+          
+             
+        
+
+
     })();
+
+    document.querySelectorAll('.map-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    // Quitar clase activa de todos los botones
+    document.querySelectorAll('.map-btn').forEach(b => b.classList.remove('active'));
+    // Activar el botón actual
+    this.classList.add('active');
+
+    // Filtrar países
+    const region = this.id.replace('btn', '').toLowerCase(); // btnAsia -> asia
+    document.querySelectorAll('.country-item').forEach(item => {
+      if (region === 'todo') {
+        item.style.display = '';
+      } else {
+        item.style.display = item.dataset.region === region ? '' : 'none';
+      }
+    });
+  });
+});
     App.init();
 })();

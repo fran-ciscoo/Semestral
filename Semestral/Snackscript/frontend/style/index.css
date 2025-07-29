@@ -1768,7 +1768,7 @@ body {
     font-family: inherit;
     padding-top: 24px;              /* Aumenta espacio superior para que el texto inicie más abajo */
     line-height: 1.5;               /* Mejora legibilidad */
-    vertical-align: top;           /* Asegura que el texto no quede centrado verticalmente */
+    vertical-align: top;          /* Asegura que el texto no quede centrado verticalmente */
     box-sizing: border-box;        /* Para que el padding no desborde */
     display: block;                /* Evita comportamientos inline extraños */
 }

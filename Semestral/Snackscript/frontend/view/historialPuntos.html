@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/historialPuntos.css">
+    
     <script type="module" src="../script/historialPuntos.js" defer></script>
     <link rel="stylesheet" href="../style/navbar.css">
     <link rel="stylesheet" href="../style/puntos.css">
@@ -71,5 +71,23 @@
     </section>
 
     <div id="footer"></div>
+
+        <div id="footer"></div>
+
+    <script>
+      // Activa el botón correspondiente según la URL
+      const path = window.location.pathname;
+      document.querySelectorAll('#selector-puntos a').forEach(link => {
+        const btn = link.querySelector('button');
+        if (link.getAttribute('href') && path.endsWith(link.getAttribute('href').split('/').pop())) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    </script>
+</body>
+</html>
+    
 </body>
 </html>

@@ -28,10 +28,54 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             couponsList: document.querySelector('#couponsList'),
             couponsNumber: document.querySelector('#couponsNumber'),
             beSub: document.querySelector('#beSub'),
-            messageCart: document.querySelector('#messageCart')
+            nameError: document.querySelector('#nameError'),
+            emailError: document.querySelector('#emailError'),
+            messageCart: document.querySelector('#messageCart'),
+            addressesCard: document.querySelector('.addresses-card'),
         }
 
         const methods = {
+            renderAddress(city, address) {
+                const container = htmlElements.addressesCard; // .card-content.addresses-card
+
+                // Elimina contenido previo de direcciones si existe
+                let addressesList = container.querySelector('.addresses-list');
+                if (addressesList) {
+                    addressesList.remove();
+                }
+                // Elimina mensaje vacío previo si existe
+                let emptyMsg = container.querySelector('.empty-message');
+                if (emptyMsg) {
+                    emptyMsg.remove();
+                }
+
+                if (city || address) {
+                    addressesList = document.createElement('div');
+                    addressesList.classList.add('addresses-list');
+
+                    const item = document.createElement('div');
+                    item.classList.add('address-item');
+
+                    const citySpan = document.createElement('span');
+                    citySpan.classList.add('address-city');
+                    citySpan.textContent = city || '';
+
+                    const addressSpan = document.createElement('span');
+                    addressSpan.classList.add('address');
+                    addressSpan.textContent = address || '';
+
+                    item.appendChild(citySpan);
+                    item.appendChild(addressSpan);
+                    addressesList.appendChild(item);
+
+                    container.appendChild(addressesList);
+                } else {
+                    const emptyMessage = document.createElement('p');
+                    emptyMessage.classList.add('empty-message');
+                    emptyMessage.textContent = 'No hay direcciones guardadas.';
+                    container.appendChild(emptyMessage);
+                }
+            },
             async getCouponsUser() {
                 try {
                     const response = await fetch('http://localhost:3000/api/users/coupons', {
@@ -40,9 +84,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     });
                     if (response.status === 401) {
                         const containerCoupon = htmlElements.couponsList;
-                        containerCoupon.innerHTML = '<div><p>No tienes cupones</p></div>';
+                        containerCoupon.innerHTML = '<div class="no-pedidos-msg"><p>No tienes cupones</p></div>';
                         htmlElements.points.innerHTML = '0';
-                        htmlElements.points2.innerHTML = '0';
                         return null;
                     }
                     const data = await response.json();
@@ -59,34 +102,41 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     container.innerHTML = '';
                     htmlElements.couponsNumber.textContent = coupons.length;
                     const limitedCoupons = coupons.slice(0, 4);
-                    limitedCoupons.forEach(coupon => {
-                        const item = document.createElement('div');
-                        item.classList.add('coupon-item');
+                    if (limitedCoupons.length > 0) {
+                        limitedCoupons.forEach(coupon => {
+                            const item = document.createElement('div');
+                            item.classList.add('coupon-item');
 
-                        const name = document.createElement('span');
-                        name.classList.add('coupon-name');
-                        name.textContent = coupon.name;
+                            const name = document.createElement('span');
+                            name.classList.add('coupon-name');
+                            name.textContent = coupon.name;
 
-                        const status = document.createElement('span');
-                        status.classList.add('coupon-status', 'active');
-                        status.textContent = 'Disponible';
+                            const status = document.createElement('span');
+                            status.classList.add('coupon-status', 'active');
+                            status.textContent = 'Disponible';
 
-                        item.appendChild(name);
-                        item.appendChild(status);
-                        container.appendChild(item);
-                    });
-                    const actionsDiv = document.createElement('div');
-                    actionsDiv.classList.add('card-actions');
+                            item.appendChild(name);
+                            item.appendChild(status);
+                            container.appendChild(item);
+                        });
 
-                    const historialLink = document.createElement('a');
-                    historialLink.href = 'historialPuntos.html';
-                    historialLink.classList.add('card-btn');
-                    historialLink.textContent = 'Ver Historial';
+                        const actionsDiv = document.createElement('div');
+                        actionsDiv.classList.add('card-actions');
 
-                    actionsDiv.appendChild(historialLink);
-                    container.appendChild(actionsDiv);
-                }else {
-                    htmlElements.couponsList.innerHTML = '<div><p>No tienes cupones</p></div>';
+                        const historialLink = document.createElement('a');
+                        historialLink.href = 'historialPuntos.html';
+                        historialLink.classList.add('card-btn');
+                        historialLink.textContent = 'Ver Historial';
+
+                        actionsDiv.appendChild(historialLink);
+                        container.appendChild(actionsDiv);
+                    } else {
+
+                        const emptyMessage = document.createElement('p');
+                        emptyMessage.classList.add('empty-message');
+                        emptyMessage.innerHTML = 'No hay cupones disponibles en este momento.';
+                        container.appendChild(emptyMessage);
+                    }   
                 }
             },
             async createSubcriptor(nombre, price) {
@@ -190,7 +240,12 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 recentOrders.forEach(order => {
                     const dateObj = new Date(order.orderedAt);
                     const formattedDate = dateObj.toLocaleDateString('es-PA');
-                    const statusClass = order.status === 'ENTREGADO' ? 'delivered' : order.status === 'CANCELADO' ? 'cancelled' : 'pending';
+                    const statusClass =
+                    order.status === 'ENTREGADO' ? 'entregado' :
+                    order.status === 'CANCELADO' ? 'cancelado' :
+                    order.status === 'PENDIENTE' ? 'pending' :
+                    (order.status === 'EN PREPARACION' || order.status === 'EN CAMINO') ? 'processing' :
+                    '';
 
                     const orderDiv = document.createElement('div');
                     orderDiv.className = "order-item";
@@ -199,7 +254,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                             <span class="idOrder">#${order._id.slice(-5)}</span>
                             <span class="order-date">${formattedDate}</span>
                         </div>
-                        <span class="status-badge ${order.status === 'PENDIENTE' ? 'pending' : order.status === 'EN PREPARACION' || order.status === 'EN CAMINO' ? 'processing' : ''}">
+                        <span class="status-badge ${statusClass}">
                             ${order.status}
                         </span>
                     `;
@@ -277,6 +332,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     htmlElements.inputPostalCode.value = user.shippingAddress?.postalCode || '';
                     htmlElements.inputPhone.value = user.phone || '';
 
+                    methods.renderAddress(user.shippingAddress?.city, user.shippingAddress?.address);
 
                     htmlElements.formEditar.addEventListener('submit', async (e) => {
                         e.preventDefault();
@@ -313,6 +369,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             },
 
             validateForm(name, email) {
+                htmlElements.nameError.innerHTML = "";
+                htmlElements.emailError.innerHTML = "";
                 if (name && !/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+( [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/.test(name)) {
                     htmlElements.nameError.innerHTML = "El nombre solo puede contener letras y espacios entre palabras";
                     return false;
@@ -321,8 +379,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     htmlElements.emailError.innerHTML = "Ingrese un correo valido";
                     return false;
                 }
-                htmlElements.nameError.innerHTML = "";
-                htmlElements.emailError.innerHTML = "";
 
                 return true;
             },
@@ -366,6 +422,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         console.warn('No hay sesión activa');
                         htmlElements.nombre.textContent = 'Sin nombre';
                         htmlElements.email.textContent = 'Sin correo';
+                        methods.renderAddress('', '');
                         return;
                     }
 
@@ -376,11 +433,13 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
                     htmlElements.nombre.textContent = user.name || 'Sin nombre';
                     htmlElements.email.textContent = user.email || 'Sin correo';
+                     methods.renderAddress(user.shippingAddress?.city, user.shippingAddress?.address);
 
                 } catch (error) {
                     console.error('Error al obtener datos del usuario:', error);
                     htmlElements.nombre.textContent = 'Sin nombre';
                     htmlElements.email.textContent = 'Sin correo';
+                    methods.renderAddress('', '');
                 }
             },
             async viewPoints() {
@@ -398,7 +457,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         const containerCoupon = htmlElements.couponsList;
                         containerCoupon.innerHTML = '<div><p>No tienes cupones</p></div>';
                         htmlElements.points.innerHTML = '0';
-                        htmlElements.points2.innerHTML = '0';
                         return null;
                     }
 
@@ -408,7 +466,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         return null;
                     }
                     htmlElements.points.innerHTML = points.totalPoints;
-                    htmlElements.points2.innerHTML = points.totalPoints;
                     return points;
 
                 } catch (error) {
@@ -473,7 +530,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             async addBottom() {
                 const session = await methods.verfySession();
                 const text = session !== 'none'
-                    ? `<button><a id="cerrarSesion" href="../view/index.html">Cerrar Sesión</a></button>`
+                    ? `<button><a id="cerrarSesion" href="../view/index.html">Cerrar Sesión</a></button>
+                        <button id="btnEditar" class="edit-profile-btn"><span class="btn-icon">✏️</span>Editar Perfil</button>`
                     : `<button><a id="iniciarSesion" href="../view/logIn.html">Iniciar Sesión</a></button>`;
 
                 const element = htmlElements.buttons;
@@ -481,6 +539,15 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
                 if (session !== 'none') {
                     const cerrarBtn = document.querySelector('#cerrarSesion');
+                    const editar = document.querySelector('#btnEditar');
+                    if (editar) {
+                        editar.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            methods.showModal(htmlElements.dialogEditar);
+                            methods.viewDetails();
+                        });
+                    }
+
                     if (cerrarBtn) {
                         cerrarBtn.addEventListener('click', (e) => {
                             e.preventDefault();
@@ -500,7 +567,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             }
         return{
             async init(){
-                const {btnCancelar, btnEditar, beSub} = htmlElements;
+                const {btnCancelar, beSub} = htmlElements;
                 document.addEventListener('DOMContentLoaded', () => {
                     methods.checkSubscriptionSession();
                 });
@@ -512,11 +579,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 methods.viewOrders();
                 const coupons = await methods.getCouponsUser();
                 methods.renderCoupons(coupons);
-                btnEditar.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    methods.showModal(htmlElements.dialogEditar);
-                    methods.viewDetails();
-                });
 
                 btnCancelar.addEventListener('click', (e) => {
                     e.preventDefault();

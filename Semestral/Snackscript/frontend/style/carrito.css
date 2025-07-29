@@ -605,29 +605,31 @@ main#carrito {
   }
 }
 
-.alert-message {
+#messageCart.alert-message {
   position: fixed;
-  top: 20px;
+  top: 32px;
   left: 50%;
-  transform: translateX(-50%);
-  background-color: #43aa8b;
-  color: #fff;
-  padding: 15px 25px;
-  border-radius: 8px;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateX(-50%) translateY(-20px);
   z-index: 9999;
+  min-width: 180px;
+  max-width: 320px;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 2rem;
+  box-shadow: 0 4px 24px rgba(149, 86, 166, 0.18);
+  font-size: 1rem;
+  font-weight: 600;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease, top 0.4s ease;
+  transition: opacity 0.3s, transform 0.3s;
+  text-align: center;
 }
 
-/* Mostrar el mensaje */
-.alert-message.show {
+/* Cuando se muestre, agrega la clase .show por JS */
+#messageCart.alert-message.show {
   opacity: 1;
   pointer-events: auto;
-  top: 40px;
+  transform: translateX(-50%) translateY(0);
 }
 
 dialog {

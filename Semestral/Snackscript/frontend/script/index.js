@@ -213,11 +213,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         return null;
                     }
                     const data = await response.json();
-                    htmlElements.messageCart.textContent = 'El producto fue agregado al carrito';
-                    htmlElements.messageCart.classList.add('show');
-                    setTimeout(() => {
-                        htmlElements.messageCart.classList.remove('show');
-                    }, 5000);
+                    methods.showMessage('El producto fue agregado al carrito', false);
                     return data.cart || null;
                 } catch (error) {
                     console.error('Error al agregar al carrito:', error);
@@ -239,7 +235,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     if (!response.ok) {
                         console.error("Ocurrió algo inesperado: "+ data.message);
                     }
-                    methods.showMessage(data.message, null);
+                    methods.showMessage(data.message, false);
                 } catch (error) {
                     console.error('Error al agregar a favoritos:', error);
                 }
@@ -267,9 +263,9 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             showMessage(mensaje, color) {
                 htmlElements.messageCart.textContent = mensaje;
                 if (color) {
-                    htmlElements.messageCart.style.backgroundColor = '#f94144';
+                    htmlElements.messageCart.style.background = 'linear-gradient(135deg, #F26052 0%, #D32F2F 100%';
                 } else {
-                    htmlElements.messageCart.style.backgroundColor = '#43aa8b';
+                    htmlElements.messageCart.style.background = 'linear-gradient(135deg, #43aa8b 0%, #2e7d32 100%)';
                 }
                 htmlElements.messageCart.classList.add('show');
                 setTimeout(() => {
@@ -299,7 +295,14 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
             printHtml(element, text) {
                 element.innerHTML += `${text}`;
-            }
+            },
+            showUrlMessage() {
+                const params = new URLSearchParams(window.location.search);
+                const message = params.get('message');
+                if(message){
+                    methods.showMessage(message, true);
+                }
+            }  
             }
 
         return{
@@ -308,7 +311,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 methods.addNavbar();
                 methods.addFooter();
                 methods.viewProducts();
-
+                methods.showUrlMessage()
                 botones.forEach((boton) =>{
                     boton.addEventListener('click', (e) =>{
                         e.preventDefault();

@@ -17,7 +17,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
             noBtn: document.querySelector('#btn-no'),
         }
         const methods = {
-            async verfySession() {
+            async verifySession() {
                 try {
                     const response = await fetch('http://localhost:3000/api/login/me', {
                         credentials: 'include',
@@ -27,11 +27,11 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         return 'none';
                     }
                     if (!response.ok) {
-                        console.warm('Error al verificar la sesión');
+                        console.warn('Error al verificar la sesión');
                         return 'none';
                     }
                     const data = await response.json();
-                    return data.user?.role || 'none';
+                    return data.user?.role ?? 'none';
 
                 } catch (error) {
                     console.error('Error al verificar la sesión:', error);
@@ -41,35 +41,28 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
 
             async viewItemsCart() {
                 try {
-                    methods.updateCartCoupon(null);
                     const cartList = htmlElements.cartList;
                     cartList.innerHTML = '';
                     const response = await fetch('http://localhost:3000/api/cart/cart', {
                         method: 'GET',
                         credentials: 'include'
                     });
-
-                    if (!response.ok) {
-                        cartList.innerHTML = `
-                            <li class="cart-empty">
-                            <div class="empty-content">
-                                <span class="empty-icon">🛒</span>
-                                <p>Tu carrito está vacío</p>
-                                <a href="../view/index.html" class="btn-empty">Ir a comprar</a>
-                            </div>
-                            </li>
-                        `;
-                        htmlElements.cartProdCount.innerHTML = '0 artículos';
-                        return;
-                    }
                     const data = await response.json();
                     const cart = data.cart;
-                    methods.renderCoupons(cart);
+                    const role = await methods.verifySession();
+                    if ( role === 'subscriber'){
+                        methods.renderCoupons(cart);
+                    }else{
+                        const container = document.getElementById('couponsUser');
+                        if (container) {
+                            container.remove();
+                        }
+                    }
                     let totalItems = 0;
                     const summary = htmlElements.priceItems;
                     summary.innerHTML = '';
 
-                    if (!cart.items || cart.items.length === 0) {
+                    if (!response.ok || !cart.items || cart.items.length === 0) {
                         cartList.innerHTML = `
                             <li class="cart-empty">
                             <div class="empty-content">
@@ -172,7 +165,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                                 return;
                             }
                             e.target.closest('.cart-item');
-                            methods.showMessage('El producto fue borrado del carrito');
+                            methods.showMessage('El producto fue borrado del carrito', false);
                             methods.viewItemsCart();
                         } catch (error) {
                             console.error('Error al eliminar producto:', error);
@@ -195,6 +188,12 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     const updateButtonsState = () => {
                         btnPlus.disabled = currentQuantity >= maxStock;
                         btnMinus.disabled = currentQuantity <= 1;
+
+                        if (currentQuantity >= maxStock) {
+                            methods.showMessage('Has alcanzado el stock máximo disponible.', true);
+                        } else if (currentQuantity <= 1) {
+                            methods.showMessage('La cantidad mínima es 1.', true);
+                        }
                     };
 
                     updateButtonsState();
@@ -287,7 +286,10 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                                 methods.showMessage('La ordern fue cancela, dirigete a la vista de pedidos', true);
                             }
                             methods.clearUserCart();
-                            methods.addPoints(data.order);
+                            const role = await methods.verifySession();
+                            if(role === 'subscriber'){
+                                methods.addPoints(data.order);
+                            }
                             const selectedDiscountCouponId = localStorage.getItem('selectedDiscountCoupon');
                             console.log(selectedDiscountCouponId);
                             const selectedCoupons = document.querySelectorAll('.coupon-item.selected');
@@ -336,7 +338,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     if (!response.ok) {
                         throw new Error(data.error || 'Error al añadir puntosssss');
                     }
-                    console.log('✅Puntos añadidos:', data.points);
+                    methods.showMessage("¡Has ganado puntos! Revisa la sección de puntos para más detalles.", false);
                     return data;
                 } catch (error) {
                     console.error('❌ Error al añadir puntos:', error.message);
@@ -360,7 +362,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
             },
             async addNavbar() {
                 const container = htmlElements.navbar;
-                const role = await methods.verfySession();
+                const role = await methods.verifySession();
                 console.log(role);
                 let generar;
 
@@ -384,7 +386,8 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     });
                     const data = await response.json();
                     if (data.error === 'noAddress') {
-                        methods.showMessage(data.message, true);
+                        const message = encodeURIComponent('Completa la direccion de envio para hacer compras');
+                        window.location.href = `../view/perfil.html?msg=${message}`;
                         return;
                     }
                     if (!response.ok) {
@@ -586,9 +589,9 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
             showMessage(mensaje, color) {
                 htmlElements.messageCart.textContent = mensaje;
                 if (color) {
-                    htmlElements.messageCart.style.backgroundColor = '#f94144';
-                }else{
-                    htmlElements.messageCart.style.backgroundColor = '#43aa8b';
+                    htmlElements.messageCart.style.background = 'linear-gradient(135deg, #F26052 0%, #D32F2F 100%';
+                } else {
+                    htmlElements.messageCart.style.background = 'linear-gradient(135deg, #43aa8b 0%, #2e7d32 100%)';
                 }
                 htmlElements.messageCart.classList.add('show');
                 setTimeout(() => {

@@ -28,7 +28,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             couponsList: document.querySelector('#couponsList'),
             couponsNumber: document.querySelector('#couponsNumber'),
             beSub: document.querySelector('#beSub'),
-            messageCart: document.querySelector('#messageCart')
+            messageCart: document.querySelector('#messageCart'),
+            btnViewPoints: document.querySelector('#btnViewPoints')
         }
 
         const methods = {
@@ -150,8 +151,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                             console.log('Suscripción verificada:', data);
 
                             if (data.status === 'active') {
+                                window.location.href = '../view/perfil.html';
                                 methods.showMessage('¡Suscripción activa! Ya puedes disfrutar de los beneficios.', false);
-                                methods.updateUserSubscription(true);
                             } else {
                                 methods.showMessage('El pago no se completó. Intenta nuevamente.', true);
                             }
@@ -351,9 +352,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
                 htmlElements.nombre.textContent = 'Sin nombre';
                 htmlElements.email.textContent = 'Sin correo';
-
-                alert('Sesión cerrada correctamente.');
-                window.location.href = '../view/index.html';
+                const message = encodeURIComponent('La session fue cerrada');
+                window.location.href = `../view/index.html?message=${message}`;
             },
 
             async addInfo() {
@@ -489,10 +489,32 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     }
                 }
             },
+            async verfySession() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/login/me', {
+                        credentials: 'include',
+                    });
+                    if (response.status === 401) {
+                        console.warn('No hay sesión activa');
+                        return 'none';
+                    }
+                    if (!response.ok) {
+                        console.warn('Error al verificar la sesión');
+                        return 'none';
+                    }
+                    const data = await response.json();
+                    return data.user?.role ?? 'none';
+
+                } catch (error) {
+                    console.error('Error al verificar la sesión:', error);
+                    return 'none';
+                }
+            },
             verifyAddress(){
                 const params = new URLSearchParams(window.location.search);
                 const msg = params.get('msg');
-                if (msg === 'noAddress') {
+                if (msg) {
+                    methods.showMessage(msg, true);
                     methods.showModal(htmlElements.dialogEditar);
                     methods.viewDetails();
                 }
@@ -500,9 +522,18 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             }
         return{
             async init(){
-                const {btnCancelar, btnEditar, beSub} = htmlElements;
-                document.addEventListener('DOMContentLoaded', () => {
+                const {btnCancelar, btnEditar, beSub, btnViewPoints} = htmlElements;
+                document.addEventListener('DOMContentLoaded', async () => {
                     methods.checkSubscriptionSession();
+                    const role = await methods.verfySession();
+                    const cardCoupons = document.getElementById('profile-card coupons-card');
+                    if(role === 'none'){
+                        const cardPoint = document.getElementById('profile-card points-card');
+                        cardPoint.remove();
+                        cardCoupons.remove();
+                    } else if(role === 'user'){
+                        cardCoupons.remove();
+                    }
                 });
                 methods.viewPoints();
                 methods.addNavbar();
@@ -527,6 +558,14 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     methods.createSubscriptionSession();
                 });
                 methods.verifyAddress();
+                btnViewPoints.addEventListener('click', async (e)=>{
+                    const role = await methods.verfySession();
+                    if (role === 'user') {
+                        methods.showMessage("Hazte subcritor para ganar puntos", true);
+                    } else if (role === 'subscriber'){
+                        window.location.href = '../view/puntos.html';
+                    }
+                });
             }
         }
     })();

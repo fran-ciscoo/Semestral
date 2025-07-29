@@ -12,6 +12,14 @@
 <body>
     <div id="navbar"></div>
 
+    <section>
+        <div class="puntos-header">
+            <h1>¡Tus puntos!</h1>
+            <div class="puntos-cantidad" id="puntos-cantidad">0</div>
+        </div>
+        <p id="lastPurchase"><!-- Última compra: 07/06/2025 --></p>
+    </section>
+
     <div id="selector-puntos">
         <a href="../view/puntos.html">
             <button id="btnCanje">Estado de puntos</button>
@@ -21,19 +29,8 @@
         </a>
     </div>
 
-    <section class="puntos-actuales">
-        <h2>¡Tus puntos!</h2>
-        <div class="puntos-cantidad" id="puntos-cantidad">0</div>
-        <p id="lastPurchase"><!-- Última compra: 07/06/2025 --></p>
-    </section>
-
     <main class="historial-puntos-section">
         <h3>Historial de puntos</h3>
-        <div style="margin-bottom: 18px; text-align:center;">
-            <span class="badge-estado badge-ganado">Ganado</span>
-            <span class="badge-estado badge-canjeado">Canjeado</span>
-            <span class="badge-estado badge-pendiente">Pendiente</span>
-        </div>
         <div class="historial-container">
             <table class="historial-table">
                 <thead>
@@ -63,12 +60,6 @@
             </table>
         </div>
     </main>
-
-    <section class="logro-puntos-card">
-        <h4>Próximos canjes</h4>
-        <p>Producto: Pocky de chocolate <span class="badge-estado badge-pendiente">80 puntos</span></p>
-        <p>Cupón: Cupón del 10% <span class="badge-estado badge-pendiente">120 puntos</span></p>
-    </section>
 
     <div id="footer"></div>
 

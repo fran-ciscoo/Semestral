@@ -38,27 +38,8 @@
             </div>
         </div>
         <div class="profile-actions">
-            <button id="btnEditar" class="edit-profile-btn">
-                <span class="btn-icon">✏️</span>
-                Editar Perfil
-            </button>
-        </div>
-    </div>
-
-    <!-- Sección de sesión -->
-    <div class="session-section">
-        <div class="session-card">
-            <div class="card-header">
-                <div class="card-icon">🔐</div>
-                <h3>Gestión de Sesión</h3>
-            </div>
-            <div class="card-content">
-                <div class="session-info">
-                    <p class="session-status">Estado de la sesión</p>
-                    <div class="session-actions" id="buttons">
+            <div class="session-actions" id="buttons">
                         <!-- Los botones se insertarán dinámicamente aquí -->
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -96,11 +77,9 @@
             </div>
             <div class="card-content">
                 <div class="coupons-list" id="couponsList">
+                    no hay cupones disponibles
                 </div>
             </div>
-            <!-- <div class="card-actions">
-                <a href="historialPuntos.html" class="card-btn">Ver Historial</a>
-            </div> -->
         </div>
 
         <!-- Tarjeta de pedidos recientes -->
@@ -110,7 +89,9 @@
                 <h3>Pedidos Recientes</h3>
             </div>
             <div class="card-content">
-                <div class="orders-list" id="ordersList">No hay pedidos recientes</div>
+                <div class="orders-list" id="ordersList">
+                    <span class="no-coupons-msg">No hay pedidos recientes</span>
+                </div>
             </div>
         </div>
 
@@ -120,21 +101,8 @@
                 <div class="card-icon">📍</div>
                 <h3>Mis Direcciones</h3>
             </div>
-            <div class="card-content">
-                <div class="addresses-list">
-                    <div class="address-item">
-                        <span class="address-name">Casa</span>
-                        <span class="address-text">Calle Principal #123</span>
-                    </div>
-                    <div class="address-item">
-                        <span class="address-name">Trabajo</span>
-                        <span class="address-text">Oficina Central #456</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-actions">
-                <button class="card-btn">Gestionar</button>
-            </div>
+            <div class="card-content addresses-card"></div>
+            
         </div>
 
         <!-- Tarjeta de configuración -->
@@ -165,13 +133,10 @@
             </div>
             <div class="card-content">
                 <div class="help-links">
-                    <a href="#" class="help-link">Preguntas Frecuentes</a>
-                    <a href="#" class="help-link">Contactar Soporte</a>
-                    <a href="#" class="help-link">Tutorial</a>
+                    <a href="#" class="help-link"> 📧 SnackScript@gmail.com</a>
+                    <a href="#" class="help-link">📞 362-4587</a>
+                    <a href="#" class="help-link">📚 Tutorial</a>
                 </div>
-            </div>
-            <div class="card-actions">
-                <button class="card-btn">Contactar</button>
             </div>
         </div>
     </div>

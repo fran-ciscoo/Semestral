@@ -733,13 +733,21 @@ body {
 
 /* Colores de icono para pasos activos y completados según el estado */
 
-/* Amarillo para pendientes, en preparación y en camino */
+/* Amarillo para pendientes, en preparación y en camino con efecto flotante */
 .order-card[data-status="PENDIENTE"] .step.active .step-icon,
 .order-card[data-status="EN PREPARACION"] .step.active .step-icon,
 .order-card[data-status="EN CAMINO"] .step.active .step-icon {
   background: #FF9800;
   color: #fff;
-  box-shadow: 0 0 0 4px #fffbe6;
+  box-shadow: 0 0 0 4px #fffbe6, 0 8px 24px #ff980044;
+  animation: floatStep 1.8s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes floatStep {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-8px) scale(1.08); }
+  100% { transform: translateY(0); }
 }
 
 /* Verde para pasos activos y completados cuando el pedido está en estado verde */
@@ -804,4 +812,29 @@ body {
 .order-footer .botones button {
   margin: 10px 0 0 0; /* elimina auto para centrar con flex */
   display: inline-block;
+}
+
+.alert-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #43aa8b;
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, top 0.4s ease;
+}
+
+/* Mostrar el mensaje */
+.alert-message.show {
+  opacity: 1;
+  pointer-events: auto;
+  top: 40px;
 }

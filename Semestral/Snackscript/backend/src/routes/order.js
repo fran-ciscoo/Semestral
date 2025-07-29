@@ -2,6 +2,8 @@ import Order from '../models/order.model.js';
 import User from '../models/user.model.js';
 import Cart from '../models/cart.model.js';
 import jwt from 'jsonwebtoken';
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const secretKey = 'clave_secreta_segura_y_larga';
 export default async function orderRoutes(fastify, reply) {
 
@@ -68,39 +70,42 @@ fastify.put('/:id', async (request, reply) => {
     }
 });
 
-fastify.post('/', async (request, reply) => {
+    fastify.post('/verificar-pago', async (request, reply) => {
         try {
+            const { session_id } = request.body;
+            const session = await stripe.checkout.sessions.retrieve(session_id, {
+                expand: ['total_details.breakdown']
+            });
+            const discountAmount = session.total_details?.breakdown?.discounts?.[0]?.amount || 0;
             const token = request.cookies.token;
             const decoded = jwt.verify(token, secretKey);
             const userId = decoded.id;
-            const {totalAmount} = request.body;
-
             const user = await User.findById(userId).select('-password');
             const cart = await Cart.findOne({ userId }).populate('items.product');
-
-            if (!cart || !Array.isArray(cart.items) || cart.items.length === 0) {
-                return reply.status(400).send({ message: 'El carrito está vacío.' });
+            if (!cart || !cart.items.length) {
+                return reply.status(400).send({ message: 'Carrito vacío.' });
             }
             const items = cart.items.map(item => ({
                 product: item.product._id,
-                name: item.product.name,
                 quantity: item.quantity,
                 price: item.price
             }));
-            
             const newOrder = await Order.create({
                 userId,
                 items,
                 shippingAddress: user.shippingAddress,
                 paymentMethod: 'stripe',
-                totalAmount: totalAmount,
-                subtotal: cart.totalAmount
+                status: session.payment_status === 'paid' ? 'PENDIENTE' : 'CANCELADO',
+                totalAmount: session.amount_total / 100,
+                subtotal: cart.totalAmount,
+                stripeSessionId: session.id,
+                descuento: discountAmount / 100
             });
-
-            return reply.status(201).send({ message: 'Orden creada exitosamente.', order: newOrder });
-        } catch (error) {
-            console.error('Error al crear la orden:', error);
-            return reply.status(500).send({ message: 'Error interno del servidor.' });
+            /* await Cart.updateOne({ userId }, { $set: { items: [], totalAmount: 0 } }); */
+            return reply.status(201).send({ message: 'Orden creada', order: newOrder });
+        } catch (err) {
+            console.error(err);
+            return reply.status(500).send({ message: 'Error al verificar el pago' });
         }
     });
 }

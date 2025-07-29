@@ -189,8 +189,6 @@ import {navbarA, footer} from "../component/navbar.js"
                     console.error("Error al agregar el cupón:", error);
                 }
             },
-            
-            
             async verifyAdmin() {
                 try {
                     const response = await fetch('http://localhost:3000/api/login/me', {
@@ -215,7 +213,6 @@ import {navbarA, footer} from "../component/navbar.js"
                     window.location.href = '../view/index.html';
                 }
             },
-
             showModal(modal) {
                 modal.showModal();
             },

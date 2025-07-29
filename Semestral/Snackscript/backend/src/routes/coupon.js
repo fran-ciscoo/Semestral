@@ -3,21 +3,28 @@ import User from '../models/user.model.js';
 import Coupon from '../models/coupon.model.js';
 import Points from '../models/points.model.js';
 import PointsHistory from '../models/pointHistory.modal.js';
-import mongoose from 'mongoose';
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const secretKey = 'clave_secreta_segura_y_larga';
-
 export default async function couponRoutes(fastify, opts) {
     
     fastify.post('/', async (request, reply) => {
         const { name, valuePoints, type, discountAmount, applicableTo } = request.body;
-
         try {
+            let coupon = '';
+            if (type === 'DESCUENTO' && discountAmount !== 0){
+                coupon = await stripe.coupons.create({
+                    percent_off: discountAmount * 100,
+                    duration: 'forever',
+                });
+            }
             const newCoupon = new Coupon({
                 name,
                 valuePoints,
                 type,
                 discountAmount: type === 'DESCUENTO' ? discountAmount : undefined,
-                applicableTo: type === 'PRODUCTO' ? applicableTo : []
+                applicableTo: type === 'PRODUCTO' ? applicableTo : [],
+                couponIdStripe: coupon.id,
             });
             await newCoupon.save();
             return reply.status(201).send({ message: 'Cupón creado exitosamente', coupon: newCoupon });

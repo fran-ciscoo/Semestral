@@ -1,6 +1,8 @@
 import Cart from '../models/cart.model.js';
 import Product from '../models/product.model.js';
 import jwt from 'jsonwebtoken';
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const secretKey = 'clave_secreta_segura_y_larga';
 export default async function cartRoutes(fastify, opts) {
     fastify.post('/', async (request, reply) => {
@@ -100,35 +102,34 @@ export default async function cartRoutes(fastify, opts) {
             const userId = decoded.id;
             const productId = request.params.productId;
             const { quantity } = request.body;
-
             if (!productId || typeof quantity !== 'number') {
                 return reply.status(400).send({ message: 'Faltan datos necesarios (productId o quantity).' });
             }
-
             const cart = await Cart.findOne({ userId });
-            if (!cart) {
-                return reply.status(404).send({ message: 'Carrito no encontrado.' });
-            }
-
-            const item = cart.items.find(item => item.product.toString() === productId);
+            const item = cart.items.find(item => item.product.toString() === productId).populate('product');
             if (!item) {
                 return reply.status(404).send({ message: 'Producto no encontrado en el carrito.' });
             }
-
-            item.quantity = quantity;
-            cart.totalAmount = 0;
-            for (const item of cart.items) {
-                cart.totalAmount += item.price * item.quantity;
+            /* const product = await Product.findById(productId);
+            if (!product) {
+                return reply.status(404).send({ message: 'Producto no existe en la base de datos.' });
+            } */
+            if (quantity > item.product.stock) {
+                return reply.status(400).send({
+                    message: `No puedes añadir más de ${item.product.stock} unidades de este producto.`,
+                    error: 'outStock',
+                });
             }
-
+            item.quantity = quantity;
+            cart.totalAmount = cart.items.reduce((total, item) => total + item.price * item.quantity, 0);
             await cart.save();
-
             return reply.status(200).send({ message: 'Cantidad actualizada correctamente.', cart });
         } catch (error) {
             console.error('Error al actualizar cantidad del producto:', error);
             return reply.status(500).send({ message: 'Error interno del servidor' });
         }
     });
+
 
     fastify.put('/clear', async (request, reply) => {
         try {
@@ -214,6 +215,63 @@ export default async function cartRoutes(fastify, opts) {
         } catch (error) {
             console.error(error);
             return reply.status(500).send({ message: 'Error interno del servidor' });
+        }
+    });
+    fastify.post('/create-checkout-session', async (request, reply) => {
+        try {
+            const domainURL = request.headers.origin || 'http://localhost:3000';
+            const token = request.cookies.token;
+            if (!token) {
+                return reply.status(401).send({ message: 'No autorizado: falta el token' });
+            }
+            const decoded = jwt.verify(token, secretKey);
+            const userId = decoded.id;
+            const cart = await Cart.findOne({ userId }).populate('items.product').populate('coupon');
+            if (!cart || cart.items.length === 0) {
+                return reply.status(400).send({ message: 'El carrito está vacío' });
+            }
+            const line_items = cart.items
+                .filter(item => !item.isFree)
+                .map(item => ({
+                    price: item.product.stripeId,
+                    quantity: item.quantity,
+                }));
+            const session = await stripe.checkout.sessions.create({
+                mode: 'payment',
+                line_items,
+                ...(cart.coupon && {
+                    discounts: [{
+                        coupon: cart.coupon.couponIdStripe,
+                    }]
+                }),
+                success_url: `${domainURL}/view/carrito.html?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${domainURL}/view/carrito.html?session_id={CHECKOUT_SESSION_ID}`,
+            });
+            return reply.send({ url: session.url });
+        } catch (error) {
+            console.error('Error al crear la sesión de pago:', error);
+            return reply.status(500).send({ message: 'Error al crear la sesión de Stripe' });
+        }
+    });
+    fastify.put('/coupon', async (request, reply) => {
+        try {
+            const token = request.cookies.token;
+            const decoded = jwt.verify(token, secretKey);
+            const userId = decoded.id;
+            const {couponId} = request.body;
+            if (!userId) {
+                return reply.status(400).send({ message: 'Falta el userId' });
+            }
+            const cart = await Cart.findOne({ userId });
+            if (!cart) {
+                return reply.status(404).send({ message: 'Carrito no encontrado para el usuario' });
+            }
+            cart.coupon = couponId || null;
+            await cart.save();
+            return reply.send({ message: 'Cupón actualizado correctamente', cart });
+        } catch (error) {
+            console.error('Error actualizando el cupón:', error);
+            return reply.status(500).send({ message: 'Error actualizando el cupón del carrito' });
         }
     });
 

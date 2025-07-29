@@ -1989,3 +1989,10 @@ body {
   font-weight: 700;
   color: #2A1B5E;
 }
+.out-of-stock {
+  opacity: 0.5;
+  /* pointer-events: none; */
+}
+.product-card.out-of-stock .add-to-cart-btn {
+  cursor: not-allowed;
+}

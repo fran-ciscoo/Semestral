@@ -14,58 +14,65 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
         }
 
         const methods = {
-            async viewOnlyCategory(category){
+            async viewOnlyCategory(category) {
                 const rol = await methods.verfySession();
-                fetch(`http://localhost:3000/api/productos/category?category=${category}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        const container = htmlElements.containerProduct;
-                        container.innerHTML = '';
-                        htmlElements.countProducts.textContent = data.productos.length + ' productos encontrados';
+                try {
+                    const response = await fetch(`http://localhost:3000/api/productos/category?category=${category}`);
+                    const data = await response.json();
 
-                        if (!Array.isArray(data.productos)) {
-                            console.error('La propiedad "productos" no está definida o no es un array:', data);
-                            return;
-                        }
+                    const container = htmlElements.containerProduct;
+                    container.innerHTML = '';
+                    htmlElements.countProducts.textContent = data.productos.length + ' productos encontrados';
 
-                        data.productos.forEach(product => {
-                            const productCard = `
-                                <div class="product-card">
-                                    <div class="product-info">
-                                        <img src="${product.image}" alt="${product.name} imagen" class="product-image">
-                                        <h2 class="product-title">${product.name}</h2>
-                                        <p class="product-description">${product.description}</p>
-                                        <p class="product-price">$${product.price.toFixed(2)}</p>
-                                        <div class="product-actions">
-                                            <button class="add-to-cart-btn" data-id="${product._id}">Agregar al carrito</button>
-                                            <button class="wishlist-btn" data-id="${product._id}">❤</button>
-                                        </div>
-                                    </div>
-                                </div>`;
-                            container.innerHTML += productCard;
-                        });
-                        document.querySelectorAll('.wishlist-btn').forEach(button => {
-                            button.addEventListener('click', (e) => {
-                                const productId = e.target.dataset.id;
-                                e.target.closest('.product-info');
-                                methods.addToFavorites(productId);
-                            });
-                        });
-                        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-                            button.addEventListener('click', (e) => {
-                                if (rol === 'none') {
-                                    const message = encodeURIComponent('Necesita una cuenta para agregar productos al carrito');
-                                    window.location.href = `../view/logIn.html?message=${message}`;
-                                    return;
-                                }
-                                const productId = e.target.dataset.id;
-                                methods.addToCart(productId);
-                                console.log(`Producto ${productId} agregado al carrito.`);
-                            });
-                        });
-                    }).catch(error => console.error('Error al obtener productos:', error));
+                    if (!Array.isArray(data.productos)) {
+                        console.error('La propiedad "productos" no está definida o no es un array:', data);
+                        return;
+                    }
+                    data.productos.forEach(product => {
+                        const isOutOfStock = product.stock === 0;
+                        const productCard = document.createElement('div');
+                        productCard.classList.add('product-card');
+                        if (isOutOfStock) productCard.classList.add('out-of-stock');
 
+                        productCard.innerHTML = `
+                            <div class="product-info">
+                                <img src="${product.image}" alt="${product.name} imagen" class="product-image">
+                                <h2 class="product-title">${product.name}</h2>
+                                <p class="product-description">${product.description}</p>
+                                <p class="product-price">$${product.price.toFixed(2)}</p>
+                                <div class="product-actions">
+                                    <button class="add-to-cart-btn" data-id="${product._id}" ${isOutOfStock ? 'disabled' : ''}>
+                                        ${isOutOfStock ? 'Agotado' : 'Agregar al carrito'}
+                                    </button>
+                                    <button class="wishlist-btn" data-id="${product._id}">❤</button>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(productCard);
+                    });
+
+                    document.querySelectorAll('.wishlist-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const productId = e.target.dataset.id;
+                            methods.addToFavorites(productId);
+                        });
+                    });
+
+                    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            if (rol === 'none') {
+                                const message = encodeURIComponent('Necesita una cuenta para agregar productos al carrito');
+                                window.location.href = `../view/logIn.html?message=${message}`;
+                                return;
+                            }
+                            const productId = e.target.dataset.id;
+                            methods.addToCart(productId);
+                            console.log(`Producto ${productId} agregado al carrito.`);
+                        });
+                    });
+                } catch (error) {
+                    console.error('Error al obtener productos:', error);
+                }
             },
             async viewFavorites() {
                 try {
@@ -79,35 +86,47 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     const container = htmlElements.containerProduct;
                     container.innerHTML = '';
                     const productos = data.favorites;
+
                     htmlElements.countProducts.textContent = productos.length + ' productos en favoritos';
+
                     if (!Array.isArray(productos)) {
                         console.error('La propiedad "favorites" no está definida o no es un array:', data);
                         return;
                     }
+
                     productos.forEach(product => {
-                        const productCard = `
-                        <div class="product-card">
+                        const outOfStock = product.stock === 0;
+                        const productCard = document.createElement('div');
+                        productCard.classList.add('product-card');
+
+                        if (outOfStock) {
+                            productCard.style.backgroundColor = '#f0f0f0'; // gris claro
+                            productCard.style.opacity = '0.7';
+                        }
+
+                        productCard.innerHTML = `
                             <div class="product-info">
                                 <img src="${product.image}" alt="${product.name} imagen" class="product-image">
                                 <h2 class="product-title">${product.name}</h2>
                                 <p class="product-description">${product.description}</p>
                                 <p class="product-price">$${product.price.toFixed(2)}</p>
                                 <div class="product-actions">
-                                    <button class="add-to-cart-btn" data-id="${product._id}">Agregar al carrito</button>
+                                    <button class="add-to-cart-btn" data-id="${product._id}" ${outOfStock ? 'disabled style="cursor:not-allowed;opacity:0.5;"' : ''}>Agregar al carrito</button>
                                     <button class="wishlist-btn" data-id="${product._id}">❤</button>
                                 </div>
                             </div>
-                        </div>`;
-                        container.innerHTML += productCard;
+                        `;
+                        container.appendChild(productCard);
                     });
+
                     document.querySelectorAll('.wishlist-btn').forEach(button => {
                         button.addEventListener('click', (e) => {
                             const productId = e.target.dataset.id;
-                            e.target.closest('.product-info');
                             methods.addToFavorites(productId);
-                            methods.viewFavorites();
+                            methods.viewFavorites(); // Refrescar vista tras quitar favorito
                         });
                     });
+
                     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
                         button.addEventListener('click', (e) => {
                             if (rol === 'none') {
@@ -130,23 +149,25 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     const response = await fetch('http://localhost:3000/api/productos');
                     const data = await response.json();
                     const rol = await methods.verfySession();
-
                     const container = htmlElements.containerProduct;
                     container.innerHTML = '';
                     htmlElements.countProducts.textContent = data.productos.length + ' productos encontrados';
-
                     data.productos.forEach(product => {
                         const productCard = document.createElement('div');
+                        const isOutOfStock = product.stock === 0;
                         productCard.classList.add('product-card');
-
+                        if (isOutOfStock) productCard.classList.add('out-of-stock');
+                        const stockClass = isOutOfStock ? 'out-of-stock' : '';
                         productCard.innerHTML = `
-                            <div class="product-info">
+                            <div class="product-info ${stockClass}">
                                 <img src="${product.image}" alt="${product.name} imagen" class="product-image">
                                 <h2 class="product-title">${product.name}</h2>
                                 <p class="product-description">${product.description}</p>
-                                <p class="product-price">$${product.price.toFixed(2) }</p>
+                                <p class="product-price">$${product.price.toFixed(2)}</p>
                                 <div class="product-actions">
-                                    <button class="add-to-cart-btn" data-id="${product._id}">Agregar al carrito</button>
+                                    <button class="add-to-cart-btn" data-id="${product._id}" ${isOutOfStock ? 'disabled' : ''}>
+                                        ${isOutOfStock ? 'Agotado' : 'Agregar al carrito'}
+                                    </button>
                                     <button class="wishlist-btn" data-id="${product._id}">❤</button>
                                 </div>
                             </div>
@@ -155,7 +176,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     });
                     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
                         button.addEventListener('click', (e) => {
-                            if(rol === 'none'){
+                            if (rol === 'none') {
                                 const message = encodeURIComponent('Necesita una cuenta para agregar productos al carrito');
                                 window.location.href = `../view/logIn.html?message=${message}`;
                                 return;
@@ -171,7 +192,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                             methods.addToFavorites(productId);
                         });
                     });
-
                 } catch (error) {
                     console.error('Error al obtener productos:', error);
                 }

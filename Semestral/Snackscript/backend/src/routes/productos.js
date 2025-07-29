@@ -1,7 +1,10 @@
 import Product from '../models/product.model.js';
+import Cart from '../models/cart.model.js';
 import cloudinary from '../../config/cloudinary.js';
 import Stripe from 'stripe';
+import jwt from 'jsonwebtoken';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const secretKey = 'clave_secreta_segura_y_larga';
 export default async function productosRoutes(fastify, opts) {
 
   fastify.addHook('preHandler', async (request, reply) => {
@@ -18,7 +21,6 @@ export default async function productosRoutes(fastify, opts) {
         if (part.type === 'field') {
           formFields[part.fieldname] = part.value;
         }
-
         if (part.type === 'file' && part.fieldname === 'productImage') {
           imageUrl = await new Promise((resolve, reject) => {
             const stream = cloudinary.uploader.upload_stream(
@@ -84,12 +86,29 @@ export default async function productosRoutes(fastify, opts) {
   });
 
   fastify.get('/', async (request, reply) => {
-    const productos = await Product.find();
-    return {
-      productos,
-      mensaje: 'Productos obtenidos correctamente',
-      status: 'success'
-    };
+    try {
+      const productos = await Product.find();
+      if (!productos || productos.length === 0) {
+        return reply.status(404).send({
+          status: 'error',
+          mensaje: 'No se encontraron productos.',
+          productos: []
+        });
+      }
+      return reply.status(200).send({
+        status: 'success',
+        mensaje: 'Productos obtenidos correctamente.',
+        total: productos.length,
+        productos
+      });
+    } catch (error) {
+      console.error('Error al obtener productos:', error);
+      return reply.status(500).send({
+        status: 'error',
+        mensaje: 'Ocurrió un error al obtener los productos.',
+        error: error.message
+      });
+    }
   });
 
   fastify.get('/name', async (request, reply) => {
@@ -202,6 +221,36 @@ export default async function productosRoutes(fastify, opts) {
     } catch (error) {
         console.error('Error al obtener usuarios por rol:', error);
         return reply.status(500).send({ error: 'Error interno del servidor.' });
+    }
+  });
+
+  fastify.put('/stock', async (request, reply) => {
+    try {
+      const token = request.cookies.token;
+      if (!token) {
+        return reply.status(401).send({ error: 'Token no proporcionado.' });
+      }
+      const decoded = jwt.verify(token, secretKey);
+      const userId = decoded.id;
+      const cart = await Cart.findOne({ userId }).populate('items.product');
+      if (!cart || cart.items.length === 0) {
+        return reply.status(404).send({ error: 'Carrito vacío o no encontrado.' });
+      }
+      for (const item of cart.items) {
+        const product = item.product;
+        if (!product) continue;
+        const nuevoStock = product.stock - item.quantity;
+        if (nuevoStock < 0) {
+          return reply.status(400).send({
+            error: `Stock insuficiente para el producto: ${product.name}`
+          });
+        }
+        await Product.findByIdAndUpdate(product._id, { stock: nuevoStock });
+      }
+      return reply.status(200).send({ message: 'Stock actualizado correctamente.' });
+    } catch (error) {
+      console.error('Error al actualizar el stock:', error);
+      return reply.status(500).send({ error: 'Error interno del servidor.' });
     }
   });
 }

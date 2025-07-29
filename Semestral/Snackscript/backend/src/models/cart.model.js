@@ -32,6 +32,11 @@ const cartSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    coupon: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Coupon',
+        default: null,
+    },
     createdAt: {
         type: Date,
         default: Date.now

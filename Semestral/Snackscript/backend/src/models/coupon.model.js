@@ -29,6 +29,9 @@ const CouponSchema = new mongoose.Schema({
     expiresAt: {
         type: Date
     },
+    couponIdStripe: {
+        type: String
+    }
 });
 
 const Coupon = mongoose.model('Coupon', CouponSchema);

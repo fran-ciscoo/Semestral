@@ -41,6 +41,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
 
             async viewItemsCart() {
                 try {
+                    methods.updateCartCoupon(null);
                     const cartList = htmlElements.cartList;
                     cartList.innerHTML = '';
                     const response = await fetch('http://localhost:3000/api/cart/cart', {
@@ -215,7 +216,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         credentials: 'include',
                         body: JSON.stringify({ quantity })
                     });
-
+                    const data = response.json
                     if (!response.ok) {
                         console.warn('No se pudo actualizar la cantidad');
                     }
@@ -224,36 +225,77 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     console.error('Error al actualizar cantidad:', error);
                 }
             },
-            async createOrder() {
+            async createCheckoutSession() {
                 try {
-                    const totalAmountElement = document.getElementById('totalAmount');
-                    const totalAmount = parseFloat(totalAmountElement.textContent.replace('$', ''));
-                    const response = await fetch('http://localhost:3000/api/order', {
+                    const response = await fetch('http://localhost:3000/api/cart/create-checkout-session', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json'},
-                        credentials: 'include',
-                        body: JSON.stringify({ totalAmount })
+                    });
+                    const data = await response.json();
+                    if (data.url) {
+                        window.location.href = data.url;
+                    } else {
+                        console.error('No se pudo crear la sesión:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error al crear la sesión de checkout:', error);
+                }
+            },
+            async checkStripeSession() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const sessionId = urlParams.get('session_id');
+                if (sessionId) {
+                    try {
+                        const response = await fetch('http://localhost:3000/api/order/verificar-pago', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            credentials: 'include',
+                            body: JSON.stringify({ session_id: sessionId }),
+                        });
+                        const data = await response.json();
+                        if (response.ok) {
+                            console.log('Orden creada:', data.order);
+                            if(data.order.status === 'PENDIENTE'){
+                                methods.showMessage('Pago exitoso, orden creada.', false);
+                                await methods.updateStock();
+                            }else{
+                                methods.showMessage('La ordern fue cancela, dirigete a la vista de pedidos', true);
+                            }
+                            methods.clearUserCart();
+                            methods.addPoints(data.order);
+                            const selectedDiscountCouponId = localStorage.getItem('selectedDiscountCoupon');
+                            console.log(selectedDiscountCouponId);
+                            const selectedCoupons = document.querySelectorAll('.coupon-item.selected');
+                            const selectedIds = Array.from(selectedCoupons).map(coupon => coupon.dataset.id);
+                            if (selectedDiscountCouponId && !selectedIds.includes(selectedDiscountCouponId)) {
+                                selectedIds.push(selectedDiscountCouponId);
+                            }
+                            methods.deleteUsedCoupons(selectedIds);
+                            methods.viewItemsCart();
+                        } else {
+                            console.error('Error:', data.message);
+                            methods.showMessage('Error verificando el pago.', true);
+                        }
+                    } catch (err) {
+                        console.error('Error al verificar pago:', err);
+                    }
+                }
+            },
+            async updateStock() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/productos/stock', {
+                        method: 'PUT',
+                        credentials: 'include', 
                     });
                     const data = await response.json();
                     if (!response.ok) {
-                        htmlElements.messageCart.textContent = data.message;
-                        htmlElements.messageCart.style.backgroundColor = '#f94144';
-                        htmlElements.messageCart.classList.add('show');
-                        setTimeout(() => {
-                            htmlElements.messageCart.classList.remove('show');
-                        }, 3000);
+                        console.error('Error al actualizar el stock:', data.error);
                         return;
                     }
-                    methods.showMessage('Pedido en progreso. Consulta tus pedidos para más info.', false);
-                    methods.clearUserCart();
-                    methods.addPoints(data.order);
-                    const selectedCoupons = document.querySelectorAll('.coupon-item.selected');
-                    const selectedIds = Array.from(selectedCoupons).map(coupon => coupon.dataset.id);
-                    console.log(selectedIds);
-                    methods.deleteUsedCoupons(selectedIds);
-                } catch (error) {
-                    console.error('Error al crear la orden:', error);
-                    methods.showMessage('Error al crear la orden', true);
+                    console.log('✅ Stock actualizado:', data.message);
+                } catch (err) {
+                    console.error('Error de red al actualizar el stock:', err);
                 }
             },
             async addPoints(order){
@@ -288,7 +330,6 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         console.warn('No se pudo vaciar el carrito:', data.message);
                         return;
                     }
-                    methods.viewItemsCart();
                 } catch (error) {
                     console.error('Error al vaciar el carrito:', error);
                 }
@@ -417,6 +458,8 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                                 couponItem.classList.remove('selected');
                                 methods.showMessage(`Cupón de "${coupon.name}" removido`, true);
                                 methods.viewItemsCart();
+                                methods.updateCartCoupon(null);
+                                localStorage.removeItem('selectedDiscountCoupon');
                             } else {
                                 const messageDiscount = document.querySelector('#discount');
                                 const alreadySelected = document.querySelector('.coupon-item.selected[data-type="DESCUENTO"]');
@@ -430,6 +473,8 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                                         <span>$${coupon.discountAmount * 100}%</span>
                                     `;
                                     methods.applyDiscount(coupon.discountAmount);
+                                    methods.updateCartCoupon(coupon._id);
+                                    localStorage.setItem('selectedDiscountCoupon', coupon._id);
                                 }
                             }
                         }
@@ -449,6 +494,28 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     userCouponsDiv.appendChild(couponItem);
                 });
                 container.appendChild(userCouponsDiv);
+            },
+            async updateCartCoupon(couponId) {
+                try {
+                    const response = await fetch('http://localhost:3000/api/cart/coupon', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            couponId
+                        })
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        console.log('Cupón actualizado correctamente:', data.cart);
+                        return data.cart;
+                    } else{
+                        console.warn('Error al actualizar el cupón:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error de red al actualizar el cupón:', error);
+                }
             },
             applyDiscount(discount) {
                 const totalAmountElement = document.getElementById('totalAmount');
@@ -517,17 +584,26 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
         return {
             init() {
                 const { btnBuy, confirmBtn, noBtn, confirmAddressDialog} = htmlElements;
-                //methods.renderCoupons();
-                methods.viewItemsCart();
+                document.addEventListener('DOMContentLoaded', () => {
+                    methods.updateCartCoupon(null);
+                    methods.checkStripeSession();
+                    methods.viewItemsCart();
+                });
                 methods.addNavbar();
                 methods.addFooter();
                 btnBuy.addEventListener('click', (e) => {
+                    const isEmpty = document.querySelector('.cart-empty');
+                    if(isEmpty){
+                        methods.showMessage('Agrega productos al carrito', true);
+                        return;
+                    }
                     e.preventDefault();
                     methods.getUserAddress();
                 });
                 confirmBtn.addEventListener('click', async (e) => {
                     htmlElements.confirmAddressDialog.close();
-                    methods.createOrder();
+                    methods.updateCartCoupon(null);
+                    methods.createCheckoutSession();
                 });
                 noBtn.addEventListener('click', (e) => {
                     confirmAddressDialog.close();

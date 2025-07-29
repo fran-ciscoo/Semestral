@@ -228,15 +228,19 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         body: JSON.stringify(userUpdate),
                         credentials: 'include',
                     });
+                    const data = await response.json();
 
                     if (!response.ok) {
-                        throw new Error('Error al actualizar el perfil');
+                        throw new Error('Error al actualizar el perfil', data);
                     }
 
-                    const data = await response.json();
                     methods.hideModal(htmlElements.dialogEditar);
                     methods.viewDetails();
                     methods.showMessage('Perfil Actualizado', false);
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
                 } catch (error) {
                     console.error('Error al actualizar el perfil:', error);
                     alert('Error al actualizar el perfil');
@@ -273,8 +277,16 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     htmlElements.inputPostalCode.value = user.shippingAddress?.postalCode || '';
                     htmlElements.inputPhone.value = user.phone || '';
 
+
                     htmlElements.formEditar.addEventListener('submit', async (e) => {
                         e.preventDefault();
+
+                        const name = htmlElements.inputName.value.trim();
+                        const email = htmlElements.inputEmail.value.trim();
+
+                        if (!methods.validateForm(name, email)) {
+                            return; 
+                        }
 
                         const userUpdate = {
                             _id: user._id,
@@ -299,6 +311,22 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     console.error('Error al obtener datos del usuario:', error);
                 }
             },
+
+            validateForm(name, email) {
+                if (name && !/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+( [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/.test(name)) {
+                    htmlElements.nameError.innerHTML = "El nombre solo puede contener letras y espacios entre palabras";
+                    return false;
+                }
+                if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    htmlElements.emailError.innerHTML = "Ingrese un correo valido";
+                    return false;
+                }
+                htmlElements.nameError.innerHTML = "";
+                htmlElements.emailError.innerHTML = "";
+
+                return true;
+            },
+
             showMessage(mensaje, color) {
                 htmlElements.messageCart.textContent = mensaje;
                 if (color) {

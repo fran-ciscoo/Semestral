@@ -62,6 +62,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
                             const card = document.createElement('div');
                             card.className = "order-card";
+                            card.setAttribute('data-status', order.status); // <-- Añade esto
                             card.innerHTML = `
                                 <div class="order-header">
                                     <div class="order-number">

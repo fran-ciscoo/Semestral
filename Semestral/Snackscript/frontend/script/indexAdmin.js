@@ -22,20 +22,14 @@ import {navbarA, footer} from "../component/navbar.js"
 
             addProduct: document.querySelector('#addProductDialog'),
             form: document.querySelector('#addProductForm'),
-            inputName: document.querySelector('#productName'),
-            inputPrice: document.querySelector('#productPrice'),
-            inputCategory: document.querySelector('#productCategory'),
-            inputOrigin: document.querySelector('#productOrigin'),
-            inputStock: document.querySelector('#productStock'),
-            inputImage: document.querySelector('#productImage'),
-            inputDescription: document.querySelector('#productDescription'),
-            inputStory: document.querySelector('#productStory'),
             botonCancelar: document.querySelector('#cancelAddProduct'),
             
             dropZone: document.querySelectorAll('.drop-zone'),
             nameError: document.querySelector("#nameError"),
-            originError: document.querySelector("#originError"),
-            imageError: document.querySelector("#imageError")
+            imageError: document.querySelector("#imageError"),
+            priceError: document.querySelector("#priceError"),
+            editNameError: document.querySelector("#editNameError"),
+            editPriceError: document.querySelector("#editPriceError"),
         }
 
         const methods = {
@@ -46,11 +40,10 @@ import {navbarA, footer} from "../component/navbar.js"
                     const formData = new FormData(form);
 
                     const name = formData.get('productName')?.trim();
-                    const origin = formData.get('productOrigin')?.trim();
                     const image = formData.get('productImage');
-                    console.log(image);
+                    const price = parseFloat(formData.get('productPrice'));
                     const edit = true;
-                    const valid = methods.validateProduct(name, origin, image, edit);
+                    const valid = methods.validateProduct(name, image, edit, price);
                     if (!valid) return;
 
                     const response = await fetch(`http://localhost:3000/api/productos/${id}`, {
@@ -189,10 +182,10 @@ import {navbarA, footer} from "../component/navbar.js"
                     const formData = new FormData(form);
 
                     const name = formData.get('productName')?.trim();
-                    const origin = formData.get('productOrigin')?.trim();
                     const image = formData.get('productImage');
+                    const price = parseFloat(formData.get('productPrice'));
                     const edit = false;
-                    const valid = methods.validateProduct(name, origin, image, edit);
+                    const valid = methods.validateProduct(name, image, edit, price);
                     if (!valid) return;
                     const response = await fetch('http://localhost:3000/api/productos', {
                         method: 'POST',
@@ -208,7 +201,7 @@ import {navbarA, footer} from "../component/navbar.js"
                         return;
                     }
                     methods.hideModal(htmlElements.addProduct);
-                    window.location.href = '../view/indexAdmin.html';
+                    window.location.reload();
 
                 } catch (err) {
                     console.error('Error al guardar producto:', err);
@@ -216,23 +209,25 @@ import {navbarA, footer} from "../component/navbar.js"
                 }
             },
 
-            validateProduct(name, origin, image, edit) {
+            validateProduct(name, image, edit, price) {
+                console.log(price);
                 htmlElements.nameError.innerHTML = "";
                 htmlElements.imageError.innerHTML = "";
-                htmlElements.originError.innerHTML = "";
+                htmlElements.priceError.innerHTML = "";
 
-                const nameRegex = /^[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ]+$/;
+                const nameRegex = /^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]+$/;
                 if (!nameRegex.test(name)) {
                     htmlElements.nameError.innerHTML = "El nombre no debe contener caracteres especiales.";
-                    return false;
-                }
-                if (!/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]+$/.test(origin)) {
-                    htmlElements.originError.innerHTML = "El origen solo debe contener letras";
+                    htmlElements.editNameError.innerHTML = "El nombre no debe contener caracteres especiales.";
                     return false;
                 }
                 if ((edit === false && image.size===0)) {
                     htmlElements.imageError.innerHTML = "Debe seleccionar una imagen válida.";
-                    console.log("Entrooooooooooo");
+                    return false;
+                }
+                if (isNaN(price) || price <= 0) {
+                    htmlElements.priceError.innerHTML = "El precio debe ser un número mayor a 0.";
+                    htmlElements.editPriceError.innerHTML = "El precio debe ser un número mayor a 0.";
                     return false;
                 }
                 return true;
@@ -352,7 +347,6 @@ import {navbarA, footer} from "../component/navbar.js"
             showModal(modal) {
                 htmlElements.nameError.innerHTML = "";
                 htmlElements.imageError.innerHTML = "";
-                htmlElements.originError.innerHTML = "";
                 const dropZone = modal.querySelector('.drop-zone');
                 if (!dropZone) {
                     console.error('No se encontró dropZone en el modal.');
@@ -420,7 +414,6 @@ import {navbarA, footer} from "../component/navbar.js"
                 form.addEventListener('submit', (e) => {
                     e.preventDefault();
                     methods.saveProduct();
-                    htmlElements.form.reset();
                 });
 
                 botonCancelar.addEventListener('click', (e) => {

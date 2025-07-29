@@ -24,10 +24,11 @@
         <div class="filters-section">
             <div class="filters-header">
                 <h2>Filtrar productos</h2>
+                <button id="addProductBtn"> + Añadir producto</button>
                 <span class="filters-count"></span>
             </div>
             <div class="filters-container">
-                <button class="filter-btn active" id="btnTodo">Todo</button>
+                <button class="filter-btn" id="btnTodo">Todo</button>
                 <button class="filter-btn" id="btnDulces">Dulces</button>
                 <button class="filter-btn" id="btnSalados">Salados</button>
                 <button class="filter-btn" id="btnAcidos">Acidos</button>
@@ -36,21 +37,11 @@
             </div>
         </div>
 
-        <!-- Sección de productos -->
-        <div class="products-section">
-            <div class="products-header">
-                <h2>Listado de productos</h2>
-                <div class="sort-controls">
-                    <button id="addProductBtn">Añadir producto</button>
-                </div>
-            </div>
-
             <div class="modal-overlay glass-blur" id="addProductOverlay" style="display:none;"></div>
             <dialog class="modal-form" id="addProductDialog">
                 <form id="addProductForm">
                     <div class="ultra-modal-header">
-                        <div class="ultra-modal-icon">🥨</div>
-                        <div class="ultra-modal-title">Añadir producto</div>
+                        <div class="ultra-modal-title">Añadir producto 🥨</div>
                     </div>
                     <div class="ultra-modal-fields">
                         <div class="floating-field">
@@ -63,6 +54,7 @@
                             <label for="productPrice" class="ultra-label-top">Precio</label>
                             <input id="productPrice" min="0" name="productPrice" required autocomplete="off"
                                 class="ultra-input">
+                            <div class="error-message" id="priceError"></div>
                         </div>
                         <div class="floating-field">
                             <label for="productCategory" class="ultra-label-top">Categoría</label>
@@ -127,71 +119,78 @@
 
             <dialog class="modal-form" id="editProductDialog">
                 <form id="editProductForm">
-                    <h2>Editar producto</h2>
-
+                    <div class="ultra-modal-header">
+                    <div class="ultra-modal-title">Editar producto 📝</div>
+                    </div>
+                    <div class="ultra-modal-fields">
                     <div class="floating-field">
-                        <label for="productName">Nombre</label>
-                        <input type="text" id="editProductName" name="productName" required>
+                        <label for="editProductName" class="ultra-label-top">Nombre</label>
+                        <input type="text" id="editProductName" name="productName" required autocomplete="off" class="ultra-input">
+                        <div class="error-message" id="editNameError"></div>
                     </div>
 
                     <div class="floating-field">
-                        <label for="productPrice">Precio</label>
-                        <input id="editProductPrice" name="productPrice" required>
+                        <label for="editProductPrice" class="ultra-label-top">Precio</label>
+                        <input id="editProductPrice" name="productPrice" required autocomplete="off" class="ultra-input">
+                        <div class="error-message" id="editPriceError"></div>
                     </div>
 
                     <div class="floating-field">
-                        <label for="productCategory">Categoría</label>
-                        <select id="editProductCategory" name="productCategory" required>
-                            <option value="Dulces">Dulces</option>
-                            <option value="Salados">Salados</option>
-                            <option value="Acidos">Acidos</option>
-                            <option value="Picantes">Picantes</option>
-                            <option value="Bebidas">Bebidas</option>
+                        <label for="editProductCategory" class="ultra-label-top">Categoría</label>
+                        <select id="editProductCategory" name="productCategory" required class="ultra-input">
+                        <option value="" disabled selected hidden></option>
+                        <option value="Dulces">Dulces</option>
+                        <option value="Salados">Salados</option>
+                        <option value="Acidos">Acidos</option>
+                        <option value="Picantes">Picantes</option>
+                        <option value="Bebidas">Bebidas</option>
                         </select>
                     </div>
 
                     <div class="floating-field">
-                        <label for="productOrigin">Origen</label>
+                        <label for="editProductOrigin" class="ultra-label-top">Origen</label>
                         <select id="editProductOrigin" name="productOrigin" required class="ultra-input">
-                            <option value="" disabled selected hidden></option>
-                            <option value="Panamá">Panamá</option>
-                            <option value="México">México</option>
-                            <option value="Perú">Perú</option>
-                            <option value="Corea del sur">Corea del sur</option>
-                            <option value="Japon">Japon</option>
-                            <option value="Estados unidos">Estados unidos</option>
-                            <option value="España">España</option>
+                        <option value="" disabled selected hidden></option>
+                        <option value="Panamá">Panamá</option>
+                        <option value="México">México</option>
+                        <option value="Perú">Perú</option>
+                        <option value="Corea del sur">Corea del sur</option>
+                        <option value="Japon">Japon</option>
+                        <option value="Estados unidos">Estados unidos</option>
+                        <option value="España">España</option>
                         </select>
                     </div>
 
                     <div class="floating-field">
-                        <label for="productStock">Stock</label>
-                        <input type="number" id="editProductStock" name="productStock" required>
+                        <label for="editProductStock" class="ultra-label-top">Stock</label>
+                        <input type="number" id="editProductStock" name="productStock" required class="ultra-input">
                     </div>
 
                     <div class="floating-field">
-                        <label for="productImage" class="ultra-label-top">Imagen del producto</label>
-                        <div id="dropZone" class="drop-zone">
-                            <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
-                            <input type="file" id="productImage" name="productImage" accept="image/*"
-                                class="drop-zone__input">
+                        <label for="editProductImage" class="ultra-label-top">Imagen del producto</label>
+                        <div id="editDropZone" class="drop-zone">
+                        <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
+                        <input type="file" id="editProductImage" name="productImage" accept="image/*" class="drop-zone__input">
                         </div>
+                        <div class="error-message" id="editImageError"></div>
                     </div>
 
                     <div class="floating-field">
-                        <label for="productDescription">Descripción</label>
-                        <textarea id="editProductDescription" name="productDescription" required></textarea>
+                        <label for="editProductDescription" class="ultra-label-top">Descripción</label>
+                        <textarea id="editProductDescription" name="productDescription" required autocomplete="off" class="ultra-input"></textarea>
                     </div>
 
                     <div class="floating-field">
-                        <label for="productStory">Historia</label>
-                        <textarea id="editProductStory" name="productStory" required></textarea>
+                        <label for="editProductStory" class="ultra-label-top">Historia</label>
+                        <textarea id="editProductStory" name="productStory" required autocomplete="off" class="ultra-input"></textarea>
                     </div>
-
-                    <button type="submit" id="Actualizar">Actualizar</button>
-                    <button type="button" class="cancel-btn" id="cancelEditProduct">Cancelar</button>
+                    </div>
+                    <div class="ultra-modal-actions">
+                    <button type="submit" class="ultra-main-btn" id="Actualizar">Actualizar</button>
+                    <button type="button" class="ultra-cancel-btn" id="cancelEditProduct">Cancelar</button>
+                    </div>
                 </form>
-            </dialog>
+                </dialog>
 
         </div>
 

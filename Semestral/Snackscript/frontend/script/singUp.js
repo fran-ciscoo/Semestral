@@ -9,7 +9,8 @@
             inputConfirmPassword: document.querySelector('#confirmPassword'),
             usernameError: document.querySelector("#usernameError"),
             emailError: document.querySelector("#emailError"),
-            passwordError: document.querySelector("#passwordError")
+            passwordError: document.querySelector("#passwordError"),
+            nameError: document.querySelector("#nameError"),
         }
 
         const methods = {
@@ -20,7 +21,7 @@
                 const password = htmlElements.inputPassword.value;
                 const confirmPassword = htmlElements.inputConfirmPassword.value;
 
-                if (!methods.validateForm(username, email, password, confirmPassword)) {
+                if (!methods.validateForm(name, username, email, password, confirmPassword)) {
                     return; 
                 }
 
@@ -58,7 +59,11 @@
                 }
             },
 
-            validateForm(username, email, password, confirmPassword) {
+            validateForm(name, username, email, password, confirmPassword) {
+                if (name && !/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+( [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/.test(name)) {
+                    htmlElements.nameError.innerHTML = "El nombre solo puede contener letras y espacios entre palabras";
+                    return false;
+                }
                 if (username && !/^[a-zA-Z0-9._]+$/.test(username)) {
                     htmlElements.usernameError.innerHTML = "El nombre de usuario solo puede contener letras, números, puntos y guiones bajos";
                     return false;

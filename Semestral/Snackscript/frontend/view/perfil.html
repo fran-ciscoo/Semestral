@@ -11,6 +11,7 @@
 <body>
     <div id="navbar"></div>
     <div id="messageCart" class="alert-message"></div>
+    
     <!-- Header del perfil con información principal -->
     <div class="profile-header">
         <div class="profile-avatar">
@@ -184,12 +185,14 @@
 
             <label id="name">Nombre:</label>
             <input type="text" id="inputName" name="name" required>
+            <div class="error-message" id="nameError"></div>
 
             <label id="username">Usuario:</label>
             <input type="text" id="inputUsername" name="username" required>
 
             <label id="email">Correo electrónico:</label>
             <input type="email" id="inputEmail" name="email" required>
+            <div class="error-message" id="emailError"></div>
 
             <label id="shippingAddress">Dirección de envío:</label>
             <input type="text" id="inputCity" name="shippingAddress" required placeholder="Ciudad">

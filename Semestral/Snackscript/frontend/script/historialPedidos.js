@@ -64,7 +64,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                             <div class="order-header">
                                 <div class="order-number">
                                     <span class="idOrder">#${order._id.slice(-5)}</span>
-                                    <span class="status-badge ${order.status === 'ENTREGADO' ? 'delivered' : order.status === 'CANCELADO' ? 'cancelled' : ''}">
+                                    <span class="status-badge ${order.status === 'ENTREGADO' ? 'entregado' : order.status === 'CANCELADO' ? 'cancelado' : ''}">
                                         ${order.status}
                                     </span>
                                 </div>

@@ -14,9 +14,9 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
         }
 
         const methods = {
-            async verfySession(){
-                try{
-                    const response = await fetch ('http://localhost:3000/api/login/me',{
+            async verify() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/login/me', {
                         credentials: 'include',
                     });
                     if (response.status === 401) {
@@ -29,12 +29,13 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     }
                     const data = await response.json();
                     return data.user?.role || 'none';
-                    
-                }catch (error) {
+
+                } catch (error) {
                     console.error('Error al verificar la sesión:', error);
                     return 'none';
                 }
             },
+            
             async viewPoints() {
                 try {
                     const response = await fetch('http://localhost:3000/api/points/', {
@@ -185,6 +186,35 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     htmlElements.message.classList.remove('show');
                 }, 3000);
             },
+            async verifySession() {
+                try {
+                    console.log("Verificando sesión...");
+                    const response = await fetch('http://localhost:3000/api/login/me', {
+                        method: 'GET',
+                        credentials: 'include'
+                    }); 
+
+                    if (!response.ok) {
+                        console.error("Usuario no autenticado");
+                        throw new Error("Usuario no autenticado");
+                    }
+                    const data = await response.json();
+
+                    if (data.user.role !== 'subscriber') {
+                        console.log("Si cumple la condición");
+                        window.location.href = '../view/index.html';
+                        return;
+                    } else {
+                        console.log("Es suscriber");
+                    }
+
+                } catch (error) {
+                    console.log("ERROR");
+                    console.error("Error al verificar el rol:", error);
+                    window.location.href = '../view/index.html';
+                    
+                }
+            },
             async getAndRenderCoupons(){
                 const coupons = await methods.getCoupons();
                 const couponsUser = await methods.getCouponsUser();
@@ -193,7 +223,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             },
             async addNavbar(){
                 const container = htmlElements.navbar;
-                const role = await methods.verfySession();
+                const role = await methods.verify();
                 console.log(role);
                 let generar;
 
@@ -220,6 +250,10 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
         return{
             init(){
                 const {confirmNo} = htmlElements;
+                document.addEventListener('DOMContentLoaded', async () => {
+                    await methods.verifySession();
+                });
+                
                 methods.getAndRenderCoupons();
                 methods.addNavbar();
                 methods.addFooter();

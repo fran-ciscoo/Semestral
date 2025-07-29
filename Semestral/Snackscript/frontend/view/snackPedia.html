@@ -10,84 +10,12 @@
 </head>
 <body>
     <div id="navbar"></div>
-    
-    <!-- Barra de búsqueda mejorada -->
-    <search>
-        <input type="text" id="searchInput" placeholder="Buscar snacks por nombre, país o categoría...">
-        <button id="searchButton">Buscar</button>
-    </search>
-
-    <!-- Mapa interactivo por países -->
-    <div class="map-container">
-        <h2>Explora snacks por país</h2>
-        <div class="world-map">
-            <div class="map-controls">
-                <button id="btnTodo" class="map-btn active">Todos los países</button>
-                <button id="btnAsia" class="map-btn">Asia</button>
-                <button id="btnAmerica" class="map-btn">América</button>
-                <button id="btnEuropa" class="map-btn">Europa</button>
-                
-            </div>
-            
-            <div class="map-visualization">
-                <div class="map-grid">
-                    <!-- Países de Asia -->
-                    <div class="country-item" data-country="japon" data-region="asia">
-                        <div class="country-flag">🇯🇵</div>
-                        <span class="country-name">Japón</span>
-                        <span class="snack-count">12 snacks</span>
-                    </div>
-                    <div class="country-item" data-country="corea" data-region="asia">
-                        <div class="country-flag">🇰🇷</div>
-                        <span class="country-name">Corea</span>
-                        <span class="snack-count">8 snacks</span>
-                    </div>
-                    
-                    
-                    <!-- Países de América -->
-                    <div class="country-item" data-country="mexico" data-region="america">
-                        <div class="country-flag">🇲🇽</div>
-                        <span class="country-name">México</span>
-                        <span class="snack-count">10 snacks</span>
-                    </div>
-
-                    <div class="country-item" data-country="estados-unidos" data-region="america">
-                        <div class="country-flag">🇺🇸</div>
-                        <span class="country-name">Estados Unidos</span>
-                        <span class="snack-count">7 snacks</span>
-                    </div>
-
-                    <div class="country-item" data-country="peru" data-region="america">
-                        <div class="country-flag">🇵🇪</div>
-                        <span class="country-name">Perú</span>
-                        <span class="snack-count">5 snacks</span>
-                    </div>
-                    
-                    
-                    <!-- Países de Europa -->
-                    
-                    <div class="country-item" data-country="espana" data-region="europa">
-                        <div class="country-flag">🇪🇸</div>
-                        <span class="country-name">España</span>
-                        <span class="snack-count">6 snacks</span>
-                    </div>
-                    
-                    
-                </div>
-            </div>
+    <div id="informacion">
+        <h1>Snack Pedia</h1>
+        <div id="contenido">
+            <p>Proximamente...</p>
         </div>
     </div>
-
-    <!-- Lista de snacks filtrados -->
-    <div id="snackList">
-        <img src="../img/buldakCarbonara.png" class="snack" data-country="corea" data-category="salado">
-        <img src="../img/SourpatchOriginal.webp" class="snack" data-country="estados-unidos" data-category="dulce">
-        <img src="../img/ChocolatemrbeastMani.jpg" class="snack" data-country="estados-unidos" data-category="dulce">
-        <img src="../img/PapiricasPollo.webp" class="snack" data-country="mexico" data-category="salado">
-        <img src="../img/LucasmuecasAzul.jpg" class="snack" data-country="japon" data-category="dulce">
-        <img src="../img/pockyChocolate.webp" class="snack" data-country="japon" data-category="dulce">
-    </div>
-    
     <div id="footer"></div>
 </body>
 </html>

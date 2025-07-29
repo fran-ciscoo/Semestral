@@ -25,11 +25,42 @@ import {navbarA, footer} from "../component/navbar.js"
             btnCancelEdit: document.querySelector('#cancelEditUser'),
             btnCancelActions: document.querySelector('#btnCancelActions'),
             formEdit: document.querySelector('#editCupon'),
+
+            nameError: document.querySelector('#nameError'),
+            pointsError: document.querySelector('#pointsError'),
+            discountError: document.querySelector('#discountError'),
             
 
         }
 
         const methods = {
+            verifyCoupon(name, points, type, discount) {
+                console.log(name, points, type, discount);
+                htmlElements.nameError.innerHTML = "";
+                htmlElements.pointsError.innerHTML = "";
+                htmlElements.discountError.innerHTML = "";
+
+                let isValid = true;
+                if (!name || name.trim() === '') {
+                    htmlElements.nameError.innerHTML = "El nombre del cupón es obligatorio.";
+                    isValid = false;
+                }
+
+                if (isNaN(points) || points <= 0) {
+                    htmlElements.pointsError.innerHTML = "Los puntos deben ser un número mayor a 0.";
+                    isValid = false;
+                }
+
+                if (type === 'DESCUENTO') {
+                    const numericDiscount = parseFloat(discount);
+                    if (isNaN(numericDiscount) || numericDiscount < 0.05) {
+                        htmlElements.discountError.innerHTML = "El descuento debe ser un número mayor o igual a 0.05.";
+                        isValid = false;
+                    }
+                }
+
+                return isValid;
+            },
             deleteCoupon(id) {
                 fetch(`http://localhost:3000/api/coupon/${id}`, {
                     method: 'DELETE',
@@ -153,7 +184,11 @@ import {navbarA, footer} from "../component/navbar.js"
                 try {
                     const type = htmlElements.couponType.value;
                     const name = htmlElements.form.elements['name'].value;
-                    const points = htmlElements.form.elements['points'].value;
+                    const points = parseInt(htmlElements.form.elements['points'].value);
+                    const discount = htmlElements.form.elements['discount'].value;
+
+                    const isValid = methods.verifyCoupon(name, points, type, discount);
+                    if (!isValid) return;
 
                     let body = {
                         name: name,

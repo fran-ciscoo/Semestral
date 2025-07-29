@@ -106,11 +106,11 @@ body {
 }
 
 .stat-label {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 0.93rem;
+  color: #9556A6;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  background: transparent;
+  padding: 0;
 }
 
 /* === SELECTOR DE VISTA === */
@@ -191,67 +191,44 @@ body {
   margin-bottom: 20px;
 }
 
-.search-input {
-  flex: 1;
-  padding: 15px 20px;
-  border: 2px solid rgba(162, 136, 212, 0.3);
-  border-radius: 12px;
-  font-size: 1rem;
-  background: rgba(255, 255, 255, 0.8);
-  outline: none;
-  transition: all 0.3s ease;
-}
-
-.search-input:focus {
-  border-color: #9556A6;
-  box-shadow: 0 0 0 3px rgba(149, 86, 166, 0.1);
-}
-
-.search-btn {
-  padding: 15px 20px;
-  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
-  border: none;
-  border-radius: 12px;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 15px rgba(149, 86, 166, 0.3);
-}
-
-.search-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(149, 86, 166, 0.4);
-}
-
 .filter-buttons {
   display: flex;
-  gap: 15px;
   flex-wrap: wrap;
+  gap: 12px;
   justify-content: center;
 }
 
 .filter-btn {
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.5);
-  border: 2px solid rgba(162, 136, 212, 0.2);
-  border-radius: 25px;
-  font-weight: 600;
-  font-size: 0.9rem;
+  background: linear-gradient(135deg, #fff 0%, #f3eaff 100%);
+  color: #9556A6;
+  border: 2px solid #BFA7F2;
+  border-radius: 1.5rem;
+  padding: 10px 26px;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-right: 10px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  color: #170C40;
+  transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #bfa7f233;
 }
 
-.filter-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+.filter-btn:last-child {
+  margin-right: 0;
+}
+
+.filter-btn:hover,
+.filter-btn:focus {
+  background: linear-gradient(135deg, #F26052 0%, #BFA7F2 100%);
+  color: #fff;
+  border-color: #F26052;
+  outline: none;
 }
 
 .filter-btn.active {
-  background: linear-gradient(135deg, #F26052 0%, #D9763D 100%);
-  color: white;
-  border-color: #F26052;
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  color: #fff;
+  border-color: #9556A6;
+  box-shadow: 0 4px 16px #9556A633;
 }
 
 /* === CONTENEDOR DE PEDIDOS === */
@@ -259,267 +236,236 @@ body {
   margin: 40px auto;
   width: 90%;
   max-width: 1400px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
 }
 
-.orders-grid {
+.orders-grid, #orders-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 80px 32px; /* 80px vertical, 32px horizontal */
+  padding: 40px 0;
+  width: 100%;
+  justify-items: center;
+  align-items: stretch;
+  background: none;
+  border: none;
+}
+
+/* Responsive: 2 columnas en tablet, 1 en móvil */
+@media (max-width: 1100px) {
+  .orders-grid, #orders-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .orders-grid, #orders-grid {
+    grid-template-columns: 1fr;
+    gap: 18px 0;
+    padding: 18px 0;
+  }
 }
 
 /* === TARJETAS DE PEDIDO === */
 .order-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
-  border-radius: 20px;
-  padding: 38px 28px;      /* Más espacio interno */
-  max-width: 750px;        /* Más ancha que antes */
-  margin: 30px auto;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-}
-
-.order-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+  background: linear-gradient(135deg, #fff 70%, #f3eaff 100%);
+  border: 2px solid #bfa7f2;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(149, 86, 166, 0.10);
+  padding: 22px 18px 16px 18px;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
+  max-width: 370px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Asegura que el footer quede abajo */
+  height: 100%;                   /* Ocupa toda la celda del grid */
+  gap: 12px;
+  transition: box-shadow 0.2s, transform 0.18s;
+  margin: 0;
 }
-
-.order-card:hover::before {
-  left: 100%;
-}
-
 .order-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px #bfa7f244;
+  transform: translateY(-4px) scale(1.025);
 }
 
-/* Header del pedido */
+/* Header de la tarjeta */
 .order-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid rgba(162, 136, 212, 0.1);
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
 }
-
 .order-number {
   display: flex;
-  align-items: center;
-  gap: 15px;
+  flex-direction: column;
+  gap: 4px;
 }
-
-.number {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #170C40;
-}
-
-.status-badge {
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+.idOrder {
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.status-badge.processing {
-  background: #FF9800;
-  color: white;
-}
-
-.status-badge.delivered {
-  background: #4CAF50;
-  color: white;
-}
-
-.status-badge.cancelled {
-    background: #F44336;
-    color: white;
-}
-
-.status-badge.pending {
-  background: #9E9E9E;
-  color: white;
-}
-
-.order-date {
-  text-align: right;
-}
-
-.date {
-  display: block;
-  font-weight: 600;
-  color: #170C40;
+  color: #9556A6;
   font-size: 1.1rem;
 }
+.status-badge {
+  display: inline-block;
+  padding: 3px 14px;
+  border-radius: 1rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  margin-top: 2px;
+  background: #f3eaff;
+  color: #9556A6;
+  border: 1.5px solid #bfa7f2;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+.status-badge.pending {
+  background: linear-gradient(135deg, #fff 0%, #ffe0e0 100%);
+  color: #666 ;
+  border-color: #666 ;
+}
+.status-badge.processing {
+  background: linear-gradient(135deg, #fff 0%, #fff2e0 100%);
+  color:  #FF9800;
+  border-color: #D9763D;
+}
+.status-badge.en-camino {
+  background: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 100%);
+  color:  #FF9800;
+  border-color: #D9763D;
+}
 
-.time {
-  display: block;
-  font-size: 0.9rem;
+.status-badge.entregado {
+  background: linear-gradient(135deg, #eaffea 0%, #d6ffd6 100%);
+  color: #43A047;
+  border-color: #54b059;
+}
+
+.status-badge.cancelado {
+  background: linear-gradient(135deg, #fff0f0 0%, #ffd6d6 100%);
+  color: #D32F2F;
+  border-color: #B71C1C;
+}
+.order-date {
+  text-align: right;
   color: #666;
+  font-size: 0.97rem;
 }
 
-/* Contenido del pedido */
+/* Contenido de la tarjeta */
 .order-content {
-  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-
 .order-items {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
-
 .item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(162, 136, 212, 0.1);
+  font-size: 0.98rem;
+  color: #170C40;
 }
-
-.item:last-child {
-  border-bottom: none;
-}
-
 .item-name {
   font-weight: 600;
-  color: #170C40;
-  flex: 1;
+  color: #9556A6;
 }
-
 .item-quantity {
   color: #666;
-  font-weight: 500;
-  margin: 0 15px;
 }
-
 .item-price {
   font-weight: 700;
   color: #F26052;
 }
 
-/* Resumen del pedido */
+/* Resumen de la orden */
 .order-summary {
-  background: rgba(255, 255, 255, 0.5);
-  padding: 20px;
-  border-radius: 15px;
-  border: 1px solid rgba(162, 136, 212, 0.1);
+  margin-top: 6px;
+  background: #f3eaff;
+  border-radius: 1rem;
+  padding: 10px 14px;
+  font-size: 0.98rem;
+  color: #170C40;
 }
-
 .summary-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  font-weight: 500;
+  margin-bottom: 2px;
 }
-
-.summary-row:last-child {
-  margin-bottom: 0;
-}
-
 .summary-row.total {
+  font-size: 1.08rem;
   font-weight: 700;
-  font-size: 1.1rem;
-  color: #F26052;
-  border-top: 2px solid rgba(162, 136, 212, 0.2);
-  padding-top: 10px;
-  margin-top: 10px;
+  color: #9556A6;
 }
 
-/* Footer del pedido */
+/* Footer y progreso */
 .order-footer {
-  border-top: 2px solid rgba(162, 136, 212, 0.1);
-  padding-top: 20px;
+  margin-top: auto; /* Empuja el footer al fondo */
 }
-
-/* Progreso del pedido */
 .order-progress {
-  margin-bottom: 20px;
+  width: 100%;
 }
-
 .progress-steps {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  position: relative;
+  gap: 0;
 }
-
-.progress-steps::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: rgba(162, 136, 212, 0.2);
-  transform: translateY(-50%);
-  z-index: 1;
-}
-
 .step {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  position: relative;
-  z-index: 2;
-  flex: 1;
+  flex: 1 1 0;
+  opacity: 0.7;
+  padding: 6px 0;
+  border-radius: 12px;
+  background: none;
+  transition: background 0.2s, color 0.2s;
+}
+.step.active,
+.step.completed {
+  opacity: 1;
+  font-weight: 700;
+}
+.order-card .step.active .step-label,
+.order-card .step.completed .step-label {
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.97rem;
+  background: #bfa7f2;
+  transition: background 0.2s, color 0.2s;
+}
+.order-card .step.active .step-label,
+.order-card .step.completed .step-label {
+  background: #bfa7f2;
 }
 
+
 .step-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  font-size: 1.3rem;
+  margin-bottom: 2px;
+  width: 2.2em;
+  height: 2.2em;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  font-weight: 700;
-  background: rgba(162, 136, 212, 0.2);
-  color: #666;
-  transition: all 0.3s ease;
-}
-
-.step.completed .step-icon {
-  background: #4CAF50;
-  color: white;
-}
-
-.step.active .step-icon {
-  background: #FF9800;
-  color: white;
-  animation: pulse 2s infinite;
+  border-radius: 50%;
+  background: #bfa7f2; /* color por defecto */
+  color: #fff;
+  margin: 0 auto 6px auto;
+  transition: background 0.2s, color 0.2s;
 }
 
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
-}
-
-.step-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #666;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.step.completed .step-label,
-.step.active .step-label {
-  color: #170C40;
 }
 
 /* Acciones del pedido */
@@ -761,38 +707,101 @@ body {
 }
 
 .orders-grid.no-orders {
-  background: linear-gradient(135deg, #FFE0EC, #FFD1D1);
-  border: 2px dashed #F26052;
-  color: #7B1E1E;
+  background: none;
+  border: none;
+  color: #9556A6;
   font-weight: 600;
-  font-size: 1.3rem;
-  padding: 30px 50px;
-  border-radius: 20px;
+  font-size: 1.2rem;
+  padding: 30px 0;
+  border-radius: 0;
   text-align: center;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
-.alert-message {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #43aa8b;
-  color: #fff;
-  padding: 15px 25px;
-  border-radius: 8px;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease, top 0.4s ease;
+  box-shadow: none;
 }
 
-/* Mostrar el mensaje */
-.alert-message.show {
-  opacity: 1;
-  pointer-events: auto;
-  top: 40px;
+/* Elimina el color y fondo de las palabras de los estados en el footer */
+.order-card .step-label,
+.order-card .step.active .step-label,
+.order-card .step.completed .step-label {
+  background: transparent !important;
+  color: #9556A6 !important;
+  padding: 0;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 0.97rem;
+  transition: none;
+}
+
+/* Colores de icono para pasos activos y completados según el estado */
+
+/* Amarillo para pendientes, en preparación y en camino */
+.order-card[data-status="PENDIENTE"] .step.active .step-icon,
+.order-card[data-status="EN PREPARACION"] .step.active .step-icon,
+.order-card[data-status="EN CAMINO"] .step.active .step-icon {
+  background: #FF9800;
+  color: #fff;
+  box-shadow: 0 0 0 4px #fffbe6;
+}
+
+/* Verde para pasos activos y completados cuando el pedido está en estado verde */
+.order-card[data-status="PENDIENTE"] .step.completed .step-icon,
+.order-card[data-status="EN PREPARACION"] .step.completed .step-icon,
+.order-card[data-status="EN CAMINO"] .step.completed .step-icon{
+  background: #4CAF50;
+  color: #fff;
+  box-shadow: 0 0 0 4px #eaffea;
+}
+
+/* Rojo para cancelado */
+.order-card[data-status="CANCELADO"] .step.active .step-icon,
+.order-card[data-status="CANCELADO"] .step.completed .step-icon {
+  background: #D32F2F;
+  color: #fff;
+  box-shadow: 0 0 0 4px #ffeaea;
+}
+
+/* Gris para estados desconocidos */
+.order-card[data-status]:not([data-status="PENDIENTE"]):not([data-status="EN PREPARACION"]):not([data-status="EN CAMINO"]):not([data-status="CONFIRMADO"]):not([data-status="PREPARADO"]):not([data-status="ENTREGADO"]):not([data-status="CANCELADO"]) .step.active .step-icon,
+.order-card[data-status]:not([data-status="PENDIENTE"]):not([data-status="EN PREPARACION"]):not([data-status="EN CAMINO"]):not([data-status="CONFIRMADO"]):not([data-status="PREPARADO"]):not([data-status="ENTREGADO"]):not([data-status="CANCELADO"]) .step.completed .step-icon {
+  background: #666;
+  color: #fff;
+  box-shadow: 0 0 0 4px #eee;
+}
+
+.status-badge.entregado {
+  background: linear-gradient(135deg, #eaffea 0%, #d6ffd6 100%);
+  color: #43A047;
+  border-color: #43A047;
+}
+.status-badge.cancelado {
+  background: linear-gradient(135deg, #fff0f0 0%, #ffd6d6 100%);
+  color: #D32F2F;
+  border-color: #B71C1C;
+}
+
+/* Botón de repetir pedido en historial */
+.order-footer .botones button {
+  background: linear-gradient(135deg, #9556A6 0%, #BFA7F2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(149, 86, 166, 0.18);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  margin: 10px auto 0 auto;
+  display: block;
+}
+/* Centra el botón de repetir pedido en el footer */
+.order-footer .botones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.order-footer .botones button {
+  margin: 10px 0 0 0; /* elimina auto para centrar con flex */
+  display: inline-block;
 }

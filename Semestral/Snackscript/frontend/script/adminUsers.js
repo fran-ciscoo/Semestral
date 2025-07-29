@@ -120,10 +120,10 @@ import {navbarA, footer} from "../component/navbar.js"
                     users.forEach(user => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${user.name}</td>
-                            <td>${user.email}</td>
-                            <td>${user.role}</td>
-                            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                            <td data-label="Nombre">${user.name}</td>
+                            <td data-label="Email">${user.email}</td>
+                            <td data-label="Rol">${user.role}</td>
+                            <td data-label="Fecha de creación">${new Date(user.createdAt).toLocaleDateString()}</td>
                         `;
                         row.addEventListener('click', (e) => {
                             methods.showModal(htmlElements.dialogActions);

@@ -108,4 +108,71 @@ fastify.put('/:id', async (request, reply) => {
             return reply.status(500).send({ message: 'Error al verificar el pago' });
         }
     });
+
+    fastify.post('/repeat/:orderId', async (request, reply) => {
+        try {
+            const { orderId } = request.params;
+            const token = request.cookies.token;
+            if (!token) {
+                return reply.status(401).send({ message: 'No autorizado' });
+            }
+            const decoded = jwt.verify(token, secretKey);
+            const userId = decoded.id;
+            const order = await Order.findById(orderId).populate('items.product');
+            if (!order) {
+                return reply.status(404).send({ message: 'Pedido no encontrado' });
+            }
+            let addedCount = 0;
+            let totalToAdd = 0;
+            for (const item of order.items) {
+                const product = item.product;
+                const quantity = item.quantity;
+                if (!product || product.stock < quantity) continue;
+                const cart = await Cart.findOne({ userId });
+                const existingItem = cart?.items.find(i => i.product.toString() === product._id.toString());
+                if (existingItem) {
+                    await Cart.updateOne(
+                        { userId, 'items.product': product._id },
+                        { $inc: { 'items.$.quantity': quantity } }
+                    );
+                } else {
+                    await Cart.updateOne(
+                        { userId },
+                        {
+                            $push: {
+                                items: {
+                                    product: product._id,
+                                    quantity,
+                                    price: product.price
+                                }
+                            }
+                        },
+                        { upsert: true }
+                    );
+                }
+                totalToAdd += quantity * product.price;
+                addedCount++;
+            }
+            if (addedCount === 0) {
+                return reply.status(400).send({
+                    message: 'No se pudo agregar ningún producto. Puede que no haya stock suficiente.'
+                });
+            }
+            // Actualiza el totalAmount del carrito
+            await Cart.updateOne(
+                { userId },
+                { $inc: { totalAmount: totalToAdd } }
+            );
+            return reply.send({
+                message: 'Pedido repetido con éxito.',
+                productosAgregados: addedCount,
+                totalAgregado: totalToAdd
+            });
+        } catch (error) {
+            console.error('Error al repetir el pedido:', error);
+            return reply.status(500).send({ message: 'Error del servidor' });
+        }
+    });
+
+
 }

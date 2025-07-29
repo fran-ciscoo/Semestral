@@ -87,7 +87,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     cart.items.forEach(item => {
                         const li = document.createElement('li');
                         li.classList.add('cart-item');
-
+                        li.dataset.stock = item.product.stock;
                         const priceText = item.isFree ? '<strong style="color: green">GRATIS</strong>' : `$${item.product.price.toFixed(2)}`;
                         const totalItemPrice = item.isFree ? '<strong style="color: green">GRATIS</strong>' : `$${(item.product.price * item.quantity).toFixed(2)}`;
                         if(item.isFree){
@@ -187,27 +187,40 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     const quantityDisplay = cartItem.querySelector('.quantity-display');
                     const removeBtn = cartItem.querySelector('.remove-btn');
                     if (!removeBtn) return;
+
                     const productId = removeBtn.dataset.id;
+                    const maxStock = parseInt(cartItem.dataset.stock);
+                    let currentQuantity = parseInt(quantityDisplay.textContent);
+
+                    const updateButtonsState = () => {
+                        btnPlus.disabled = currentQuantity >= maxStock;
+                        btnMinus.disabled = currentQuantity <= 1;
+                    };
+
+                    updateButtonsState();
 
                     btnPlus.addEventListener('click', () => {
-                        let quantity = parseInt(quantityDisplay.textContent);
-                        quantity += 1;
-                        quantityDisplay.textContent = quantity;
-                        methods.updateQuantity(productId, quantity);
+                        if (currentQuantity < maxStock) {
+                            currentQuantity += 1;
+                            quantityDisplay.textContent = currentQuantity;
+                            methods.updateQuantity(productId, currentQuantity);
+                            updateButtonsState();
+                        }
                     });
 
                     btnMinus.addEventListener('click', () => {
-                        let quantity = parseInt(quantityDisplay.textContent);
-                        if (quantity > 1) {
-                            quantity -= 1;
-                            quantityDisplay.textContent = quantity;
-                            methods.updateQuantity(productId, quantity);
-                            return;
+                        if (currentQuantity > 1) {
+                            currentQuantity -= 1;
+                            quantityDisplay.textContent = currentQuantity;
+                            methods.updateQuantity(productId, currentQuantity);
+                            updateButtonsState();
+                        } else {
+                            methods.showMessage('No se puede poner cantidades negativas', true);
                         }
-                        methods.showMessage('No se puedo poner cantidades negativas', true);
                     });
                 });
             },
+
             async updateQuantity(productId, quantity) {
                 try {
                     const response = await fetch(`http://localhost:3000/api/cart/update/${productId}`, {
@@ -216,13 +229,24 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                         credentials: 'include',
                         body: JSON.stringify({ quantity })
                     });
-                    const data = response.json
-                    if (!response.ok) {
-                        console.warn('No se pudo actualizar la cantidad');
+
+                    const data = await response.json();
+
+                    if (response.status === 400) {
+                        methods.showMessage(data.message || 'No se puede actualizar la cantidad.', true);
+                        return;
                     }
+
+                    if (!response.ok) {
+                        console.warn('❌ No se pudo actualizar la cantidad:', data.message || 'Error desconocido.');
+                        methods.showMessage(data.message || 'Error al actualizar cantidad.', true);
+                        return;
+                    }
+
                     methods.viewItemsCart();
                 } catch (error) {
-                    console.error('Error al actualizar cantidad:', error);
+                    console.error('🌐 Error al actualizar cantidad:', error);
+                    methods.showMessage('Error de red al actualizar cantidad.', true);
                 }
             },
             async createCheckoutSession() {
@@ -508,7 +532,7 @@ import { navbarN, navbarS, footer } from "../component/navbar.js"
                     });
                     const data = await response.json();
                     if (response.ok) {
-                        console.log('Cupón actualizado correctamente:', data.cart);
+                        
                         return data.cart;
                     } else{
                         console.warn('Error al actualizar el cupón:', data.message);

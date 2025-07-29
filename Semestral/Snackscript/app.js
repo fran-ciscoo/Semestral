@@ -79,6 +79,13 @@ async function couponRoutes() {
 }
 couponRoutes();
 
+async function SubRoutes() {
+  await fastify.register(import('./backend/src/routes/subcriptor.js'), {
+    prefix: '/api/sub'
+  })
+}
+SubRoutes()
+
 const start = async () => {
     try {
         await connect(MONGO_URI);

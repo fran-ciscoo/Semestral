@@ -12,6 +12,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             cantidadTotal: document.querySelector('#cantidadtotal'),
             cantidadEntregados: document.querySelector('#cantidadentregados'),
             cantidadCancelados: document.querySelector('#cantidadcancelados'),
+            messageCart: document.querySelector('#messageCart')
         }
 
         const methods = {
@@ -48,7 +49,6 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
                         let itemsHtml = "";
                         (order.items || []).forEach(item => {
-                            console.log(item);
                             itemsHtml += `
                                 <div class="item">
                                     <span class="item-name">${item.product.name|| ''}</span>
@@ -99,7 +99,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                                 <div class="order-progress">
                                     <div class="progress-steps">
                                         <div class="botones">
-                                            <button id="btnpedir${order._id}">Repetir Pedido</button>
+                                            <button id="btnPedir" data-id="${order._id}">Repetir Pedido</button>
                                         </div>
                                     </div>
                                 </div>
@@ -107,13 +107,36 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                         `;
 
                         container.appendChild(card);
+                        const btnRepetir = card.querySelector('#btnPedir');
+                        if (btnRepetir) {
+                            btnRepetir.addEventListener('click', async () => {
+                                const orderId = btnRepetir.dataset.id;
+                                console.log(`Repetir pedido con ID: ${orderId}`);
+                                methods.repeatOrder(orderId);
+                            });
+                        }
                     });
 
                 } catch (error) {
                     console.error('Error en viewOrders:', error);
                 }
             },
-            
+            async repeatOrder(orderId) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/order/repeat/${orderId}`, {
+                        method: 'POST',
+                        credentials: 'include'
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.message || 'No se pudo repetir el pedido');
+                    }
+                    methods.showMessage('Pedido repetido. Los productos se agregaron al carrito.', false);
+                } catch (error) {
+                    console.error('Error al repetir pedido:', error);
+                    methods.showMessage('Ocurrió un error al repetir el pedido', true);
+                }
+            },
             async verfySession(){
                 try{
                     const response = await fetch ('http://localhost:3000/api/login/me',{
@@ -135,7 +158,18 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                     return 'none';
                 }
             },
-
+            showMessage(mensaje, color) {
+                htmlElements.messageCart.textContent = mensaje;
+                if (color) {
+                    htmlElements.messageCart.style.backgroundColor = '#f94144';
+                } else {
+                    htmlElements.messageCart.style.backgroundColor = '#43aa8b';
+                }
+                htmlElements.messageCart.classList.add('show');
+                setTimeout(() => {
+                    htmlElements.messageCart.classList.remove('show');
+                }, 3000);
+            },
             async addNavbar(){
                 const container = htmlElements.navbar;
                 const role = await methods.verfySession();

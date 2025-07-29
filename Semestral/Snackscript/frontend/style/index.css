@@ -1763,14 +1763,14 @@ body {
 /* Textarea específico */
 /* Textarea específico */
 .floating-field textarea {
-    min-height: 120px;
-    resize: vertical;
-    font-family: inherit;
-    padding-top: 24px;              /* Aumenta espacio superior para que el texto inicie más abajo */
-    line-height: 1.5;               /* Mejora legibilidad */
-    vertical-align: top;          /* Asegura que el texto no quede centrado verticalmente */
-    box-sizing: border-box;        /* Para que el padding no desborde */
-    display: block;                /* Evita comportamientos inline extraños */
+min-height: 120px;
+resize: vertical;
+font-family: inherit;
+padding-top: 24px;              /* Aumenta espacio superior para que el texto inicie más abajo */
+line-height: 1.5;               /* Mejora legibilidad */
+vertical-align: top;          /* Asegura que el texto no quede centrado verticalmente */
+box-sizing: border-box;        /* Para que el padding no desborde */
+display: block;                /* Evita comportamientos inline extraños */
 }
 
 

@@ -252,5 +252,6 @@ export default async function productosRoutes(fastify, opts) {
       console.error('Error al actualizar el stock:', error);
       return reply.status(500).send({ error: 'Error interno del servidor.' });
     }
-  });
+  }); 
+  
 }

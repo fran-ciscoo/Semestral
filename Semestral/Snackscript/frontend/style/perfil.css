@@ -238,25 +238,23 @@ body {
 
 /* === GRID DE TARJETAS === */
 .profile-grid {
-  max-width: 700px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 60px 60px;
+  /* antes 40px 40px */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 30px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 70px;
+  /* antes 50px */
+  margin-bottom: 80px;
+  /* antes 60px */
 }
 
 .profile-card {
-  max-width: 900px;
-  margin: 0 auto;
-  /* ...resto de tus estilos... */
-}
-
-.profile-card {
+  width: 100%;
   background: linear-gradient(135deg, #DED6FF 0%, #E8E4FF 100%);
   border-radius: 20px;
-  padding: 30px;
+  padding: 25px;
   box-shadow: 0 15px 40px rgba(3, 12, 38, 0.1);
   border: 2px solid rgba(162, 136, 212, 0.3);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -287,7 +285,6 @@ body {
   border-color: rgba(149, 86, 166, 0.5);
 }
 
-/* Contenido específico de las tarjetas */
 .card-content {
   margin-bottom: 25px;
 }
@@ -892,4 +889,29 @@ input:checked + .toggle-slider:before {
 
 .btn-primary:hover {
   background: linear-gradient(135deg, #d96f63, #a03c92);
+}
+
+.alert-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #43aa8b;
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, top 0.4s ease;
+}
+
+/* Mostrar el mensaje */
+.alert-message.show {
+  opacity: 1;
+  pointer-events: auto;
+  top: 40px;
 }

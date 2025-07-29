@@ -106,17 +106,18 @@ export default async function cartRoutes(fastify, opts) {
                 return reply.status(400).send({ message: 'Faltan datos necesarios (productId o quantity).' });
             }
             const cart = await Cart.findOne({ userId });
-            const item = cart.items.find(item => item.product.toString() === productId).populate('product');
+            const item = cart.items.find(item => item.product.toString() === productId);
             if (!item) {
                 return reply.status(404).send({ message: 'Producto no encontrado en el carrito.' });
             }
-            /* const product = await Product.findById(productId);
+            const product = await Product.findById(productId);
             if (!product) {
                 return reply.status(404).send({ message: 'Producto no existe en la base de datos.' });
-            } */
-            if (quantity > item.product.stock) {
+            }
+            
+            if (quantity > product.stock) {
                 return reply.status(400).send({
-                    message: `No puedes añadir más de ${item.product.stock} unidades de este producto.`,
+                    message: `No puedes añadir más de ${product.stock} unidades de este producto.`,
                     error: 'outStock',
                 });
             }

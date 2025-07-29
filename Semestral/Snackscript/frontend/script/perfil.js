@@ -27,6 +27,8 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             pedidosCount: document.querySelector('#pedidosCount'),
             couponsList: document.querySelector('#couponsList'),
             couponsNumber: document.querySelector('#couponsNumber'),
+            beSub: document.querySelector('#beSub'),
+            messageCart: document.querySelector('#messageCart')
         }
 
         const methods = {
@@ -52,7 +54,7 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 }
             },
             renderCoupons(coupons) {
-                if (coupons !== null) {
+                if (coupons) {
                     const container = htmlElements.couponsList;
                     container.innerHTML = '';
                     htmlElements.couponsNumber.textContent = coupons.length;
@@ -83,8 +85,84 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
 
                     actionsDiv.appendChild(historialLink);
                     container.appendChild(actionsDiv);
+                }else {
+                    htmlElements.couponsList.innerHTML = '<div><p>No tienes cupones</p></div>';
                 }
-                htmlElements.couponsList.innerHTML = '<div><p>No tienes cupones</p></div>';
+            },
+            async createSubcriptor(nombre, price) {
+                try {
+                    const response = await fetch('http://localhost:3000/api/sub/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include', 
+                        body: JSON.stringify({ nombre:"Subcriptor", price: 10.00 })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        console.error('Error al crear subscriptor:', data.error || 'Error desconocido');
+                        return null;
+                    }
+                    console.log('✅ Subscriptor creado:', data.subcriptor);
+                    return data.subcriptor;
+                } catch (error) {
+                    console.error('Error de red al crear subscriptor:', error);
+                    return null;
+                }
+            },
+            async createSubscriptionSession(subcriptorId) {
+                try {
+                    const response = await fetch('http://localhost:3000/api/sub/session', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ subcriptorId: '68885b95330a2749e2010de7'})
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        console.error('Error al crear sesión de suscripción:', data.error || 'Error desconocido');
+                        return null;
+                    }
+                    window.location.href = data.url;
+                } catch (error) {
+                    console.error('Error de red al crear sesión de suscripción:', error);
+                }
+            },
+            async checkSubscriptionSession() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const sessionId = urlParams.get('session_id');
+
+                if (sessionId) {
+                    try {
+                        const response = await fetch('http://localhost:3000/api/sub/verificar', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            credentials: 'include',
+                            body: JSON.stringify({ session_id: sessionId }),
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            console.log('Suscripción verificada:', data);
+
+                            if (data.status === 'active') {
+                                methods.showMessage('¡Suscripción activa! Ya puedes disfrutar de los beneficios.', false);
+                                methods.updateUserSubscription(true);
+                            } else {
+                                methods.showMessage('El pago no se completó. Intenta nuevamente.', true);
+                            }
+                        } else {
+                            console.error('Error al verificar suscripción:', data.error);
+                            methods.showMessage('Error verificando la suscripción.', true);
+                        }
+                    } catch (err) {
+                        console.error('Error al verificar suscripción:', err);
+                    }
+                }
             },
             async viewOrders(){
                 try {
@@ -394,7 +472,10 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
             }
         return{
             async init(){
-                const {btnCancelar, btnEditar} = htmlElements;
+                const {btnCancelar, btnEditar, beSub} = htmlElements;
+                document.addEventListener('DOMContentLoaded', () => {
+                    methods.checkSubscriptionSession();
+                });
                 methods.viewPoints();
                 methods.addNavbar();
                 methods.addFooter();
@@ -412,6 +493,10 @@ import {navbarN, navbarS, footer} from "../component/navbar.js"
                 btnCancelar.addEventListener('click', (e) => {
                     e.preventDefault();
                     methods.hideModal(htmlElements.dialogEditar);
+                });
+                beSub.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    methods.createSubscriptionSession();
                 });
                 methods.verifyAddress();
             }

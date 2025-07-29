@@ -10,7 +10,7 @@
 </head>
 <body>
     <div id="navbar"></div>
-    
+    <div id="messageCart" class="alert-message"></div>
     <!-- Header del perfil con información principal -->
     <div class="profile-header">
         <div class="profile-avatar">
@@ -137,31 +137,22 @@
         </div>
 
         <!-- Tarjeta de configuración -->
-        <div class="profile-card settings-card">
+        <div class="profile-card subscription-card">
             <div class="card-header">
-                <div class="card-icon">⚙️</div>
-                <h3>Configuración</h3>
+                <div class="card-icon">🌟</div>
+                <h3>Hazte Suscriptor</h3>
             </div>
             <div class="card-content">
-                <div class="settings-list">
-                    <div class="setting-item">
-                        <span class="setting-name">Notificaciones</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="setting-item">
-                        <span class="setting-name">Newsletter</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
+                <p>Al convertirte en suscriptor, ganarás puntos por cada compra que realices.
+                    Luego podrás canjearlos por cupones de descuento y beneficios exclusivos.</p>
+                <ul class="benefits-list">
+                    <li>🎁 Gana puntos por tus compras</li>
+                    <li>🏷️ Accede a cupones especiales</li>
+                    <li>🚀 Obtén acceso anticipado a productos</li>
+                </ul>
             </div>
             <div class="card-actions">
-                <button class="card-btn">Más Opciones</button>
+                <button class="card-btn" id="beSub">Suscribirme</button>
             </div>
         </div>
 
